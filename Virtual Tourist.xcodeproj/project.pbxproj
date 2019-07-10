@@ -13,6 +13,7 @@
 		8451FECA22D55A8500BE42ED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8451FEC922D55A8500BE42ED /* Assets.xcassets */; };
 		8451FECD22D55A8500BE42ED /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8451FECB22D55A8500BE42ED /* LaunchScreen.storyboard */; };
 		8451FED622D560EC00BE42ED /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 8451FED522D560EC00BE42ED /* .gitignore */; };
+		8451FED822D563D800BE42ED /* TravelLocationsViewController+MapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8451FED722D563D800BE42ED /* TravelLocationsViewController+MapKit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		8451FECC22D55A8500BE42ED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8451FECE22D55A8500BE42ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8451FED522D560EC00BE42ED /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		8451FED722D563D800BE42ED /* TravelLocationsViewController+MapKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TravelLocationsViewController+MapKit.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				8451FEC422D55A8400BE42ED /* TravelLocationsMapViewController.swift */,
+				8451FED722D563D800BE42ED /* TravelLocationsViewController+MapKit.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -148,6 +151,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8451FEC522D55A8400BE42ED /* TravelLocationsMapViewController.swift in Sources */,
+				8451FED822D563D800BE42ED /* TravelLocationsViewController+MapKit.swift in Sources */,
 				8451FEC322D55A8400BE42ED /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

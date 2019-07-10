@@ -9,9 +9,10 @@
 import UIKit
 import MapKit
 
-class TravelLocationsViewController: UIViewController, MKMapViewDelegate {
+class TravelLocationsViewController: UIViewController {
 
 	@IBOutlet weak var mapView: MKMapView!
+	@IBOutlet weak var mapActivityIndicator: UIActivityIndicatorView!
 
 	var persistedLatitude = {
 		return UserDefaults.standard.float(forKey: "latitude")
@@ -24,10 +25,15 @@ class TravelLocationsViewController: UIViewController, MKMapViewDelegate {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-
+		mapView.delegate = self
+		
 		//Fetch Map Pins from coreData model
 
 		//Fetch Saved Photos associated with each mapPin
+	}
+
+	func isDownloading(downloading: Bool){
+		downloading ? mapActivityIndicator.startAnimating() : mapActivityIndicator.stopAnimating()
 	}
 
 
