@@ -26,10 +26,22 @@ class TravelLocationsViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		mapView.delegate = self
+		let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+		self.view.addGestureRecognizer(recognizer)
 		
 		//Fetch Map Pins from coreData model
 
 		//Fetch Saved Photos associated with each mapPin
+	}
+
+	@objc func handleLongPress(_ recognizer: UILongPressGestureRecognizer) {
+		if recognizer.state == .began{
+			//Hover pin above location
+			print("Long Press")
+		} else if recognizer.state == .ended {
+			//Drop pin at location
+			print("Long Press Ended")
+		}
 	}
 
 	func isDownloading(downloading: Bool){
