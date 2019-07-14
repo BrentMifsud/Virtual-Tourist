@@ -13,14 +13,8 @@ class TravelLocationsViewController: UIViewController {
 
 	@IBOutlet weak var mapView: MKMapView!
 	@IBOutlet weak var mapActivityIndicator: UIActivityIndicatorView!
-
-	var persistedLatitude = {
-		return UserDefaults.standard.float(forKey: "latitude")
-	}
-
-	var persistedLongitude = {
-		return UserDefaults.standard.float(forKey: "longitude")
-	}
+	let locationKey: String = "persistedMapRegion"
+	var currentLocation: [String : CLLocationDegrees]!
 
 
 	override func viewDidLoad() {
@@ -28,10 +22,15 @@ class TravelLocationsViewController: UIViewController {
 		mapView.delegate = self
 		let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
 		self.view.addGestureRecognizer(recognizer)
-		
+		retrievePersistedMapLocation()
+
 		//Fetch Map Pins from coreData model
 
 		//Fetch Saved Photos associated with each mapPin
+	}
+
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
 	}
 
 	@objc func handleLongPress(_ recognizer: UILongPressGestureRecognizer) {
@@ -47,7 +46,5 @@ class TravelLocationsViewController: UIViewController {
 	func isDownloading(downloading: Bool){
 		downloading ? mapActivityIndicator.startAnimating() : mapActivityIndicator.stopAnimating()
 	}
-
-
 }
 
