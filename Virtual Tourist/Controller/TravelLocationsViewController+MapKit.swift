@@ -9,10 +9,6 @@
 import MapKit
 
 extension TravelLocationsViewController: MKMapViewDelegate {
-	func retrieveMapViewRegion() -> MKCoordinateRegion {
-		return self.mapView.region
-	}
-
 	func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
 
 		let reuseId = "pin"
@@ -40,4 +36,27 @@ extension TravelLocationsViewController: MKMapViewDelegate {
 			}
 		}
 	}
+
+	func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
+		setPersistedMapLocation()
+	}
+
+	func setPersistedMapLocation() {
+		let location = ["lat":mapView.centerCoordinate.latitude
+			, "long":mapView.centerCoordinate.longitude
+			, "latDelta":mapView.region.span.latitudeDelta
+			, "longDelta":mapView.region.span.longitudeDelta]
+
+		UserDefaults.standard.set(location, forKey: locationKey)
+	}
+
+	func retrievePersistedMapLocation() {
+		if let mapRegion = UserDefaults.standard.dictionary(forKey: locationKey) {
+			let locationData = mapRegion as! [String : CLLocationDegrees]
+			let center = CLLocationCoordinate2D(latitude: locationData["lat"]!, longitude: locationData["long"]!)
+			let span = MKCoordinateSpan(latitudeDelta: locationData["latDelta"]!, longitudeDelta: locationData["longDelta"]!)
+			mapView.setRegion(MKCoordinateRegion(center: center, span: span), animated: true)
+		}
+	}
+
 }
