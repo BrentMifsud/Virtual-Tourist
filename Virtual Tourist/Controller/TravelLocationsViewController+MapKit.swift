@@ -9,6 +9,10 @@
 import MapKit
 
 extension TravelLocationsViewController: MKMapViewDelegate {
+	func retrieveMapViewRegion() -> MKCoordinateRegion {
+		return self.mapView.region
+	}
+
 	func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
 
 		let reuseId = "pin"
