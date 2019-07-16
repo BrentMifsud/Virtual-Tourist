@@ -8,13 +8,17 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class TravelLocationsViewController: UIViewController {
 
 	@IBOutlet weak var mapView: MKMapView!
 	@IBOutlet weak var mapActivityIndicator: UIActivityIndicatorView!
+
 	let locationKey: String = "persistedMapRegion"
 	var currentLocation: [String : CLLocationDegrees]!
+	var mapPins: [MapPin] = [] //TODO: replace later. Tie Map Pins to core data model.
+	var dataController: DataController!
 
 
 	override func viewDidLoad() {
@@ -25,8 +29,12 @@ class TravelLocationsViewController: UIViewController {
 		retrievePersistedMapLocation()
 
 		//Fetch Map Pins from coreData model
-
-		//Fetch Saved Photos associated with each mapPin
+		let fetchRequest: NSFetchRequest<MapPin> = MapPin.fetchRequest()
+		let sortDescriptor = NSSortDescriptor(key: "locationName", ascending: true)
+		if let result = try? dataController.viewContext.fetch(fetchRequest) {
+			mapPins = result
+			//TODO: load all map pins onto map
+		}
 	}
 
 	override func viewWillDisappear(_ animated: Bool) {
@@ -35,11 +43,28 @@ class TravelLocationsViewController: UIViewController {
 
 	@objc func handleLongPress(_ recognizer: UILongPressGestureRecognizer) {
 		if recognizer.state == .began{
-			//Hover pin above location
+			//TODO: Hover pin above location
 			print("Long Press")
 		} else if recognizer.state == .ended {
-			//Drop pin at location
+			//TODO: Drop pin at location
+			//TODO: Popup prompting to name pin
+			//TODO: addMapPin(Name of pin from above, Coordinates from above)
 			print("Long Press Ended")
+		}
+	}
+
+	func addMapPin(locationName: String, coordinates: CLLocationCoordinate2D) {
+		let mapPin: MapPin = MapPin(context: dataController.viewContext)
+		mapPin.locationName = locationName
+		mapPin.latitude = coordinates.latitude
+		mapPin.longitude = coordinates.longitude
+
+		do {
+			try dataController.viewContext.save()
+			mapPins.append(mapPin)
+		} catch {
+			//TODO: show alert for unable to add location to map
+			print(error)
 		}
 	}
 
