@@ -59,4 +59,23 @@ extension TravelLocationsViewController: MKMapViewDelegate {
 		}
 	}
 
+	func retrieveLocationName(latitude: CLLocationDegrees, longitude: CLLocationDegrees) -> String {
+		let geoCoder = CLGeocoder()
+		let location = CLLocation(latitude: latitude, longitude: longitude)
+
+		var locationName = ""
+
+		geoCoder.reverseGeocodeLocation(location) { (placemarks, error) in
+			guard let placemark = placemarks?.first else {return}
+
+			// Location Name
+			if let name = placemark.name{
+				print(name)
+				locationName = name
+			}
+		}
+
+		return locationName
+	}
+
 }

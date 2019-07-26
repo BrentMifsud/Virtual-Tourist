@@ -25,6 +25,12 @@
                                 <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
                                 <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Long press to add travel location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sfw-Ca-8ws">
+                                <rect key="frame" x="82" y="64" width="250" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -34,10 +40,13 @@
                             <constraint firstItem="Jlx-0P-Rh2" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="bE1-Ok-afj"/>
                             <constraint firstAttribute="trailing" secondItem="bBo-HU-Sao" secondAttribute="trailing" id="hlQ-hd-yX3"/>
                             <constraint firstItem="bBo-HU-Sao" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="i9p-Mn-0k5"/>
+                            <constraint firstItem="sfw-Ca-8ws" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="tdZ-lW-AI1"/>
+                            <constraint firstItem="sfw-Ca-8ws" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="vM4-ev-mG7"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="instructionLabel" destination="sfw-Ca-8ws" id="wED-jj-Kpp"/>
                         <outlet property="mapActivityIndicator" destination="Jlx-0P-Rh2" id="ODT-HO-cRW"/>
                         <outlet property="mapView" destination="bBo-HU-Sao" id="Tky-Lk-QSo"/>
                     </connections>

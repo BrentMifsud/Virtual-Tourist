@@ -14,6 +14,7 @@ class TravelLocationsViewController: UIViewController {
 
 	@IBOutlet weak var mapView: MKMapView!
 	@IBOutlet weak var mapActivityIndicator: UIActivityIndicatorView!
+	@IBOutlet weak var instructionLabel: UILabel!
 
 	let locationKey: String = "persistedMapRegion"
 	var currentLocation: [String : CLLocationDegrees]!
@@ -31,6 +32,7 @@ class TravelLocationsViewController: UIViewController {
 		//Fetch Map Pins from coreData model
 		let fetchRequest: NSFetchRequest<MapPin> = MapPin.fetchRequest()
 		let sortDescriptor = NSSortDescriptor(key: "locationName", ascending: true)
+		fetchRequest.sortDescriptors?.append(sortDescriptor)
 		if let result = try? dataController.viewContext.fetch(fetchRequest) {
 			mapPins = result
 			//TODO: load all map pins onto map
@@ -42,14 +44,22 @@ class TravelLocationsViewController: UIViewController {
 	}
 
 	@objc func handleLongPress(_ recognizer: UILongPressGestureRecognizer) {
+		var locationName: String
+		var locationCoordinates: CLLocationCoordinate2D
+
 		if recognizer.state == .began{
-			//TODO: Hover pin above location
-			print("Long Press")
+			//Update Label
+			instructionLabel.text = "Release to add pin"
+
+			//Get coordinate of touchpoint
+			let touchPoint = recognizer.location(in: self.mapView)
+
+			locationCoordinates = self.mapView.convert(touchPoint, toCoordinateFrom: self.mapView)
+
+			locationName = retrieveLocationName(latitude: locationCoordinates.latitude, longitude: locationCoordinates.longitude)
+
 		} else if recognizer.state == .ended {
-			//TODO: Drop pin at location
-			//TODO: Popup prompting to name pin
-			//TODO: addMapPin(Name of pin from above, Coordinates from above)
-			print("Long Press Ended")
+			instructionLabel.text = "Long press to add new travel location"
 		}
 	}
 
