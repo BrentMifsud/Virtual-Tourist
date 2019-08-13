@@ -18,63 +18,43 @@ class TravelLocationsViewController: UIViewController {
 
 	let locationKey: String = "persistedMapRegion"
 	var currentLocation: [String : CLLocationDegrees]!
-	var mapPins: [MapPin] = [] //TODO: replace later. Tie Map Pins to core data model.
-	var dataController: DataController!
-
+	var annotations: [MKPointAnnotation] = []
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		mapView.delegate = self
-		let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
-		self.view.addGestureRecognizer(recognizer)
 		retrievePersistedMapLocation()
-
-		//Fetch Map Pins from coreData model
-		let fetchRequest: NSFetchRequest<MapPin> = MapPin.fetchRequest()
-		let sortDescriptor = NSSortDescriptor(key: "locationName", ascending: true)
-		fetchRequest.sortDescriptors?.append(sortDescriptor)
-		if let result = try? dataController.viewContext.fetch(fetchRequest) {
-			mapPins = result
-			//TODO: load all map pins onto map
-		}
 	}
 
-	override func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(animated)
-	}
+	@IBAction func longPress(_ sender: UILongPressGestureRecognizer) {
 
-	@objc func handleLongPress(_ recognizer: UILongPressGestureRecognizer) {
-		var locationName: String
-		var locationCoordinates: CLLocationCoordinate2D
+		if sender.state == .began{
+			//Update Instruction Label
+			instructionLabel.text = "Release finger to add pin"
 
-		if recognizer.state == .began{
-			//Update Label
-			instructionLabel.text = "Release to add pin"
-
+		} else if sender.state == .ended {
 			//Get coordinate of touchpoint
-			let touchPoint = recognizer.location(in: self.mapView)
+			let touchPoint = sender.location(in: self.mapView)
 
-			locationCoordinates = self.mapView.convert(touchPoint, toCoordinateFrom: self.mapView)
+			let locationCoordinate = self.mapView.convert(touchPoint, toCoordinateFrom: self.mapView)
 
-			locationName = retrieveLocationName(latitude: locationCoordinates.latitude, longitude: locationCoordinates.longitude)
+			print("\nTouch Point: \(touchPoint)\nLocation Coordinates: \(locationCoordinate)\n")
 
-		} else if recognizer.state == .ended {
+			let geoCoder = CLGeocoder()
+			let location = CLLocation(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude)
+
+			DispatchQueue.main.async {
+				geoCoder.reverseGeocodeLocation(location) { [unowned self] (placemarks, error) in
+					guard let placemark = placemarks?.first else { return }
+
+					// Location Name
+					if let name = placemark.name{
+						self.addMapPin(locationName: name, coordinate: locationCoordinate)
+					}
+				}
+			}
+			
 			instructionLabel.text = "Long press to add new travel location"
-		}
-	}
-
-	func addMapPin(locationName: String, coordinates: CLLocationCoordinate2D) {
-		let mapPin: MapPin = MapPin(context: dataController.viewContext)
-		mapPin.locationName = locationName
-		mapPin.latitude = coordinates.latitude
-		mapPin.longitude = coordinates.longitude
-
-		do {
-			try dataController.viewContext.save()
-			mapPins.append(mapPin)
-		} catch {
-			//TODO: show alert for unable to add location to map
-			print(error)
 		}
 	}
 

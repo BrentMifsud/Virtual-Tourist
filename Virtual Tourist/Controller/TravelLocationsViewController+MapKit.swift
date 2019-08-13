@@ -59,23 +59,16 @@ extension TravelLocationsViewController: MKMapViewDelegate {
 		}
 	}
 
-	func retrieveLocationName(latitude: CLLocationDegrees, longitude: CLLocationDegrees) -> String {
-		let geoCoder = CLGeocoder()
-		let location = CLLocation(latitude: latitude, longitude: longitude)
+	func addMapPin(locationName: String, coordinate: CLLocationCoordinate2D) {
+		let mapPin: MapPin = MapPin(context: dataController.viewContext)
+		mapPin.locationName = locationName
+		mapPin.latitude = coordinate.latitude
+		mapPin.longitude = coordinate.longitude
 
-		var locationName = ""
+		let newAnnotation = MKPointAnnotation()
+		newAnnotation.coordinate = coordinate
+		newAnnotation.title = locationName
 
-		geoCoder.reverseGeocodeLocation(location) { (placemarks, error) in
-			guard let placemark = placemarks?.first else {return}
-
-			// Location Name
-			if let name = placemark.name{
-				print(name)
-				locationName = name
-			}
-		}
-
-		return locationName
+		mapView.addAnnotation(newAnnotation)
 	}
-
 }
