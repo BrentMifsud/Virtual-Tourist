@@ -21,8 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		dataController.load()
 
 		// Pass the data controller to the root view controller
-		let travelVC = window?.rootViewController as! TravelLocationsViewController
-		travelVC.dataController = dataController
+//		let travelVC = window?.rootViewController as! TravelLocationsViewController
+//		travelVC.dataController = dataController
 
 		return true
 	}

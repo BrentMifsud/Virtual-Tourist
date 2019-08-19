@@ -16,6 +16,13 @@ class TravelLocationsViewController: UIViewController {
 	@IBOutlet weak var mapActivityIndicator: UIActivityIndicatorView!
 	@IBOutlet weak var instructionLabel: UILabel!
 
+	let instructionLabelLongPress = "Long press to add new travel location"
+	let instructionLabelRelease = "Release finger to add pin"
+	let instructionLabelDismiss = "Tap map to dismiss photo album"
+
+	let darkView = UIView()
+	var collectionView: UICollectionView!
+
 	let locationKey: String = "persistedMapRegion"
 	var currentLocation: [String : CLLocationDegrees]!
 	var annotations: [MKPointAnnotation] = []
@@ -23,6 +30,7 @@ class TravelLocationsViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		mapView.delegate = self
+		collectionView.delegate = self
 		retrievePersistedMapLocation()
 	}
 
@@ -30,16 +38,13 @@ class TravelLocationsViewController: UIViewController {
 
 		if sender.state == .began{
 			//Update Instruction Label
-			instructionLabel.text = "Release finger to add pin"
+			instructionLabel.text = instructionLabelRelease
 
 		} else if sender.state == .ended {
 			//Get coordinate of touchpoint
 			let touchPoint = sender.location(in: self.mapView)
 
 			let locationCoordinate = self.mapView.convert(touchPoint, toCoordinateFrom: self.mapView)
-
-			print("\nTouch Point: \(touchPoint)\nLocation Coordinates: \(locationCoordinate)\n")
-
 			let geoCoder = CLGeocoder()
 			let location = CLLocation(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude)
 
@@ -54,7 +59,7 @@ class TravelLocationsViewController: UIViewController {
 				}
 			}
 			
-			instructionLabel.text = "Long press to add new travel location"
+			instructionLabel.text = instructionLabelLongPress
 		}
 	}
 

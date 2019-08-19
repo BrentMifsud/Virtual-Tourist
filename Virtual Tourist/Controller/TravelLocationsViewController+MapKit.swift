@@ -30,10 +30,11 @@ extension TravelLocationsViewController: MKMapViewDelegate {
 
 	func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
 		if control == view.rightCalloutAccessoryView {
-			let app = UIApplication.shared
-			if let toOpen = view.annotation?.subtitle! {
-				app.open(URL(string: toOpen) ?? URL(string: "")!, options: [:], completionHandler: nil)
-			}
+			//TODO:- Get Images from core data. If no images exist for this location in core data, download images
+
+			//Bring up collection View
+			instructionLabel.text = instructionLabelDismiss
+			showPhotoAlbum(photos: [])
 		}
 	}
 
@@ -42,11 +43,13 @@ extension TravelLocationsViewController: MKMapViewDelegate {
 	}
 
 	func setPersistedMapLocation() {
-		let location = ["lat":mapView.centerCoordinate.latitude
-			, "long":mapView.centerCoordinate.longitude
-			, "latDelta":mapView.region.span.latitudeDelta
-			, "longDelta":mapView.region.span.longitudeDelta]
-
+		let location = [
+			"lat":mapView.centerCoordinate.latitude,
+			"long":mapView.centerCoordinate.longitude,
+			"latDelta":mapView.region.span.latitudeDelta,
+			"longDelta":mapView.region.span.longitudeDelta
+		]
+		
 		UserDefaults.standard.set(location, forKey: locationKey)
 	}
 
@@ -60,11 +63,6 @@ extension TravelLocationsViewController: MKMapViewDelegate {
 	}
 
 	func addMapPin(locationName: String, coordinate: CLLocationCoordinate2D) {
-		let mapPin: MapPin = MapPin(context: dataController.viewContext)
-		mapPin.locationName = locationName
-		mapPin.latitude = coordinate.latitude
-		mapPin.longitude = coordinate.longitude
-
 		let newAnnotation = MKPointAnnotation()
 		newAnnotation.coordinate = coordinate
 		newAnnotation.title = locationName
