@@ -19,39 +19,46 @@ extension TravelLocationsViewController: UICollectionViewDelegate, UICollectionV
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: photoCell, for: indexPath)
 		return cell
 	}
-	
+
 	func showPhotoAlbum(photos: [UIImage]){
 		guard let window = UIApplication.shared.keyWindow else { return }
 		
-		//Set up view for tap recognizer
-		tapView.backgroundColor = UIColor(white: 0, alpha: 0)
-		tapView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissPhotoAlbumView)))
-		window.addSubview(tapView)
-		tapView.frame = window.frame
-		
-		//Set up slide up collection view
-		collectionView = showCollectionView()
-		window.addSubview(collectionView)
-		let height: CGFloat = window.frame.height/2
-		let y = window.frame.height - height
-		collectionView.frame = CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: height)
-		
+		setUpTapView(window)
+		setUpCollectionView(window)
+
 		//Animate the views
 		UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
 			self.tapView.alpha = 1
-			self.collectionView.frame = CGRect(x: 0, y: y, width: self.collectionView.frame.width, height: self.collectionView.frame.height)
+			self.collectionView.frame = CGRect(x: 0, y: window.frame.height/2, width: self.collectionView.frame.width, height: self.collectionView.frame.height)
 			self.view.frame = CGRect(x: 0, y: 0, width: window.frame.width, height: window.frame.height/2)
 		}, completion: nil)
+
+		setUpActivityIndicator(window)
 	}
-	
-	func showCollectionView() -> UICollectionView {
-		let layout = UICollectionViewFlowLayout()
-		let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-		cv.backgroundColor = .white
-		cv.delegate = self
-		return cv
+
+	fileprivate func setUpTapView(_ window: UIWindow) {
+		self.tapView.backgroundColor = UIColor(white: 0, alpha: 0)
+		self.tapView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissPhotoAlbumView)))
+		window.addSubview(self.tapView)
+		self.tapView.frame = window.frame
 	}
-	
+
+	fileprivate func setUpCollectionView(_ window: UIWindow) {
+		self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+		self.collectionView.backgroundColor = .white
+		self.collectionView.delegate = self
+		self.collectionView.frame = CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: window.frame.height/2)
+		window.addSubview(self.collectionView)
+	}
+
+	fileprivate func setUpActivityIndicator(_ window: UIWindow) {
+		self.activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+		self.activityIndicator.center = self.collectionView.center
+		self.activityIndicator.color = .black
+		self.activityIndicator.hidesWhenStopped = true
+		window.addSubview(self.activityIndicator)
+	}
+
 	@objc func dismissPhotoAlbumView(){
 		UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
 			guard let window = UIApplication.shared.keyWindow else { return }

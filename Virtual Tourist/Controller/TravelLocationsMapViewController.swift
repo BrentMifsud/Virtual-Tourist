@@ -13,7 +13,6 @@ import CoreData
 class TravelLocationsViewController: UIViewController {
 
 	@IBOutlet weak var mapView: MKMapView!
-	@IBOutlet weak var mapActivityIndicator: UIActivityIndicatorView!
 	@IBOutlet weak var instructionLabel: UILabel!
 
 	let instructionLabelLongPress = "Long press to add new travel location"
@@ -22,6 +21,7 @@ class TravelLocationsViewController: UIViewController {
 
 	let tapView = UIView()
 	var collectionView: UICollectionView!
+	var activityIndicator: UIActivityIndicatorView!
 
 	let locationKey: String = "persistedMapRegion"
 	var currentLocation: [String : CLLocationDegrees]!
@@ -63,7 +63,7 @@ class TravelLocationsViewController: UIViewController {
 	}
 
 	func isDownloading(downloading: Bool){
-		downloading ? mapActivityIndicator.startAnimating() : mapActivityIndicator.stopAnimating()
+		downloading ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
 	}
 }
 
