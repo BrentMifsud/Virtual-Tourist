@@ -20,7 +20,7 @@ class TravelLocationsViewController: UIViewController {
 	let instructionLabelRelease = "Release finger to add pin"
 	let instructionLabelDismiss = "Tap map to dismiss photo album"
 
-	let darkView = UIView()
+	let tapView = UIView()
 	var collectionView: UICollectionView!
 
 	let locationKey: String = "persistedMapRegion"
@@ -30,7 +30,6 @@ class TravelLocationsViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		mapView.delegate = self
-		collectionView.delegate = self
 		retrievePersistedMapLocation()
 	}
 
