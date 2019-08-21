@@ -13,12 +13,12 @@ extension TravelLocationsViewController: MKMapViewDelegate {
 
 		let reuseId = "pin"
 
-		var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
+		var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKMarkerAnnotationView
 
 		if pinView == nil {
-			pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+			pinView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
 			pinView!.canShowCallout = true
-			pinView!.pinTintColor = .red
+			pinView!.glyphTintColor = .red
 			pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure) as UIButton
 		} else {
 			pinView!.annotation = annotation
