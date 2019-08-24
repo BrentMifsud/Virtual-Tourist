@@ -34,6 +34,6 @@ class FlickrClient {
 		static let Format = "json"
 		static let NoJsonCallback = "1"
 		static let ExtraMediumURL = "url_m"
-		static let APIKey = "ENTER API KEY HERE"
+		static let APIKey = "ADD API KEY HERE"
 	}
 }
