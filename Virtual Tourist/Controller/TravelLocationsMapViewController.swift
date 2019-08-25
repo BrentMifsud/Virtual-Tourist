@@ -15,6 +15,8 @@ class TravelLocationsViewController: UIViewController {
 	@IBOutlet weak var mapView: MKMapView!
 	@IBOutlet weak var instructionLabel: UILabel!
 
+	var dataController: DataController!
+
 	let instructionLabelLongPress = "Long press to add new travel location"
 	let instructionLabelRelease = "Release finger to add pin"
 	let instructionLabelDismiss = "Tap map to dismiss photo album"
