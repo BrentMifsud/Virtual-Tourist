@@ -9,39 +9,21 @@
 
 import Foundation
 
-class FlickrClient {
+class FlickrClient: FlickrClientProtocol {
+	var networkClient: NetworkClientProtocol
 
-	//Flicker API Constants
-	enum API {
-		static let BaseUrl = "https://api.flickr.com/services/rest/"
+	var dataController: DataController
+
+	private let baseURL: URL = URL(string: API.BaseUrl)!
+
+	required init(networkClient: NetworkClientProtocol, dataController: DataController) {
+		self.networkClient = networkClient
+		self.dataController = dataController
 	}
 
-	enum Methods {
-		static let PhotosSearch = "flickr.photos.search"
-	}
+	func getFlickrPhotos(forPin pin: Pin, completionHandler: @escaping (Pin?, Error?) -> Void) {
+		let pinId = pin.objectID
 
-	enum ParameterKeys {
-		static let APIKey = "api_key"
-		static let Method = "method"
-		static let Format = "format"
-		static let NoJsonCallback = "nojsoncallback"
-		static let Text = "text"
-		static let Extra = "extras"
-		static let latitude = "lat"
-		static let longitude = "lon"
-		static let radius = "radius"
-		static let radiusUnits = "radius_units"
-		static let page = "page"
-		static let resultsPerPage = "per_page"
-	}
-
-	enum ParameterDefaultValues {
-		static let Format = "json"
-		static let NoJsonCallback = "1"
-		static let ExtraMediumURL = "url_m"
-		static let resultsPerPage = "100"
-		static let radius = "0.5"
-		static let radiusUnits = "km"
-		static let APIKey = "ADD API KEY HERE"
+		
 	}
 }
