@@ -10,13 +10,14 @@ import Foundation
 
 protocol FlickrClientProtocol {
 	var networkClient: NetworkClientProtocol { get }
+	var photoAlbumStore: PhotoAlbumStoreProtocol { get }
 	var dataController: DataController { get }
 
-	init(networkClient: NetworkClientProtocol, dataController: DataController )
+	init(networkClient: NetworkClientProtocol, photoAlbumStore: PhotoAlbumStoreProtocol, dataController: DataController )
 
 	/// Obtains photos from Flickr for a specified map pin.
 	/// - Parameters:
 	/// 	- pin: the map pin to be populated with photos.
 	///		- completionHandler: function that will be called following the compeltion of this method.
-	func getFlickrPhotos(forPin pin: Pin, completionHandler: @escaping (Pin?, Error?) -> Void)
+	func getFlickrPhotos(forPin pin: Pin, resultsForPage page: Int, completionHandler: @escaping (Pin?, Error?) -> Void)
 }

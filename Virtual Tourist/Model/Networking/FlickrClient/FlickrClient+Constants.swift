@@ -25,21 +25,21 @@ extension FlickrClient {
 		static let NoJsonCallback = "nojsoncallback"
 		static let Text = "text"
 		static let Extra = "extras"
-		static let latitude = "lat"
-		static let longitude = "lon"
-		static let radius = "radius"
-		static let radiusUnits = "radius_units"
-		static let page = "page"
-		static let resultsPerPage = "per_page"
+		static let Latitude = "lat"
+		static let Longitude = "lon"
+		static let Radius = "radius"
+		static let RadiusUnits = "radius_units"
+		static let Page = "page"
+		static let ResultsPerPage = "per_page"
 	}
 
 	enum ParameterDefaultValues {
 		static let Format = "json"
 		static let NoJsonCallback = "1"
 		static let ExtraMediumURL = "url_m"
-		static let resultsPerPage = "100"
-		static let radius = "0.5"
-		static let radiusUnits = "km"
+		static let ResultsPerPage = "100"
+		static let Radius = "0.5"
+		static let RadiusUnits = "km"
 		static let APIKey = "ADD API KEY HERE"
 	}
 }
