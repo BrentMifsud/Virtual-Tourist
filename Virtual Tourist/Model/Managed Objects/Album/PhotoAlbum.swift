@@ -10,8 +10,8 @@ import Foundation
 import CoreData
 
 extension PhotoAlbum {
-	var hasImages: Bool {
-		return (photos?.count ?? 0) > 0
+	var isEmpty: Bool {
+		return (photos?.count ?? 0) == 0
 	}
 
 	override public func awakeFromInsert() {
