@@ -17,25 +17,13 @@ extension TravelLocationsViewController: MKMapViewDelegate {
 
 		if pinView == nil {
 			pinView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-			pinView!.canShowCallout = true
-			pinView!.glyphTintColor = .red
-			pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure) as UIButton
+			pinView!.canShowCallout = false
+			pinView!.glyphTintColor = .blue
 		} else {
 			pinView!.annotation = annotation
 		}
 
 		return pinView
-	}
-
-
-	func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-		if control == view.rightCalloutAccessoryView {
-			//TODO:- Get Images from core data. If no images exist for this location in core data, download images
-
-			//Bring up collection View
-			instructionLabel.text = instructionLabelDismiss
-			showPhotoAlbum(photos: [])
-		}
 	}
 
 	func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
@@ -68,5 +56,25 @@ extension TravelLocationsViewController: MKMapViewDelegate {
 		newAnnotation.title = locationName
 
 		mapView.addAnnotation(newAnnotation)
+	}
+
+	func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+		let pinToZoom = view.annotation
+
+		let span = MKCoordinateSpan(latitudeDelta: 0.015, longitudeDelta: 0.015)
+
+		let region = MKCoordinateRegion(center: pinToZoom!.coordinate, span: span)
+
+		mapView.setRegion(region, animated: true)
+
+		//TODO:- Get Images from core data. If no images exist for this location in core data, download images
+
+		//Bring up collection View
+		instructionLabel.text = instructionLabelDismiss
+		showPhotoAlbum(photos: [])
+	}
+
+	func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+		dismissPhotoAlbumView()
 	}
 }

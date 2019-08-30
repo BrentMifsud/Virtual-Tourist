@@ -23,24 +23,15 @@ extension TravelLocationsViewController: UICollectionViewDelegate, UICollectionV
 	func showPhotoAlbum(photos: [UIImage]){
 		guard let window = UIApplication.shared.keyWindow else { return }
 		
-		setUpTapView(window)
 		setUpCollectionView(window)
 
 		//Animate the views
 		UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-			self.tapView.alpha = 1
 			self.collectionView.frame = CGRect(x: 0, y: window.frame.height/2, width: self.collectionView.frame.width, height: self.collectionView.frame.height)
 			self.view.frame = CGRect(x: 0, y: 0, width: window.frame.width, height: window.frame.height/2)
 		}, completion: nil)
 
 		setUpActivityIndicator(window)
-	}
-
-	fileprivate func setUpTapView(_ window: UIWindow) {
-		self.tapView.backgroundColor = UIColor(white: 0, alpha: 0)
-		self.tapView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissPhotoAlbumView)))
-		window.addSubview(self.tapView)
-		self.tapView.frame = window.frame
 	}
 
 	fileprivate func setUpCollectionView(_ window: UIWindow) {
@@ -62,7 +53,6 @@ extension TravelLocationsViewController: UICollectionViewDelegate, UICollectionV
 	@objc func dismissPhotoAlbumView(){
 		UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
 			guard let window = UIApplication.shared.keyWindow else { return }
-			self.tapView.alpha = 0
 			self.collectionView.frame = CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: self.collectionView.frame.height)
 			self.view.frame = CGRect(x: 0, y: 0, width: window.frame.width, height: window.frame.height)
 		}, completion: nil)
