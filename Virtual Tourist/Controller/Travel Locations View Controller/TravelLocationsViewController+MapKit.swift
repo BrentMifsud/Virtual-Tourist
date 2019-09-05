@@ -67,11 +67,14 @@ extension TravelLocationsViewController: MKMapViewDelegate {
 
 		mapView.setRegion(region, animated: true)
 
+		
+
 		//TODO:- Get Images from core data. If no images exist for this location in core data, download images
 
 		//Bring up collection View
 		instructionLabel.text = instructionLabelDismiss
-		showPhotoAlbum(photos: [])
+
+//		showPhotoAlbum(photos: [])
 	}
 
 	func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {

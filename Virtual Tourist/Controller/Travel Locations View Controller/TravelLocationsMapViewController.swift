@@ -16,6 +16,8 @@ class TravelLocationsViewController: UIViewController {
 	@IBOutlet weak var instructionLabel: UILabel!
 
 	var dataController: DataController!
+	var flickrClient: FlickrClient!
+	var networkClient: NetworkClient!
 
 	let instructionLabelLongPress = "Long press to add new travel location"
 	let instructionLabelRelease = "Release finger to add pin"
@@ -61,6 +63,10 @@ class TravelLocationsViewController: UIViewController {
 			
 			instructionLabel.text = instructionLabelLongPress
 		}
+	}
+
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		let vc = segue.destination as? PhotoAlbumViewController
 	}
 
 	func isDownloading(downloading: Bool){
