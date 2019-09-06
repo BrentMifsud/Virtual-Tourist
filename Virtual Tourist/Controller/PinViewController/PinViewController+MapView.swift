@@ -1,5 +1,5 @@
 //
-//  TravelLocationsViewController+MapKit.swift
+//  PinViewController+MapView.swift
 //  Virtual Tourist
 //
 //  Created by Brent Mifsud on 2019-07-09.
@@ -8,7 +8,7 @@
 
 import MapKit
 
-extension TravelLocationsViewController: MKMapViewDelegate {
+extension PinViewController: MKMapViewDelegate {
 	func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
 
 		let reuseId = "pin"
@@ -59,25 +59,14 @@ extension TravelLocationsViewController: MKMapViewDelegate {
 	}
 
 	func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-		let pinToZoom = view.annotation
+		guard let annotation = view.annotation else { return }
 
 		let span = MKCoordinateSpan(latitudeDelta: 0.015, longitudeDelta: 0.015)
 
-		let region = MKCoordinateRegion(center: pinToZoom!.coordinate, span: span)
+		let region = MKCoordinateRegion(center: annotation.coordinate, span: span)
 
 		mapView.setRegion(region, animated: true)
 
-		
-
-		//TODO:- Get Images from core data. If no images exist for this location in core data, download images
-
-		//Bring up collection View
-		instructionLabel.text = instructionLabelDismiss
-
-//		showPhotoAlbum(photos: [])
-	}
-
-	func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
-		dismissPhotoAlbumView()
+		performSegue(withIdentifier: "showPhotoAlbum", sender: annotation)
 	}
 }

@@ -10,21 +10,18 @@ import UIKit
 import MapKit
 import CoreData
 
-class TravelLocationsViewController: UIViewController {
+class PinViewController: UIViewController {
 
 	@IBOutlet weak var mapView: MKMapView!
 	@IBOutlet weak var instructionLabel: UILabel!
 
 	var dataController: DataController!
 	var flickrClient: FlickrClient!
-	var networkClient: NetworkClient!
+	var pinStore: PinStoreProtocol!
+	var albumStore: PhotoAlbumStoreProtocol!
 
-	let instructionLabelLongPress = "Long press to add new travel location"
-	let instructionLabelRelease = "Release finger to add pin"
-	let instructionLabelDismiss = "Tap map to dismiss photo album"
-
-	var collectionView: UICollectionView!
-	var activityIndicator: UIActivityIndicatorView!
+	private let instructionLabelLongPress = "Long press to add new travel location"
+	private let instructionLabelRelease = "Release finger to add pin"
 
 	let locationKey: String = "persistedMapRegion"
 	var currentLocation: [String : CLLocationDegrees]!
@@ -66,11 +63,15 @@ class TravelLocationsViewController: UIViewController {
 	}
 
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		let vc = segue.destination as? PhotoAlbumViewController
-	}
+		guard let vc = segue.destination as? PhotoAlbumViewController else { return }
 
-	func isDownloading(downloading: Bool){
-		downloading ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
+		let selectedAnnotation = sender as! MKAnnotation
+
+		vc.dataController = self.dataController
+		vc.flickrClient = self.flickrClient
+		vc.pinStore = self.pinStore
+		vc.albumStore = self.albumStore
+		vc.selectedAnnotation = selectedAnnotation
 	}
 }
 

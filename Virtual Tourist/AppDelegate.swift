@@ -17,16 +17,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	let dataController = DataController(modelName: "VirtualTourist")
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-		// Override point for customization after application launch.
 
+		// Set up the data controller
 		dataController.load()
-
-		guard let travelVC = window?.rootViewController as? TravelLocationsViewController else {
-			preconditionFailure("Unable to load Root View Controller")
-
-		}
 		
-		travelVC.dataController = dataController
+		// Set up Initial view controller
+		guard let navVC = window?.rootViewController as? UINavigationController else { preconditionFailure("\nERROR:\nUnable to load root view controller") }
+
+		guard let pinVC = navVC.viewControllers.first as? PinViewController else { preconditionFailure("\nERROR:\nUnable to load PinViewController") }
+
+		pinVC.dataController = dataController
+
+		pinVC.pinStore = PinStore()
+
+		pinVC.albumStore = PhotoAlbumStore(photoStore: PhotoStore())
+
+		pinVC.flickrClient = FlickrClient(
+			networkClient: NetworkClient(urlSession: .shared),
+			photoAlbumStore: pinVC.albumStore,
+			dataController: dataController
+		)
 
 		return true
 	}
