@@ -35,7 +35,7 @@ class PhotoAlbumViewController: UIViewController {
 
 		mapView.setRegion(region, animated: true)
 
-		mapView.disableMapInteraction(enabled: false)
+		mapView.isInteractionEnabled(false)
     }
 
 	override func viewWillAppear(_ animated: Bool) {

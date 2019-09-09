@@ -10,7 +10,7 @@ import Foundation
 import MapKit
 
 extension MKMapView {
-	func disableMapInteraction(enabled: Bool) {
+	func isInteractionEnabled(_ enabled: Bool) {
 		self.isScrollEnabled = enabled
 		self.isZoomEnabled = enabled
 		self.isPitchEnabled = enabled
