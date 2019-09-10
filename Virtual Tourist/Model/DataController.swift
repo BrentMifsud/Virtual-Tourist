@@ -9,6 +9,7 @@
 import Foundation
 import CoreData
 
+/// Used to manage core data in Virtual Tourist Application.
 class DataController {
 	let persistentContainer: NSPersistentContainer
 
@@ -16,18 +17,8 @@ class DataController {
 		return persistentContainer.viewContext
 	}
 
-	let backgroundContext: NSManagedObjectContext!
-
 	init(modelName: String) {
 		persistentContainer = NSPersistentContainer(name: modelName)
-		backgroundContext = persistentContainer.newBackgroundContext()
-	}
-
-	func configureContexts() {
-		viewContext.automaticallyMergesChangesFromParent = true
-		viewContext.mergePolicy = NSMergePolicy.mergeByPropertyStoreTrump
-		backgroundContext.automaticallyMergesChangesFromParent = true
-		backgroundContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
 	}
 
 	func load(completion: (() -> Void)? = nil) {
@@ -35,8 +26,8 @@ class DataController {
 			guard error == nil else {
 				fatalError(error!.localizedDescription)
 			}
+			//TODO:- Enable this
 			//self.autoSaveViewContext()
-			self.configureContexts()
 			completion?()
 		}
 	}

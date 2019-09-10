@@ -16,7 +16,7 @@ class PinViewController: UIViewController {
 	@IBOutlet weak var instructionLabel: UILabel!
 
 	var dataController: DataController!
-	var flickrClient: FlickrClient!
+	var flickrClient: FlickrClientProtocol!
 	var pinStore: PinStoreProtocol!
 	var albumStore: PhotoAlbumStoreProtocol!
 
@@ -25,38 +25,25 @@ class PinViewController: UIViewController {
 
 	let locationKey: String = "persistedMapRegion"
 	var currentLocation: [String : CLLocationDegrees]!
-	var annotations: [MKPointAnnotation] = []
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		mapView.delegate = self
 		retrievePersistedMapLocation()
+		fetchPins()
 	}
 
 	@IBAction func longPress(_ sender: UILongPressGestureRecognizer) {
 
 		if sender.state == .began{
-			//Update Instruction Label
+			// Update Instruction Label
 			instructionLabel.text = instructionLabelRelease
 
 		} else if sender.state == .ended {
-			//Get coordinate of touchpoint
-			let touchPoint = sender.location(in: self.mapView)
+			// Get the coordinates of the tapped location on the map.
+			let locationCoordinate = self.mapView.convert(sender.location(in: self.mapView), toCoordinateFrom: self.mapView)
 
-			let locationCoordinate = self.mapView.convert(touchPoint, toCoordinateFrom: self.mapView)
-			let geoCoder = CLGeocoder()
-			let location = CLLocation(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude)
-
-			DispatchQueue.main.async {
-				geoCoder.reverseGeocodeLocation(location) { [unowned self] (placemarks, error) in
-					guard let placemark = placemarks?.first else { return }
-
-					// Location Name
-					if let name = placemark.name{
-						self.addMapPin(locationName: name, coordinate: locationCoordinate)
-					}
-				}
-			}
+			createGeocodedAnnotation(from: locationCoordinate)
 			
 			instructionLabel.text = instructionLabelLongPress
 		}
@@ -65,13 +52,13 @@ class PinViewController: UIViewController {
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		guard let vc = segue.destination as? PhotoAlbumViewController else { return }
 
-		let selectedAnnotation = sender as! MKAnnotation
+		let pinAnnotation: AnnotationPinView = sender as! AnnotationPinView
 
 		vc.dataController = self.dataController
 		vc.flickrClient = self.flickrClient
-		vc.pinStore = self.pinStore
 		vc.albumStore = self.albumStore
-		vc.selectedAnnotation = selectedAnnotation
+		vc.photoStore = self.albumStore.photoStore
+		vc.pin = pinAnnotation.pin
 	}
 }
 

@@ -17,7 +17,7 @@ struct PhotoStore: PhotoStoreProtocol {
 		photo.title = flickrImage.title
 		photo.url = URL(string: flickrImage.mediumUrl)
 		photo.id = flickrImage.id
-		photo.album = album
+		photo.photoAlbum = album
 
 		return photo
 	}

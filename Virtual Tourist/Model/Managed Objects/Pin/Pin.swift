@@ -9,8 +9,8 @@
 import Foundation
 import CoreData
 
-extension Pin {
-	override public func awakeFromInsert() {
+class Pin: NSManagedObject {
+	override func awakeFromInsert() {
 		super.awakeFromInsert()
 
 		dateCreated = Date()

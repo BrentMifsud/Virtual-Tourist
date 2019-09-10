@@ -9,12 +9,12 @@
 import Foundation
 import CoreData
 
-extension PhotoAlbum {
+class PhotoAlbum: NSManagedObject {
 	var isEmpty: Bool {
 		return (photos?.count ?? 0) == 0
 	}
 
-	override public func awakeFromInsert() {
+	override func awakeFromInsert() {
 		super.awakeFromInsert()
 		dateCreated = Date()
 		id = UUID().uuidString

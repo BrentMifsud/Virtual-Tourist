@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class PhotoAlbumViewController: UIViewController {
 
@@ -18,20 +19,27 @@ class PhotoAlbumViewController: UIViewController {
 	@IBOutlet weak var navBarItem: UINavigationItem!
 
 	var dataController: DataController!
-	var flickrClient: FlickrClient!
-	var pinStore: PinStoreProtocol!
+
+	var pin: Pin!
+
+	var photoStore: PhotoStoreProtocol!
+
+	var flickrClient: FlickrClientProtocol!
+
+	var photoFetchedResultsController: NSFetchedResultsController<Photo>!
+
 	var albumStore: PhotoAlbumStoreProtocol!
-	var selectedAnnotation: MKAnnotation!
-	
 
 	override func viewDidLoad() {
         super.viewDidLoad()
 
-		navBarItem.title = selectedAnnotation.title ?? "Album"
+		navBarItem.title = pin.locationName ?? "Album"
 
 		let span = MKCoordinateSpan(latitudeDelta: 0.015, longitudeDelta: 0.015)
 
-		let region = MKCoordinateRegion(center: selectedAnnotation.coordinate, span: span)
+		let coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
+
+		let region = MKCoordinateRegion(center: coordinate, span: span)
 
 		mapView.setRegion(region, animated: true)
 
@@ -44,7 +52,7 @@ class PhotoAlbumViewController: UIViewController {
 		//TODO:- Connect to core data to load all pins.
 		//TODO:- Pass the pin instead of MK annotation to this view controller and use that to fill up the map view
 
-		mapView.addAnnotation(selectedAnnotation)
+		mapView.addAnnotation(AnnotationPinView(pin: pin))
 	}
 
 

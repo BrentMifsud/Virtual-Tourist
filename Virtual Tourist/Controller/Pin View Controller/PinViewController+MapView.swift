@@ -30,6 +30,7 @@ extension PinViewController: MKMapViewDelegate {
 		setPersistedMapLocation()
 	}
 
+	/// Persist the map's current view details inside user defaults.
 	func setPersistedMapLocation() {
 		let location = [
 			"lat":mapView.centerCoordinate.latitude,
@@ -50,23 +51,56 @@ extension PinViewController: MKMapViewDelegate {
 		}
 	}
 
-	func addMapPin(locationName: String, coordinate: CLLocationCoordinate2D) {
-		let newAnnotation = MKPointAnnotation()
-		newAnnotation.coordinate = coordinate
-		newAnnotation.title = locationName
-
-		mapView.addAnnotation(newAnnotation)
-	}
-
 	func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
 		guard let annotation = view.annotation else { return }
 
+		let pinAnnotation = annotation as! AnnotationPinView
+
 		let span = MKCoordinateSpan(latitudeDelta: 0.015, longitudeDelta: 0.015)
-
 		let region = MKCoordinateRegion(center: annotation.coordinate, span: span)
-
 		mapView.setRegion(region, animated: true)
+		performSegue(withIdentifier: "showPhotoAlbum", sender: pinAnnotation)
+	}
 
-		performSegue(withIdentifier: "showPhotoAlbum", sender: annotation)
+	/// Persists a new pin managed object and adds it to the map using the specified coordinate.
+	/// - Parameter coordinate: the coordinate for the new pin to be added.
+	func createGeocodedAnnotation(from coordinate: CLLocationCoordinate2D) {
+		let geoCoder = CLGeocoder()
+		let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+
+			geoCoder.reverseGeocodeLocation(location) { (placemarks, error) in
+				DispatchQueue.main.async {
+					guard let placemark = placemarks?.first else { return }
+					let name = placemark.name ?? "Unknown Area"
+
+					do {
+						let newPin = self.pinStore.createPin(usingContext: self.dataController.viewContext, withLocation: name, andCoordinate: coordinate)
+
+						// Try to save the newly created pin.
+						try self.dataController.save()
+
+						// Get photos from flickr for the new pin.
+						self.flickrClient.getFlickrPhotos(forPin: newPin, resultsForPage: 1) { (pin, error) in
+							guard pin == pin else { return }
+						}
+
+						// Add the newly created pin to the map.
+						self.mapView.addAnnotation(AnnotationPinView(pin: newPin))
+					} catch {
+						print("Error saving new pin: \(error)")
+					}
+				}
+			}
+	}
+
+	/// Add a pin managed object to the Map View.
+	/// - Parameter pin: Pin Managed Object to be added.
+	func addPinAnnotation(pin: Pin){
+		self.mapView.addAnnotation(AnnotationPinView(pin: pin))
+	}
+
+	/// Clear all existing annotations from the map.
+	func clearAnnotations(){
+		self.mapView.removeAnnotations(self.mapView.annotations)
 	}
 }
