@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14492.1" systemVersion="18G95" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Photo" representedClassName=".Photo" syncable="YES" codeGenerationType="category">
+        <attribute name="dateCreated" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" attributeType="URI" syncable="YES"/>
+        <relationship name="photoAlbum" maxCount="1" deletionRule="Nullify" destinationEntity="PhotoAlbum" inverseName="photos" inverseEntity="PhotoAlbum" syncable="YES"/>
+    </entity>
+    <entity name="PhotoAlbum" representedClassName=".PhotoAlbum" syncable="YES" codeGenerationType="category">
+        <attribute name="dateCreated" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="id" attributeType="String" syncable="YES"/>
+        <relationship name="photos" toMany="YES" deletionRule="Cascade" destinationEntity="Photo" inverseName="photoAlbum" inverseEntity="Photo" syncable="YES"/>
+        <relationship name="pin" maxCount="1" deletionRule="Nullify" destinationEntity="Pin" inverseName="album" inverseEntity="Pin" syncable="YES"/>
+    </entity>
+    <entity name="Pin" representedClassName=".Pin" syncable="YES" codeGenerationType="category">
+        <attribute name="dateCreated" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="Double" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="locationName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="album" maxCount="1" deletionRule="Nullify" destinationEntity="PhotoAlbum" inverseName="pin" inverseEntity="PhotoAlbum" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Pin" positionX="-326.25" positionY="-34.953125" width="128" height="118"/>
+        <element name="PhotoAlbum" positionX="-151.15625" positionY="-19.87109375" width="128" height="103"/>
+        <element name="Photo" positionX="25.828125" positionY="-65.90234375" width="128" height="133"/>
+    </elements>
+</model>
