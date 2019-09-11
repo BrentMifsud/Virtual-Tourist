@@ -15,12 +15,14 @@ class PhotoAlbumViewController: UIViewController {
 	@IBOutlet weak var mapView: MKMapView!
 	@IBOutlet weak var collectionView: UICollectionView!
 	@IBOutlet weak var doneButton: UIBarButtonItem!
-	@IBOutlet weak var refreshButton: UIBarButtonItem!
+	@IBOutlet weak var deleteButton: UIBarButtonItem!
 	@IBOutlet weak var navBarItem: UINavigationItem!
 
 	var dataController: DataController!
 
 	var pin: Pin!
+
+	var pinStore: PinStoreProtocol!
 
 	var photoStore: PhotoStoreProtocol!
 
@@ -32,6 +34,7 @@ class PhotoAlbumViewController: UIViewController {
 
 	override func viewDidLoad() {
         super.viewDidLoad()
+		mapView.delegate = self
 
 		navBarItem.title = pin.locationName ?? "Album"
 
@@ -62,5 +65,7 @@ class PhotoAlbumViewController: UIViewController {
 
 
 	@IBAction func refreshButtonPressed(_ sender: UIBarButtonItem) {
+		pinStore.deletePin(pin: self.pin, fromContext: self.dataController.viewContext)
+		self.dismiss(animated: true, completion: nil)
 	}
 }

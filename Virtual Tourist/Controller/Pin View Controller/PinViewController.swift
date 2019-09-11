@@ -30,7 +30,11 @@ class PinViewController: UIViewController {
 		super.viewDidLoad()
 		mapView.delegate = self
 		retrievePersistedMapLocation()
-		fetchPins()
+	}
+
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		refreshPins()
 	}
 
 	@IBAction func longPress(_ sender: UILongPressGestureRecognizer) {
@@ -58,6 +62,7 @@ class PinViewController: UIViewController {
 		vc.flickrClient = self.flickrClient
 		vc.albumStore = self.albumStore
 		vc.photoStore = self.albumStore.photoStore
+		vc.pinStore = self.pinStore
 		vc.pin = pinAnnotation.pin
 	}
 }

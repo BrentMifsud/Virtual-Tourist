@@ -20,7 +20,7 @@ extension PhotoAlbumViewController: MKMapViewDelegate {
 		if pinView == nil {
 			pinView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
 			pinView!.canShowCallout = false
-			pinView!.glyphTintColor = .blue
+			pinView!.markerTintColor = .blue
 		} else {
 			pinView!.annotation = annotation
 		}

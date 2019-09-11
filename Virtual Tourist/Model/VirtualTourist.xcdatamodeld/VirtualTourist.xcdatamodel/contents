@@ -19,11 +19,11 @@
         <attribute name="latitude" optional="YES" attributeType="Double" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="locationName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Double" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="album" maxCount="1" deletionRule="Nullify" destinationEntity="PhotoAlbum" inverseName="pin" inverseEntity="PhotoAlbum" syncable="YES"/>
+        <relationship name="album" maxCount="1" deletionRule="Cascade" destinationEntity="PhotoAlbum" inverseName="pin" inverseEntity="PhotoAlbum" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Pin" positionX="-326.25" positionY="-34.953125" width="128" height="118"/>
-        <element name="PhotoAlbum" positionX="-151.15625" positionY="-19.87109375" width="128" height="103"/>
         <element name="Photo" positionX="25.828125" positionY="-65.90234375" width="128" height="133"/>
+        <element name="PhotoAlbum" positionX="-151.15625" positionY="-19.87109375" width="128" height="103"/>
+        <element name="Pin" positionX="-326.25" positionY="-34.953125" width="128" height="120"/>
     </elements>
 </model>

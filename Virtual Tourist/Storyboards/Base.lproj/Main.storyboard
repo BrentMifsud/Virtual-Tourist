@@ -78,7 +78,7 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                                 <items>
                                     <navigationItem title="Title" id="7u3-yy-IyI">
-                                        <barButtonItem key="leftBarButtonItem" systemItem="refresh" id="EAa-T8-RMY">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="trash" id="EAa-T8-RMY">
                                             <connections>
                                                 <action selector="refreshButtonPressed:" destination="tsv-o4-prm" id="rbR-JV-H34"/>
                                             </connections>
@@ -129,10 +129,10 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="caF-8S-NS9" id="Zmb-KA-myu"/>
+                        <outlet property="deleteButton" destination="EAa-T8-RMY" id="xxt-5y-3lO"/>
                         <outlet property="doneButton" destination="3Fy-h9-skT" id="hNF-vQ-ENJ"/>
                         <outlet property="mapView" destination="3aO-g4-M1x" id="moU-Nd-OzG"/>
                         <outlet property="navBarItem" destination="7u3-yy-IyI" id="Par-OZ-FXh"/>
-                        <outlet property="refreshButton" destination="EAa-T8-RMY" id="xxt-5y-3lO"/>
                         <segue destination="h60-Qv-lbR" kind="show" identifier="showAlbumImage" id="w6y-q4-x6W"/>
                     </connections>
                 </viewController>

@@ -12,7 +12,7 @@ import MapKit
 
 extension PinViewController {
 	/// Fetch all persisted pins and add them to the map view.
-	func fetchPins() {
+	func refreshPins() {
 		// Clear all existing annotations before trying to refresh them.
 		clearAnnotations()
 
