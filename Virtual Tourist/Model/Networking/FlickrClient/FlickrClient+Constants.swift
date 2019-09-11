@@ -31,6 +31,7 @@ extension FlickrClient {
 		static let RadiusUnits = "radius_units"
 		static let Page = "page"
 		static let ResultsPerPage = "per_page"
+		static let Sort = "sort"
 	}
 
 	enum ParameterDefaultValues {
@@ -38,8 +39,9 @@ extension FlickrClient {
 		static let NoJsonCallback = "1"
 		static let ExtraMediumURL = "url_m"
 		static let ResultsPerPage = "100"
-		static let Radius = "0.5"
+		static let Radius = "0.1"
 		static let RadiusUnits = "km"
 		static let APIKey = "ADD API KEY HERE"
+		static let Sort = "date-posted-desc"
 	}
 }

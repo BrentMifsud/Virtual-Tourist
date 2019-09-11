@@ -58,6 +58,17 @@ class PhotoAlbumViewController: UIViewController {
 		mapView.addAnnotation(AnnotationPinView(pin: pin))
 	}
 
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+
+//		// Get photos from flickr for the new pin.
+//		self.flickrClient.getFlickrPhotos(forPin: self.pin, resultsForPage: 1) { (pin, error) in
+//			guard pin == pin else { return }
+//		}
+
+		// Get Photo count to see if there are new photos
+	}
+
 
 	@IBAction func doneButtonPressed(_ sender: UIBarButtonItem) {
 		self.dismiss(animated: true, completion: nil)

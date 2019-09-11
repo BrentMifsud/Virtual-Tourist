@@ -91,11 +91,6 @@ extension PinViewController: MKMapViewDelegate {
 						// Try to save the newly created pin.
 						try self.dataController.save()
 
-						// Get photos from flickr for the new pin.
-						self.flickrClient.getFlickrPhotos(forPin: newPin, resultsForPage: 1) { (pin, error) in
-							guard pin == pin else { return }
-						}
-
 						// Add the newly created pin to the map.
 						self.mapView.addAnnotation(AnnotationPinView(pin: newPin))
 					} catch {
