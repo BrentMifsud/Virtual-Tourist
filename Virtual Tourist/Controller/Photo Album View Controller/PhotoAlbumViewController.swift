@@ -20,6 +20,8 @@ class PhotoAlbumViewController: UIViewController {
 
 	var dataController: DataController!
 
+	var fetchedResultsController: NSFetchedResultsController<Photo>!
+
 	var pin: Pin!
 
 	var pinStore: PinStoreProtocol!
@@ -28,45 +30,40 @@ class PhotoAlbumViewController: UIViewController {
 
 	var flickrClient: FlickrClientProtocol!
 
-	var photoFetchedResultsController: NSFetchedResultsController<Photo>!
-
 	var albumStore: PhotoAlbumStoreProtocol!
 
 	override func viewDidLoad() {
         super.viewDidLoad()
+
+		// Set delegates
 		mapView.delegate = self
+		collectionView.delegate = self
+		collectionView.dataSource = self
+
+		setUpFetchedResultsController()
 
 		navBarItem.title = pin.locationName ?? "Album"
 
-		let span = MKCoordinateSpan(latitudeDelta: 0.015, longitudeDelta: 0.015)
-
-		let coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
-
-		let region = MKCoordinateRegion(center: coordinate, span: span)
-
-		mapView.setRegion(region, animated: true)
-
-		mapView.isInteractionEnabled(false)
+		// Set Map View
+		setUpMapView()
     }
 
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
+	fileprivate func setUpFetchedResultsController() {
+		guard let album = self.pin.album else { preconditionFailure("\nError: No Album exists for Pin") }
 
-		//TODO:- Connect to core data to load all pins.
-		//TODO:- Pass the pin instead of MK annotation to this view controller and use that to fill up the map view
+		let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
+		let sortDescriptor = NSSortDescriptor(key: "dateCreated", ascending: false)
+		let predicate = NSPredicate(format: "photoAlbum == %@", album)
+		fetchRequest.predicate = predicate
+		fetchRequest.sortDescriptors = [sortDescriptor]
 
-		mapView.addAnnotation(AnnotationPinView(pin: pin))
-	}
+		fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
 
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-
-//		// Get photos from flickr for the new pin.
-//		self.flickrClient.getFlickrPhotos(forPin: self.pin, resultsForPage: 1) { (pin, error) in
-//			guard pin == pin else { return }
-//		}
-
-		// Get Photo count to see if there are new photos
+		do {
+			try fetchedResultsController.performFetch()
+		} catch {
+			fatalError("Unable to fetch photos: \(error.localizedDescription)")
+		}
 	}
 
 
@@ -75,8 +72,57 @@ class PhotoAlbumViewController: UIViewController {
 	}
 
 
-	@IBAction func refreshButtonPressed(_ sender: UIBarButtonItem) {
+	@IBAction func deleteButtonPressed(_ sender: UIBarButtonItem) {
 		pinStore.deletePin(pin: self.pin, fromContext: self.dataController.viewContext)
 		self.dismiss(animated: true, completion: nil)
+	}
+}
+
+//TODO:- PhotoCell is broken
+extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+
+	func numberOfSections(in collectionView: UICollectionView) -> Int {
+		let sections = fetchedResultsController.sections ?? []
+
+		return sections.isEmpty ? 0 : 1
+	}
+
+	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+
+		let count = fetchedResultsController.sections?[section].numberOfObjects ?? 0
+
+		return count
+	}
+
+	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as! PhotoCell
+
+		let currentPhoto = fetchedResultsController.object(at: indexPath)
+
+		if let data = currentPhoto.imageData {
+			if let existingImage = currentPhoto.image {
+				cell.imageView.image = existingImage
+				cell.activityIndicator.stopAnimating()
+			} else {
+				let image = UIImage(data: data)
+				currentPhoto.image = image
+				cell.imageView.image = image
+				cell.activityIndicator.stopAnimating()
+			}
+		} else {
+			// No photo currently downloaded. Request image from flickr
+			cell.activityIndicator.startAnimating()
+
+			flickrClient.downloadImage(fromUrl: currentPhoto.url!) { (image, error) in
+				guard let image = image else { preconditionFailure("Unable to download image") }
+
+				currentPhoto.imageData = image.pngData()
+				cell.imageView.image = image
+				cell.activityIndicator.stopAnimating()
+			}
+		}
+
+		return cell
+
 	}
 }

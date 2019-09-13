@@ -24,7 +24,7 @@ struct SearchResults: Codable {
 	let page: Int
 	let pages: Int
 	let photosPerPage: Int
-	let totalPhotosCount: Int
+	let totalPhotosCount: String
 	let photos: [FlickrImage]
 
 	enum CodingKeys: String, CodingKey {

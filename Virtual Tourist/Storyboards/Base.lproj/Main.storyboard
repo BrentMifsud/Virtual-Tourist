@@ -80,7 +80,7 @@
                                     <navigationItem title="Title" id="7u3-yy-IyI">
                                         <barButtonItem key="leftBarButtonItem" systemItem="trash" id="EAa-T8-RMY">
                                             <connections>
-                                                <action selector="refreshButtonPressed:" destination="tsv-o4-prm" id="rbR-JV-H34"/>
+                                                <action selector="deleteButtonPressed:" destination="tsv-o4-prm" id="rbR-JV-H34"/>
                                             </connections>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="3Fy-h9-skT">
@@ -101,7 +101,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" reuseIdentifier="photoCell" id="DGG-wG-3zN" customClass="PhotoAlbumCollectionViewCell" customModule="Virtual_Tourist" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" reuseIdentifier="photoCell" id="DGG-wG-3zN" customClass="PhotoCell" customModule="Virtual_Tourist" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">

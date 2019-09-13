@@ -91,6 +91,27 @@ extension PinViewController: MKMapViewDelegate {
 						// Try to save the newly created pin.
 						try self.dataController.save()
 
+
+						// Determine the number of pages of images.
+						var numberOfPages: Int = 0
+
+						self.flickrClient.getTotalPagesCount(forPin: newPin) { (count, error) in
+							guard let count = count else { preconditionFailure("Unable to fetch photo count from flickr") }
+
+							numberOfPages = count
+						}
+
+						// Get all images for current Pin
+						var currentPage: Int = 1
+
+						repeat {
+							self.flickrClient.getFlickrPhotos(forPin: newPin, resultsForPage: currentPage) { (pin, error) in
+								guard pin == pin else { return }
+							}
+
+							currentPage += 1
+						} while currentPage <= numberOfPages
+
 						// Add the newly created pin to the map.
 						self.mapView.addAnnotation(AnnotationPinView(pin: newPin))
 					} catch {

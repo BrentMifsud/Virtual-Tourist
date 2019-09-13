@@ -30,4 +30,13 @@ extension PhotoAlbumViewController: MKMapViewDelegate {
 
 		return pinView
 	}
+
+	func setUpMapView(){
+		let span = MKCoordinateSpan(latitudeDelta: 0.015, longitudeDelta: 0.015)
+		let coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
+		let region = MKCoordinateRegion(center: coordinate, span: span)
+		mapView.setRegion(region, animated: true)
+		mapView.isInteractionEnabled(false)
+		mapView.addAnnotation(AnnotationPinView(pin: pin))
+	}
 }
