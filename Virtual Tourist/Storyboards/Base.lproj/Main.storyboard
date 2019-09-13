@@ -31,13 +31,19 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="XcP-Z1-CAa">
+                                <rect key="frame" x="188.66666666666666" y="429.66666666666669" width="37" height="37"/>
+                                <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="XcP-Z1-CAa" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="3r0-By-aMZ"/>
                             <constraint firstAttribute="bottom" secondItem="bBo-HU-Sao" secondAttribute="bottom" id="OCJ-7e-7AF"/>
                             <constraint firstItem="bBo-HU-Sao" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Vtc-CD-KqU"/>
                             <constraint firstAttribute="trailing" secondItem="bBo-HU-Sao" secondAttribute="trailing" id="hlQ-hd-yX3"/>
                             <constraint firstItem="bBo-HU-Sao" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="i9p-Mn-0k5"/>
+                            <constraint firstItem="XcP-Z1-CAa" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="qQ5-mU-XWH"/>
                             <constraint firstItem="sfw-Ca-8ws" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="tdZ-lW-AI1"/>
                             <constraint firstItem="sfw-Ca-8ws" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="vM4-ev-mG7"/>
                         </constraints>
@@ -45,6 +51,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="Wnw-7S-j28"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="XcP-Z1-CAa" id="Ks5-jp-1xc"/>
                         <outlet property="instructionLabel" destination="sfw-Ca-8ws" id="wED-jj-Kpp"/>
                         <outlet property="mapView" destination="bBo-HU-Sao" id="Tky-Lk-QSo"/>
                         <segue destination="tsv-o4-prm" kind="presentation" identifier="showPhotoAlbum" modalTransitionStyle="coverVertical" id="wjy-JH-TsJ"/>
@@ -95,19 +102,40 @@
                                 <rect key="frame" x="0.0" y="288" width="414" height="574"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="oNq-LG-G37">
-                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="itemSize" width="121" height="116"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" reuseIdentifier="photoCell" id="DGG-wG-3zN" customClass="PhotoCell" customModule="Virtual_Tourist" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="121" height="116"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="121" height="116"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="r3z-5K-QlW">
+                                                    <rect key="frame" x="0.0" y="0.0" width="121" height="116"/>
+                                                </imageView>
+                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="bzL-6W-EhN">
+                                                    <rect key="frame" x="42" y="39.666666666666664" width="37" height="36.999999999999993"/>
+                                                    <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </activityIndicatorView>
+                                            </subviews>
                                         </view>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="r3z-5K-QlW" secondAttribute="trailing" id="JSF-Yr-HO1"/>
+                                            <constraint firstItem="r3z-5K-QlW" firstAttribute="top" secondItem="DGG-wG-3zN" secondAttribute="top" id="KFh-ZI-xMC"/>
+                                            <constraint firstItem="bzL-6W-EhN" firstAttribute="centerY" secondItem="DGG-wG-3zN" secondAttribute="centerY" id="efc-ia-mE6"/>
+                                            <constraint firstItem="r3z-5K-QlW" firstAttribute="leading" secondItem="DGG-wG-3zN" secondAttribute="leading" id="hke-q0-Xsc"/>
+                                            <constraint firstItem="bzL-6W-EhN" firstAttribute="centerX" secondItem="DGG-wG-3zN" secondAttribute="centerX" id="vDW-4e-0IT"/>
+                                            <constraint firstAttribute="bottom" secondItem="r3z-5K-QlW" secondAttribute="bottom" id="zJz-cw-gLi"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="activityIndicator" destination="bzL-6W-EhN" id="hMf-J5-zTJ"/>
+                                            <outlet property="imageView" destination="r3z-5K-QlW" id="2oc-ro-rEP"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>

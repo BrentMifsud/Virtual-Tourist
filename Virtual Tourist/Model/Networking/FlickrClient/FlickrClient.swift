@@ -89,7 +89,7 @@ class FlickrClient: FlickrClientProtocol {
 		dataTask.resume()
 	}
 
-	func getTotalPagesCount(forPin pin: Pin, completionHandler: @escaping (Int?, Error?) -> Void) {
+	func getTotalPhotosCount(forPin pin: Pin, completionHandler: @escaping (Int?, Error?) -> Void) {
 		let queryParms = [
 			ParameterKeys.APIKey: ParameterDefaultValues.APIKey,
 			ParameterKeys.Format: ParameterDefaultValues.Format,

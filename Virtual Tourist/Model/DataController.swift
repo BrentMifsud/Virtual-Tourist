@@ -28,6 +28,8 @@ class DataController {
 			}
 			//TODO:- Enable this
 			//self.autoSaveViewContext()
+
+			self.configureContext()
 			completion?()
 		}
 	}
@@ -36,6 +38,11 @@ class DataController {
 		if viewContext.hasChanges {
 			try viewContext.save()
 		}
+	}
+
+	func configureContext() {
+		viewContext.automaticallyMergesChangesFromParent = true
+		viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
 	}
 }
 
