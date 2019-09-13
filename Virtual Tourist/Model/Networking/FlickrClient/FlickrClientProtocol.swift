@@ -34,5 +34,5 @@ protocol FlickrClientProtocol {
 	/// - Parameters:
 	/// 	- pin: the map pin to be populated with photos.
 	///		- completionHandler: function that will be called following the compeltion of this method.
-	func getTotalPagesCount(forPin pin: Pin, completionHandler: @escaping (Int?, Error?) -> Void)
+	func getTotalPhotosCount(forPin pin: Pin, completionHandler: @escaping (Int?, Error?) -> Void)
 }

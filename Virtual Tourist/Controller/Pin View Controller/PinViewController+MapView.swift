@@ -15,10 +15,14 @@ extension PinViewController: MKMapViewDelegate {
 
 		var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKMarkerAnnotationView
 
+		let pinAnnotation = annotation as! AnnotationPinView
+		pinAnnotation.title = pinAnnotation.pin.locationName
+
 		if pinView == nil {
 			pinView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
 			pinView!.canShowCallout = false
 			pinView!.markerTintColor = .blue
+
 		} else {
 			pinView!.annotation = annotation
 		}
@@ -57,10 +61,10 @@ extension PinViewController: MKMapViewDelegate {
 		guard let annotation = view.annotation else { return }
 
 		let pinAnnotation = annotation as! AnnotationPinView
-		let span = MKCoordinateSpan(latitudeDelta: 0.015, longitudeDelta: 0.015)
-		let region = MKCoordinateRegion(center: annotation.coordinate, span: span)
-
-		mapView.setRegion(region, animated: true)
+//		let span = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
+//		let region = MKCoordinateRegion(center: annotation.coordinate, span: span)
+//
+//		mapView.setRegion(region, animated: true)
 
 		performSegue(withIdentifier: "showPhotoAlbum", sender: pinAnnotation)
 
@@ -85,38 +89,28 @@ extension PinViewController: MKMapViewDelegate {
 					guard let placemark = placemarks?.first else { return }
 					let name = placemark.name ?? "Unknown Area"
 
-					do {
-						let newPin = self.pinStore.createPin(usingContext: self.dataController.viewContext, withLocation: name, andCoordinate: coordinate)
+					let newPin = self.pinStore.createPin(usingContext: self.dataController.viewContext, withLocation: name, andCoordinate: coordinate)
+					let annotationPin = AnnotationPinView(pin: newPin)
+					annotationPin.title = name
 
+					do {
 						// Try to save the newly created pin.
 						try self.dataController.save()
-
-
-						// Determine the number of pages of images.
-						var numberOfPages: Int = 0
-
-						self.flickrClient.getTotalPagesCount(forPin: newPin) { (count, error) in
-							guard let count = count else { preconditionFailure("Unable to fetch photo count from flickr") }
-
-							numberOfPages = count
-						}
-
-						// Get all images for current Pin
-						var currentPage: Int = 1
-
-						repeat {
-							self.flickrClient.getFlickrPhotos(forPin: newPin, resultsForPage: currentPage) { (pin, error) in
-								guard pin == pin else { return }
-							}
-
-							currentPage += 1
-						} while currentPage <= numberOfPages
-
-						// Add the newly created pin to the map.
-						self.mapView.addAnnotation(AnnotationPinView(pin: newPin))
 					} catch {
 						print("Error saving new pin: \(error)")
 					}
+
+					// Get images for current Pin
+					self.activityIndicator.startAnimating()
+
+					self.flickrClient.getFlickrPhotos(forPin: newPin, resultsForPage: 1) { (pin, error) in
+						guard pin == pin else { return }
+					}
+
+					self.activityIndicator.stopAnimating()
+
+					// Add the newly created pin to the map.
+					self.mapView.addAnnotation(annotationPin)
 				}
 			}
 	}

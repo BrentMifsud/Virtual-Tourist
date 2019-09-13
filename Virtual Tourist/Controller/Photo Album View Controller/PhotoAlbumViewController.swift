@@ -31,7 +31,7 @@ class PhotoAlbumViewController: UIViewController {
 	var flickrClient: FlickrClientProtocol!
 
 	var albumStore: PhotoAlbumStoreProtocol!
-
+	
 	override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -114,7 +114,7 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
 			cell.activityIndicator.startAnimating()
 
 			flickrClient.downloadImage(fromUrl: currentPhoto.url!) { (image, error) in
-				guard let image = image else { preconditionFailure("Unable to download image") }
+				guard let image = image else { preconditionFailure("Unable to download image: \(error.debugDescription)") }
 
 				currentPhoto.imageData = image.pngData()
 				cell.imageView.image = image
@@ -125,4 +125,5 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
 		return cell
 
 	}
+
 }

@@ -14,7 +14,8 @@ class PinViewController: UIViewController {
 
 	@IBOutlet weak var mapView: MKMapView!
 	@IBOutlet weak var instructionLabel: UILabel!
-
+	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+	
 	var dataController: DataController!
 	var flickrClient: FlickrClientProtocol!
 	var pinStore: PinStoreProtocol!
