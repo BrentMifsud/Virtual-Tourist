@@ -111,4 +111,5 @@ class PhotoAlbumViewController: UIViewController {
 		destinationVC.fetchedResultsViewController = fetchedResultsController
 		destinationVC.fetchedResultsViewControllerDelegate = self
 	}
+
 }
