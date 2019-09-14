@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class PhotoCell: UICollectionViewCell {
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
