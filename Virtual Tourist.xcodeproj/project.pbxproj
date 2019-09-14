@@ -33,7 +33,6 @@
 		847F110E2321C31700D052E0 /* MapView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F110D2321C31700D052E0 /* MapView+Extensions.swift */; };
 		847F11122321DD9800D052E0 /* PhotoAlbumViewController+CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F11112321DD9800D052E0 /* PhotoAlbumViewController+CollectionView.swift */; };
 		847F11162327351900D052E0 /* AnnotationPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F11152327351900D052E0 /* AnnotationPinView.swift */; };
-		847F11182327396800D052E0 /* PinViewController+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F11172327396800D052E0 /* PinViewController+CoreData.swift */; };
 		847F111F2327564F00D052E0 /* VirtualTourist.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 847F111D2327564F00D052E0 /* VirtualTourist.xcdatamodeld */; };
 		847F11212328841800D052E0 /* PhotoAlbumViewController+MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F11202328841800D052E0 /* PhotoAlbumViewController+MapView.swift */; };
 		847F1127232C3EFC00D052E0 /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F1126232C3EFC00D052E0 /* PhotoCell.swift */; };
@@ -362,7 +361,6 @@
 				847F10DC2318A2A100D052E0 /* PhotoAlbumStore.swift in Sources */,
 				847F11162327351900D052E0 /* AnnotationPinView.swift in Sources */,
 				847F10CB2316050400D052E0 /* NetworkClient.swift in Sources */,
-				847F11182327396800D052E0 /* PinViewController+CoreData.swift in Sources */,
 				847F11212328841800D052E0 /* PhotoAlbumViewController+MapView.swift in Sources */,
 				847F10DA2318A29600D052E0 /* PhotoAlbumStoreProtocol.swift in Sources */,
 				845B479C2311E75500ECEA74 /* Photo.swift in Sources */,
