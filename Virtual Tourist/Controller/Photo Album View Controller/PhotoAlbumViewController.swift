@@ -31,9 +31,20 @@ class PhotoAlbumViewController: UIViewController {
 	var flickrClient: FlickrClientProtocol!
 
 	var albumStore: PhotoAlbumStoreProtocol!
+
+	var blockOperations: [BlockOperation] = []
+
+	deinit {
+		// Cancel all block operations when VC deallocates
+		for operation: BlockOperation in blockOperations {
+			operation.cancel()
+		}
+
+		blockOperations.removeAll(keepingCapacity: false)
+	}
 	
 	override func viewDidLoad() {
-        super.viewDidLoad()
+		super.viewDidLoad()
 
 		// Set delegates
 		mapView.delegate = self
@@ -46,7 +57,7 @@ class PhotoAlbumViewController: UIViewController {
 
 		// Set Map View
 		setUpMapView()
-    }
+	}
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
@@ -92,40 +103,59 @@ class PhotoAlbumViewController: UIViewController {
 
 extension PhotoAlbumViewController: NSFetchedResultsControllerDelegate {
 	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-		//TODO: batch update
+		blockOperations.removeAll(keepingCapacity: false)
 	}
 
 	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-		//TODO: Batch update
+		collectionView!.performBatchUpdates({ () -> Void in
+			self.blockOperations.forEach({ (blockOp) in
+				blockOp.start()
+			})
+		}, completion: { (finished) -> Void in
+			self.blockOperations.removeAll(keepingCapacity: false)
+		})
 	}
 
 	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
 
+		var op: BlockOperation!
+
 		switch type {
 		case .insert:
-			collectionView.insertItems(at: [newIndexPath!])
+			op = BlockOperation { [unowned self] in self.collectionView!.insertItems(at: [indexPath!]) }
 		case.delete:
-			collectionView.deleteItems(at: [indexPath!])
+			op = BlockOperation { [unowned self] in self.collectionView!.deleteItems(at: [indexPath!]) }
 		case.update:
-			collectionView.reloadItems(at: [indexPath!])
+			op = BlockOperation { [unowned self] in self.collectionView!.reloadItems(at: [indexPath!]) }
 		case.move:
-			collectionView.moveItem(at: indexPath!, to: newIndexPath!)
+			op = BlockOperation { [unowned self] in	self.collectionView!.moveItem(at: indexPath!, to: newIndexPath!) }
 		@unknown default:
 			break
 		}
+
+		blockOperations.append(op)
 	}
 
 	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
 
 		let indexSet = IndexSet(integer: sectionIndex)
 
+		var op: BlockOperation!
+
 		switch type {
-		case .insert: collectionView.insertSections(indexSet)
-		case .delete: collectionView.deleteSections(indexSet)
-		case .update, .move:
-			fatalError("Invalid change type in controller(_:didChange:atSectionIndex:for:). Only .insert or .delete should be possible.")
+		case .insert:
+			op = BlockOperation {[unowned self] in self.collectionView!.insertSections(indexSet) }
+		case .update:
+			op = BlockOperation {[unowned self] in self.collectionView!.reloadSections(indexSet) }
+		case .delete:
+			op = BlockOperation {[unowned self] in self.collectionView!.deleteSections(indexSet) }
+		case .move:
+			break
 		@unknown default:
 			break
 		}
+
+		blockOperations.append(op)
 	}
 }
+

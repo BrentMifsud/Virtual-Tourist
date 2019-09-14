@@ -47,6 +47,7 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
 				guard let image = image else { preconditionFailure("Unable to download image: \(error.debugDescription)") }
 
 				currentPhoto.imageData = image.pngData()
+				currentPhoto.image = image
 				cell.imageView.image = image
 				cell.activityIndicator.stopAnimating()
 			}
@@ -63,7 +64,7 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
 	}
 
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-		var photo = albumPhotosFetchedResultsController.object(at: indexPath) as! Photo
+		let photo = albumPhotosFetchedResultsController.object(at: indexPath) 
 
 		performSegue(withIdentifier: "showPhotoDetails", sender: photo)
 	}
