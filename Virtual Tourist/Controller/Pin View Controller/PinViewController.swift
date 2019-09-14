@@ -12,25 +12,24 @@ import CoreData
 
 class PinViewController: UIViewController {
 
+	// MARK:- IBOutlets
 	@IBOutlet weak var mapView: MKMapView!
 	@IBOutlet weak var instructionLabel: InstructionLabel!
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	
+	// MARK:- Controller Properties
 	var dataController: DataController!
 	var flickrClient: FlickrClientProtocol!
 	var pinStore: PinStoreProtocol!
 	var albumStore: PhotoAlbumStoreProtocol!
-
-	
-
-
 	let locationKey: String = "persistedMapRegion"
 	var currentLocation: [String : CLLocationDegrees]!
 
+	// MARK:- View lifecycle methods
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		mapView.delegate = self
-		retrievePersistedMapLocation()
+		loadPersistedMapLocation()
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -38,6 +37,28 @@ class PinViewController: UIViewController {
 		refreshPins()
 	}
 
+	/// Fetch all persisted pins and add them to the map view.
+	func refreshPins() {
+		// Clear all existing annotations before trying to refresh them.
+		clearAnnotations()
+
+		// Fetch all the pins from core data.
+		let request: NSFetchRequest<Pin> = Pin.fetchRequest()
+		request.sortDescriptors = [
+			NSSortDescriptor(key: "dateCreated", ascending: false)
+		]
+
+		dataController.viewContext.perform {
+			do {
+				let pins = try self.dataController.viewContext.fetch(request)
+				self.mapView.addAnnotations(pins.map { pin in AnnotationPinView(pin: pin) })
+			} catch {
+				print("Error fetching Pins: \(error)")
+			}
+		}
+	}
+
+	//MARK:- IBActions
 	@IBAction func longPress(_ sender: UILongPressGestureRecognizer) {
 
 		if sender.state == .began{
@@ -56,6 +77,7 @@ class PinViewController: UIViewController {
 		}
 	}
 
+	//MARK:- Segue
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		guard let vc = segue.destination as? PhotoAlbumViewController else { return }
 
@@ -63,7 +85,6 @@ class PinViewController: UIViewController {
 
 		vc.dataController = self.dataController
 		vc.flickrClient = self.flickrClient
-		vc.albumStore = self.albumStore
 		vc.photoStore = self.albumStore.photoStore
 		vc.pinStore = self.pinStore
 		vc.pin = pinAnnotation.pin
