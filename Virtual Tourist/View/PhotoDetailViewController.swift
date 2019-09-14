@@ -38,6 +38,12 @@ class PhotoDetailViewController: UIViewController {
 	}
 
 	//MARK:- IBActions
+	@IBAction func urlButtonPressed(_ sender: UIButton) {
+		let app = UIApplication.shared
+		if let toOpen = photo.url {
+			app.open(toOpen, options: [:], completionHandler: nil)
+		}
+	}
 	@IBAction func doneButtonPressed(_ sender: UIBarButtonItem) {
 		dismiss(animated: true, completion: nil)
 	}
