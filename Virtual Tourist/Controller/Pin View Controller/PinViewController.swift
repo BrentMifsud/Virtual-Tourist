@@ -13,7 +13,7 @@ import CoreData
 class PinViewController: UIViewController {
 
 	@IBOutlet weak var mapView: MKMapView!
-	@IBOutlet weak var instructionLabel: UILabel!
+	@IBOutlet weak var instructionLabel: InstructionLabel!
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	
 	var dataController: DataController!
@@ -21,8 +21,8 @@ class PinViewController: UIViewController {
 	var pinStore: PinStoreProtocol!
 	var albumStore: PhotoAlbumStoreProtocol!
 
-	private let instructionLabelLongPress = "Long press to add new travel location"
-	private let instructionLabelRelease = "Release finger to add pin"
+	
+
 
 	let locationKey: String = "persistedMapRegion"
 	var currentLocation: [String : CLLocationDegrees]!
@@ -42,15 +42,17 @@ class PinViewController: UIViewController {
 
 		if sender.state == .began{
 			// Update Instruction Label
-			instructionLabel.text = instructionLabelRelease
+			instructionLabel.setInstructionLabel(.release)
 
 		} else if sender.state == .ended {
 			// Get the coordinates of the tapped location on the map.
-			let locationCoordinate = self.mapView.convert(sender.location(in: self.mapView), toCoordinateFrom: self.mapView)
+			let locationCoordinate = mapView.convert(sender.location(in: mapView), toCoordinateFrom: mapView)
 
-			createGeocodedAnnotation(from: locationCoordinate)
-			
-			instructionLabel.text = instructionLabelLongPress
+			activityIndicator.startAnimating()
+			mapView.isInteractionEnabled(false)
+			instructionLabel.setInstructionLabel(.downloading)
+
+			createGeocodedAnnotation(from: locationCoordinate)			
 		}
 	}
 

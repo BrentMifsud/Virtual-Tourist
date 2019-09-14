@@ -42,7 +42,9 @@ class FlickrClient: FlickrClientProtocol {
 				do {
 					try self.photoAlbumStore.addPhotos(images: data.searchResults.photos, toPhotoAlbum: pinContext.album!)
 
-					completionHandler(pin, nil)
+					DispatchQueue.main.async {
+						completionHandler(pin, nil)
+					}
 				} catch {
 					completionHandler(nil, error)
 				}

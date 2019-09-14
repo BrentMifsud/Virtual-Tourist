@@ -61,10 +61,6 @@ extension PinViewController: MKMapViewDelegate {
 		guard let annotation = view.annotation else { return }
 
 		let pinAnnotation = annotation as! AnnotationPinView
-//		let span = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
-//		let region = MKCoordinateRegion(center: annotation.coordinate, span: span)
-//
-//		mapView.setRegion(region, animated: true)
 
 		performSegue(withIdentifier: "showPhotoAlbum", sender: pinAnnotation)
 
@@ -101,13 +97,13 @@ extension PinViewController: MKMapViewDelegate {
 					}
 
 					// Get images for current Pin
-					self.activityIndicator.startAnimating()
-
-					self.flickrClient.getFlickrPhotos(forPin: newPin, resultsForPage: 1) { (pin, error) in
+					self.flickrClient.getFlickrPhotos(forPin: newPin, resultsForPage: 1) { [unowned self] (pin, error) in
 						guard pin == pin else { return }
-					}
 
-					self.activityIndicator.stopAnimating()
+						self.activityIndicator.stopAnimating()
+						self.instructionLabel.setInstructionLabel(.longPress)
+						self.mapView.isInteractionEnabled(true)
+					}
 
 					// Add the newly created pin to the map.
 					self.mapView.addAnnotation(annotationPin)
