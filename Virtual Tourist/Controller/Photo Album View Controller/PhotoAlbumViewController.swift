@@ -20,7 +20,7 @@ class PhotoAlbumViewController: UIViewController {
 
 	var dataController: DataController!
 
-	var fetchedResultsController: NSFetchedResultsController<Photo>!
+	var albumPhotosFetchedResultsController: NSFetchedResultsController<Photo>!
 
 	var pin: Pin!
 
@@ -48,6 +48,11 @@ class PhotoAlbumViewController: UIViewController {
 		setUpMapView()
     }
 
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		collectionView.reloadData()
+	}
+
 	fileprivate func setUpFetchedResultsController() {
 		guard let album = self.pin.album else { preconditionFailure("\nError: No Album exists for Pin") }
 
@@ -57,10 +62,10 @@ class PhotoAlbumViewController: UIViewController {
 		fetchRequest.predicate = predicate
 		fetchRequest.sortDescriptors = [sortDescriptor]
 
-		fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+		albumPhotosFetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
 
 		do {
-			try fetchedResultsController.performFetch()
+			try albumPhotosFetchedResultsController.performFetch()
 		} catch {
 			fatalError("Unable to fetch photos: \(error.localizedDescription)")
 		}
@@ -76,54 +81,51 @@ class PhotoAlbumViewController: UIViewController {
 		pinStore.deletePin(pin: self.pin, fromContext: self.dataController.viewContext)
 		self.dismiss(animated: true, completion: nil)
 	}
+
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		let photo = sender as! Photo
+		let destinationVC = segue.destination as! PhotoDetailViewController
+		destinationVC.image = photo
+		destinationVC.dataController = self.dataController
+	}
 }
 
-//TODO:- PhotoCell is broken
-extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-
-	func numberOfSections(in collectionView: UICollectionView) -> Int {
-		let sections = fetchedResultsController.sections ?? []
-
-		return sections.isEmpty ? 0 : 1
+extension PhotoAlbumViewController: NSFetchedResultsControllerDelegate {
+	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+		//TODO: batch update
 	}
 
-	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-
-		let count = fetchedResultsController.sections?[section].numberOfObjects ?? 0
-
-		return count
+	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+		//TODO: Batch update
 	}
 
-	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as! PhotoCell
+	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
 
-		let currentPhoto = fetchedResultsController.object(at: indexPath)
-
-		if let data = currentPhoto.imageData {
-			if let existingImage = currentPhoto.image {
-				cell.imageView.image = existingImage
-				cell.activityIndicator.stopAnimating()
-			} else {
-				let image = UIImage(data: data)
-				currentPhoto.image = image
-				cell.imageView.image = image
-				cell.activityIndicator.stopAnimating()
-			}
-		} else {
-			// No photo currently downloaded. Request image from flickr
-			cell.activityIndicator.startAnimating()
-
-			flickrClient.downloadImage(fromUrl: currentPhoto.url!) { (image, error) in
-				guard let image = image else { preconditionFailure("Unable to download image: \(error.debugDescription)") }
-
-				currentPhoto.imageData = image.pngData()
-				cell.imageView.image = image
-				cell.activityIndicator.stopAnimating()
-			}
+		switch type {
+		case .insert:
+			collectionView.insertItems(at: [newIndexPath!])
+		case.delete:
+			collectionView.deleteItems(at: [indexPath!])
+		case.update:
+			collectionView.reloadItems(at: [indexPath!])
+		case.move:
+			collectionView.moveItem(at: indexPath!, to: newIndexPath!)
+		@unknown default:
+			break
 		}
-
-		return cell
-
 	}
 
+	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+
+		let indexSet = IndexSet(integer: sectionIndex)
+
+		switch type {
+		case .insert: collectionView.insertSections(indexSet)
+		case .delete: collectionView.deleteSections(indexSet)
+		case .update, .move:
+			fatalError("Invalid change type in controller(_:didChange:atSectionIndex:for:). Only .insert or .delete should be possible.")
+		@unknown default:
+			break
+		}
+	}
 }

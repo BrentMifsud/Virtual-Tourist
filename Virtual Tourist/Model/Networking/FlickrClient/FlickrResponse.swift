@@ -41,11 +41,15 @@ struct FlickrImage: Codable {
 	let id: String
 	let title: String
 	let mediumUrl: String
+	let height: String
+	let width: String
 
 	enum CodingKeys: String, CodingKey {
 		case id
 		case title
 		case mediumUrl = "url_m"
+		case height = "height_m"
+		case width = "width_m"
 	}
 }
 
