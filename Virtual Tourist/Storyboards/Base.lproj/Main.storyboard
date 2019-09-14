@@ -161,7 +161,7 @@
                         <outlet property="doneButton" destination="3Fy-h9-skT" id="hNF-vQ-ENJ"/>
                         <outlet property="mapView" destination="3aO-g4-M1x" id="moU-Nd-OzG"/>
                         <outlet property="navBarItem" destination="7u3-yy-IyI" id="Par-OZ-FXh"/>
-                        <segue destination="h60-Qv-lbR" kind="show" identifier="showAlbumImage" id="w6y-q4-x6W"/>
+                        <segue destination="h60-Qv-lbR" kind="show" identifier="showPhotoDetails" id="w6y-q4-x6W"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CAF-Zy-060" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -171,13 +171,13 @@
         <!--Photo Detail View Controller-->
         <scene sceneID="ZUs-k0-RA3">
             <objects>
-                <viewController id="h60-Qv-lbR" userLabel="Photo Detail View Controller" sceneMemberID="viewController">
+                <viewController id="h60-Qv-lbR" userLabel="Photo Detail View Controller" customClass="PhotoDetailViewController" customModule="Virtual_Tourist" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="UmB-tC-aYZ">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kitten-image" translatesAutoresizingMaskIntoConstraints="NO" id="zKt-43-Ofa">
-                                <rect key="frame" x="0.0" y="44" width="414" height="655.33333333333337"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="kitten-image" translatesAutoresizingMaskIntoConstraints="NO" id="zKt-43-Ofa">
+                                <rect key="frame" x="0.0" y="88" width="414" height="611.33333333333337"/>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="0R6-sB-w8I">
                                 <rect key="frame" x="8" y="699.33333333333337" width="398" height="162.66666666666663"/>
@@ -257,19 +257,46 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8zB-FB-Re9">
+                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                                <items>
+                                    <navigationItem title="Photo Details" id="3vK-Um-mcl">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="trash" id="hJa-ub-n9W" userLabel="Delete Button">
+                                            <connections>
+                                                <action selector="deleteButtonPressed:" destination="h60-Qv-lbR" id="C5D-ur-blp"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" title="Done" id="F2d-BP-HYu" userLabel="Done Button">
+                                            <connections>
+                                                <action selector="doneButtonPressed:" destination="h60-Qv-lbR" id="SQM-nQ-ozD"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="zKt-43-Ofa" firstAttribute="top" secondItem="8zB-FB-Re9" secondAttribute="bottom" id="O8m-0I-BTt"/>
                             <constraint firstItem="zKt-43-Ofa" firstAttribute="leading" secondItem="kvd-3q-7Dm" secondAttribute="leading" id="PWQ-27-ET5"/>
-                            <constraint firstItem="zKt-43-Ofa" firstAttribute="top" secondItem="kvd-3q-7Dm" secondAttribute="top" id="Tka-ld-StH"/>
+                            <constraint firstItem="8zB-FB-Re9" firstAttribute="leading" secondItem="kvd-3q-7Dm" secondAttribute="leading" id="Sa3-sE-Xtf"/>
                             <constraint firstItem="zKt-43-Ofa" firstAttribute="bottom" secondItem="0R6-sB-w8I" secondAttribute="top" id="UKv-ZN-Gwk"/>
+                            <constraint firstItem="8zB-FB-Re9" firstAttribute="trailing" secondItem="kvd-3q-7Dm" secondAttribute="trailing" id="dOf-Mt-eeF"/>
                             <constraint firstItem="kvd-3q-7Dm" firstAttribute="trailing" secondItem="0R6-sB-w8I" secondAttribute="trailing" constant="8" id="iXS-8f-HQI"/>
                             <constraint firstItem="0R6-sB-w8I" firstAttribute="leading" secondItem="kvd-3q-7Dm" secondAttribute="leading" constant="8" id="mcy-Ge-a1l"/>
                             <constraint firstItem="kvd-3q-7Dm" firstAttribute="bottom" secondItem="0R6-sB-w8I" secondAttribute="bottom" id="r8V-f5-3kI"/>
+                            <constraint firstItem="8zB-FB-Re9" firstAttribute="top" secondItem="kvd-3q-7Dm" secondAttribute="top" id="sWb-UW-a4m"/>
                             <constraint firstItem="zKt-43-Ofa" firstAttribute="trailing" secondItem="kvd-3q-7Dm" secondAttribute="trailing" id="txL-Lc-Zhu"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="kvd-3q-7Dm"/>
                     </view>
+                    <connections>
+                        <outlet property="imageHeight" destination="4N6-33-6De" id="V2O-yY-F30"/>
+                        <outlet property="imageTitle" destination="40o-E7-M15" id="VaQ-fe-h9G"/>
+                        <outlet property="imageView" destination="zKt-43-Ofa" id="b12-fU-ssY"/>
+                        <outlet property="imageWidth" destination="hMk-qo-t9e" id="2xL-Jp-0eG"/>
+                        <outlet property="url" destination="Xs2-Ad-cQl" id="01m-qu-upM"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mpM-Uq-D2d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
