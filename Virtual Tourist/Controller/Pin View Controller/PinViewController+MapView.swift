@@ -46,7 +46,8 @@ extension PinViewController: MKMapViewDelegate {
 		UserDefaults.standard.set(location, forKey: locationKey)
 	}
 
-	func retrievePersistedMapLocation() {
+	/// Returns the mapView's location to how it was last time the app was open.
+	func loadPersistedMapLocation() {
 		if let mapRegion = UserDefaults.standard.dictionary(forKey: locationKey) {
 
 			let locationData = mapRegion as! [String : CLLocationDegrees]

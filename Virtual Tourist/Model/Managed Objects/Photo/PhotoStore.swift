@@ -25,11 +25,14 @@ struct PhotoStore: PhotoStoreProtocol {
 	}
 
 	func getFetchedResultsController(forAlbum album: PhotoAlbum, fromContext context: NSManagedObjectContext) -> NSFetchedResultsController<Photo> {
-		let photosRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
-		photosRequest.predicate = NSPredicate(format: "album = %@", album)
-		photosRequest.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: true)]
 
-		return NSFetchedResultsController(fetchRequest: photosRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+		let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
+		let sortDescriptor = NSSortDescriptor(key: "dateCreated", ascending: false)
+		let predicate = NSPredicate(format: "photoAlbum == %@", album)
+		fetchRequest.predicate = predicate
+		fetchRequest.sortDescriptors = [sortDescriptor]
+
+		return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
 	}
 
 

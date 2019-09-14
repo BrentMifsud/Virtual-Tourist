@@ -49,7 +49,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" id="Wnw-7S-j28"/>
+                    <navigationItem key="navigationItem" title="Location Explorer" id="Wnw-7S-j28"/>
                     <connections>
                         <outlet property="activityIndicator" destination="XcP-Z1-CAa" id="Ks5-jp-1xc"/>
                         <outlet property="instructionLabel" destination="sfw-Ca-8ws" id="wED-jj-Kpp"/>
@@ -139,23 +139,44 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xku-LJ-cPp" userLabel="Album Status View">
+                                <rect key="frame" x="0.0" y="288" width="414" height="574"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No photos found for this location." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fm7-HG-z9U">
+                                        <rect key="frame" x="63.333333333333343" y="275" width="287.66666666666663" height="24"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="fm7-HG-z9U" firstAttribute="centerX" secondItem="xku-LJ-cPp" secondAttribute="centerX" id="dtp-kT-oEf"/>
+                                    <constraint firstItem="fm7-HG-z9U" firstAttribute="centerY" secondItem="xku-LJ-cPp" secondAttribute="centerY" id="gBp-la-JHW"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="dOs-6d-Zal" firstAttribute="top" secondItem="Kfd-HO-U9d" secondAttribute="top" id="1yW-5q-62i"/>
+                            <constraint firstItem="xku-LJ-cPp" firstAttribute="trailing" secondItem="Kfd-HO-U9d" secondAttribute="trailing" id="65y-EY-v8N"/>
                             <constraint firstItem="caF-8S-NS9" firstAttribute="trailing" secondItem="Kfd-HO-U9d" secondAttribute="trailing" id="8X2-kB-hxv"/>
+                            <constraint firstItem="xku-LJ-cPp" firstAttribute="top" secondItem="3aO-g4-M1x" secondAttribute="bottom" id="9wW-hA-4fd"/>
                             <constraint firstItem="caF-8S-NS9" firstAttribute="leading" secondItem="Kfd-HO-U9d" secondAttribute="leading" id="Ffn-2g-CbR"/>
                             <constraint firstItem="caF-8S-NS9" firstAttribute="top" secondItem="3aO-g4-M1x" secondAttribute="bottom" id="HdX-oh-vB3"/>
                             <constraint firstItem="3aO-g4-M1x" firstAttribute="leading" secondItem="Kfd-HO-U9d" secondAttribute="leading" id="Tuz-vm-zNo"/>
                             <constraint firstItem="dOs-6d-Zal" firstAttribute="leading" secondItem="Kfd-HO-U9d" secondAttribute="leading" id="UMR-DT-ewN"/>
+                            <constraint firstItem="xku-LJ-cPp" firstAttribute="bottom" secondItem="Kfd-HO-U9d" secondAttribute="bottom" id="ecY-bD-Nir"/>
                             <constraint firstItem="caF-8S-NS9" firstAttribute="bottom" secondItem="Kfd-HO-U9d" secondAttribute="bottom" id="ibt-9t-yio"/>
                             <constraint firstItem="dOs-6d-Zal" firstAttribute="trailing" secondItem="Kfd-HO-U9d" secondAttribute="trailing" id="o1w-A5-scQ"/>
+                            <constraint firstItem="xku-LJ-cPp" firstAttribute="leading" secondItem="Kfd-HO-U9d" secondAttribute="leading" id="sFr-o6-wgL"/>
                             <constraint firstItem="3aO-g4-M1x" firstAttribute="trailing" secondItem="Kfd-HO-U9d" secondAttribute="trailing" id="tl1-sS-wVt"/>
                             <constraint firstItem="3aO-g4-M1x" firstAttribute="top" secondItem="dOs-6d-Zal" secondAttribute="bottom" id="xVd-x8-v9b"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Kfd-HO-U9d"/>
                     </view>
                     <connections>
+                        <outlet property="albumStatusView" destination="xku-LJ-cPp" id="SQG-yI-kch"/>
                         <outlet property="collectionView" destination="caF-8S-NS9" id="Zmb-KA-myu"/>
                         <outlet property="deleteButton" destination="EAa-T8-RMY" id="xxt-5y-3lO"/>
                         <outlet property="doneButton" destination="3Fy-h9-skT" id="hNF-vQ-ENJ"/>

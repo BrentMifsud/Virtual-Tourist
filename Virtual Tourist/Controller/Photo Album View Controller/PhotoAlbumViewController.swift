@@ -12,15 +12,18 @@ import CoreData
 
 class PhotoAlbumViewController: UIViewController {
 
+	//MARK:- IBOutlets
 	@IBOutlet weak var mapView: MKMapView!
 	@IBOutlet weak var collectionView: UICollectionView!
 	@IBOutlet weak var doneButton: UIBarButtonItem!
 	@IBOutlet weak var deleteButton: UIBarButtonItem!
 	@IBOutlet weak var navBarItem: UINavigationItem!
-
+	@IBOutlet weak var albumStatusView: UIView!
+	
+	//MARK:- Controller Properties
 	var dataController: DataController!
 
-	var albumPhotosFetchedResultsController: NSFetchedResultsController<Photo>!
+	var fetchedResultsController: NSFetchedResultsController<Photo>!
 
 	var pin: Pin!
 
@@ -30,10 +33,11 @@ class PhotoAlbumViewController: UIViewController {
 
 	var flickrClient: FlickrClientProtocol!
 
-	var albumStore: PhotoAlbumStoreProtocol!
-
 	var blockOperations: [BlockOperation] = []
 
+	var numberOfPhotos: Int { return collectionView.numberOfItems(inSection: 0) }
+
+	//MARK:- Deinit
 	deinit {
 		// Cancel all block operations when VC deallocates
 		for operation: BlockOperation in blockOperations {
@@ -43,46 +47,55 @@ class PhotoAlbumViewController: UIViewController {
 		blockOperations.removeAll(keepingCapacity: false)
 	}
 	
+	//MARK:- View Lifecycle methods
 	override func viewDidLoad() {
 		super.viewDidLoad()
+
+		guard let pin = pin else { preconditionFailure("No pin passed to photo album view controller") }
+		guard let album = pin.album else { preconditionFailure("pin must have an album") }
+
+		navBarItem.title = pin.locationName ?? "Album"
+
+		fetchedResultsController = photoStore.getFetchedResultsController(forAlbum: album, fromContext: dataController.viewContext)
 
 		// Set delegates
 		mapView.delegate = self
 		collectionView.delegate = self
 		collectionView.dataSource = self
+		fetchedResultsController.delegate = self
 
-		setUpFetchedResultsController()
-
-		navBarItem.title = pin.locationName ?? "Album"
-
-		// Set Map View
 		setUpMapView()
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+
+		configureFlowLayout()
+
+		refreshPhotos()
+
 		collectionView.reloadData()
+
+		setAlbumStatusView()
 	}
 
-	fileprivate func setUpFetchedResultsController() {
-		guard let album = self.pin.album else { preconditionFailure("\nError: No Album exists for Pin") }
+	func setAlbumStatusView() {
+		albumStatusView.isHidden = numberOfPhotos > 0
+		collectionView.isHidden = numberOfPhotos == 0
+	}
 
-		let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
-		let sortDescriptor = NSSortDescriptor(key: "dateCreated", ascending: false)
-		let predicate = NSPredicate(format: "photoAlbum == %@", album)
-		fetchRequest.predicate = predicate
-		fetchRequest.sortDescriptors = [sortDescriptor]
-
-		albumPhotosFetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+	fileprivate func refreshPhotos(){
 
 		do {
-			try albumPhotosFetchedResultsController.performFetch()
+			try fetchedResultsController.performFetch()
 		} catch {
 			fatalError("Unable to fetch photos: \(error.localizedDescription)")
 		}
+
+		collectionView.reloadData()
 	}
 
-
+	//MARK:- IBActions
 	@IBAction func doneButtonPressed(_ sender: UIBarButtonItem) {
 		self.dismiss(animated: true, completion: nil)
 	}
@@ -93,69 +106,12 @@ class PhotoAlbumViewController: UIViewController {
 		self.dismiss(animated: true, completion: nil)
 	}
 
+	//MARK:- Prepare for Segue
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		let photo = sender as! Photo
 		let destinationVC = segue.destination as! PhotoDetailViewController
-		destinationVC.image = photo
-		destinationVC.dataController = self.dataController
+		destinationVC.photo = photo
+		destinationVC.fetchedResultsViewController = fetchedResultsController
+		destinationVC.fetchedResultsViewControllerDelegate = self
 	}
 }
-
-extension PhotoAlbumViewController: NSFetchedResultsControllerDelegate {
-	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-		blockOperations.removeAll(keepingCapacity: false)
-	}
-
-	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-		collectionView!.performBatchUpdates({ () -> Void in
-			self.blockOperations.forEach({ (blockOp) in
-				blockOp.start()
-			})
-		}, completion: { (finished) -> Void in
-			self.blockOperations.removeAll(keepingCapacity: false)
-		})
-	}
-
-	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-
-		var op: BlockOperation!
-
-		switch type {
-		case .insert:
-			op = BlockOperation { [unowned self] in self.collectionView!.insertItems(at: [indexPath!]) }
-		case.delete:
-			op = BlockOperation { [unowned self] in self.collectionView!.deleteItems(at: [indexPath!]) }
-		case.update:
-			op = BlockOperation { [unowned self] in self.collectionView!.reloadItems(at: [indexPath!]) }
-		case.move:
-			op = BlockOperation { [unowned self] in	self.collectionView!.moveItem(at: indexPath!, to: newIndexPath!) }
-		@unknown default:
-			break
-		}
-
-		blockOperations.append(op)
-	}
-
-	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-
-		let indexSet = IndexSet(integer: sectionIndex)
-
-		var op: BlockOperation!
-
-		switch type {
-		case .insert:
-			op = BlockOperation {[unowned self] in self.collectionView!.insertSections(indexSet) }
-		case .update:
-			op = BlockOperation {[unowned self] in self.collectionView!.reloadSections(indexSet) }
-		case .delete:
-			op = BlockOperation {[unowned self] in self.collectionView!.deleteSections(indexSet) }
-		case .move:
-			break
-		@unknown default:
-			break
-		}
-
-		blockOperations.append(op)
-	}
-}
-
