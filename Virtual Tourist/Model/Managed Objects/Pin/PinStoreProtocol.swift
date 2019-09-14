@@ -20,4 +20,10 @@ protocol PinStoreProtocol {
 	///     - coordinate: the coordinates of the pin.
 	/// - Returns: the created pin object.
 	func createPin(usingContext context: NSManagedObjectContext, withLocation location: String?, andCoordinate coordinate: CLLocationCoordinate2D) -> Pin
+
+	/// Deletes the specified pin object.
+	/// - Parameters:
+	///		- pin: the pin that will be deleted.
+	///     - context: the NSManagedObjectContext responsible for the pin.
+	func deletePin(pin: Pin, fromContext context: NSManagedObjectContext)
 }

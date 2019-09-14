@@ -23,6 +23,17 @@ struct PinStore: PinStoreProtocol {
 		pin.latitude = coordinate.latitude
 		pin.longitude = coordinate.longitude
 
-		return Pin()
+		return pin
+
+	}
+
+	func deletePin(pin: Pin, fromContext context: NSManagedObjectContext) {
+		context.delete(pin)
+
+		do {
+			try context.save()
+		} catch {
+			print("Error deleting pin: \(error)")
+		}
 	}
 }

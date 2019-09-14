@@ -24,12 +24,14 @@ struct SearchResults: Codable {
 	let page: Int
 	let pages: Int
 	let photosPerPage: Int
+	let totalPhotosCount: String
 	let photos: [FlickrImage]
 
 	enum CodingKeys: String, CodingKey {
 		case page
 		case pages
 		case photosPerPage = "perpage"
+		case totalPhotosCount = "total"
 		case photos = "photo"
 	}
 }
@@ -39,11 +41,15 @@ struct FlickrImage: Codable {
 	let id: String
 	let title: String
 	let mediumUrl: String
+	let height: String
+	let width: String
 
 	enum CodingKeys: String, CodingKey {
 		case id
 		case title
 		case mediumUrl = "url_m"
+		case height = "height_m"
+		case width = "width_m"
 	}
 }
 

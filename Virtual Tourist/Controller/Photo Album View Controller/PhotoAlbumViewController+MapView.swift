@@ -20,7 +20,7 @@ extension PhotoAlbumViewController: MKMapViewDelegate {
 		if pinView == nil {
 			pinView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
 			pinView!.canShowCallout = false
-			pinView!.glyphTintColor = .blue
+			pinView!.markerTintColor = .blue
 		} else {
 			pinView!.annotation = annotation
 		}
@@ -29,5 +29,14 @@ extension PhotoAlbumViewController: MKMapViewDelegate {
 		pinView?.isUserInteractionEnabled = false
 
 		return pinView
+	}
+
+	func setUpMapView(){
+		let span = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
+		let coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
+		let region = MKCoordinateRegion(center: coordinate, span: span)
+		mapView.setRegion(region, animated: true)
+		mapView.isInteractionEnabled(false)
+		mapView.addAnnotation(AnnotationPinView(pin: pin))
 	}
 }

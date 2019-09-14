@@ -25,7 +25,7 @@ class FlickrClient: FlickrClientProtocol {
 		self.dataController = dataController
 	}
 
-	func getFlickrPhotos(forPin pin: Pin, resultsForPage page: Int, completionHandler: @escaping (Pin?, Error?) -> Void) {
+	func getFlickrPhotos(forPin pin: Pin, resultsForPage page: Int = 1, completionHandler: @escaping (Pin?, Error?) -> Void) {
 		let pinId = pin.objectID
 
 		requestImages(forPin: pin, resultsForPage: page) { (data, error) in
@@ -42,7 +42,9 @@ class FlickrClient: FlickrClientProtocol {
 				do {
 					try self.photoAlbumStore.addPhotos(images: data.searchResults.photos, toPhotoAlbum: pinContext.album!)
 
-					completionHandler(pin, nil)
+					DispatchQueue.main.async {
+						completionHandler(pin, nil)
+					}
 				} catch {
 					completionHandler(nil, error)
 				}
@@ -52,24 +54,20 @@ class FlickrClient: FlickrClientProtocol {
 	}
 
 	func requestImages(forPin pin: Pin, resultsForPage page: Int, completionHandler: @escaping (FlickrResponse?, Error?) -> Void) {
-		var queryParms = [
+		let queryParms = [
 			ParameterKeys.APIKey: ParameterDefaultValues.APIKey,
 			ParameterKeys.Format: ParameterDefaultValues.Format,
 			ParameterKeys.NoJsonCallback: ParameterDefaultValues.NoJsonCallback,
 			ParameterKeys.Method: Methods.PhotosSearch,
-			ParameterKeys.Extra: ParameterDefaultValues.ExtraMediumURL
+			ParameterKeys.Extra: ParameterDefaultValues.ExtraMediumURL,
+			ParameterKeys.Page: "1",
+			ParameterKeys.RadiusUnits: ParameterDefaultValues.RadiusUnits,
+			ParameterKeys.Radius: ParameterDefaultValues.Radius,
+			ParameterKeys.ResultsPerPage: ParameterDefaultValues.ResultsPerPage,
+			ParameterKeys.Sort: ParameterDefaultValues.Sort,
+			ParameterKeys.Latitude: String(pin.latitude),
+			ParameterKeys.Longitude: String(pin.longitude)
 		]
-
-		if let locationName = pin.locationName {
-			queryParms[ParameterKeys.Text] = locationName
-		} else {
-			queryParms[ParameterKeys.Latitude] = String(pin.latitude)
-			queryParms[ParameterKeys.Longitude] = String(pin.longitude)
-			queryParms[ParameterKeys.Page] = String(page)
-			queryParms[ParameterKeys.RadiusUnits] = ParameterDefaultValues.RadiusUnits
-			queryParms[ParameterKeys.Radius] = "0.1"
-			queryParms[ParameterKeys.ResultsPerPage] = ParameterDefaultValues.ResultsPerPage
-		}
 
 		let dataTask = networkClient.createGetRequest(withUrl: baseURL, queryParms: queryParms, headers: nil) { (data, error) in
 
@@ -93,8 +91,42 @@ class FlickrClient: FlickrClientProtocol {
 		dataTask.resume()
 	}
 
-	func requestImage(imageUrl: URL, completionHandler: @escaping (UIImage?, Error?) -> Void) {
-		let dataTask = networkClient.createGetRequest(withUrl: imageUrl, queryParms: [:], headers: [:]) { (data, error) in
+	func getTotalPhotosCount(forPin pin: Pin, completionHandler: @escaping (Int?, Error?) -> Void) {
+		let queryParms = [
+			ParameterKeys.APIKey: ParameterDefaultValues.APIKey,
+			ParameterKeys.Format: ParameterDefaultValues.Format,
+			ParameterKeys.NoJsonCallback: ParameterDefaultValues.NoJsonCallback,
+			ParameterKeys.Method: Methods.PhotosSearch,
+			ParameterKeys.Extra: ParameterDefaultValues.ExtraMediumURL,
+			ParameterKeys.Page: "1",
+			ParameterKeys.RadiusUnits: ParameterDefaultValues.RadiusUnits,
+			ParameterKeys.Radius: ParameterDefaultValues.Radius,
+			ParameterKeys.ResultsPerPage: "1",
+			ParameterKeys.Sort: ParameterDefaultValues.Sort,
+			ParameterKeys.Latitude: String(pin.latitude),
+			ParameterKeys.Longitude: String(pin.longitude)
+		]
+
+		let dataTask = networkClient.createGetRequest(withUrl: baseURL, queryParms: queryParms, headers: nil) { (data, error) in
+			guard let data = data, error == nil else {
+				completionHandler(nil, error)
+				return
+			}
+
+			let jsonDecoder = JSONDecoder()
+
+			do {
+				let flickrResponse = try jsonDecoder.decode(FlickrResponse.self, from: data)
+				completionHandler(flickrResponse.searchResults.pages, nil)
+			} catch {
+				completionHandler(nil, error)
+			}
+		}
+		dataTask.resume()
+	}
+
+	func downloadImage(fromUrl url: URL, completionHandler: @escaping (UIImage?, Error?) -> Void) {
+		let dataTask = networkClient.createGetRequest(withUrl: url, queryParms: [:], headers: [:]) { (data, error) in
 			guard let data = data, error == nil else {
 				completionHandler(nil, error)
 				return
@@ -105,7 +137,9 @@ class FlickrClient: FlickrClientProtocol {
 				return
 			}
 
-			completionHandler(image, nil)
+			DispatchQueue.main.async {
+				completionHandler(image, nil)
+			}
 		}
 
 		//TODO:- enable network indicator

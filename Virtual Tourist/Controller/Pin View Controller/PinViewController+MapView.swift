@@ -15,10 +15,14 @@ extension PinViewController: MKMapViewDelegate {
 
 		var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKMarkerAnnotationView
 
+		let pinAnnotation = annotation as! AnnotationPinView
+		pinAnnotation.title = pinAnnotation.pin.locationName
+
 		if pinView == nil {
 			pinView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
 			pinView!.canShowCallout = false
-			pinView!.glyphTintColor = .blue
+			pinView!.markerTintColor = .blue
+
 		} else {
 			pinView!.annotation = annotation
 		}
@@ -42,11 +46,14 @@ extension PinViewController: MKMapViewDelegate {
 		UserDefaults.standard.set(location, forKey: locationKey)
 	}
 
-	func retrievePersistedMapLocation() {
+	/// Returns the mapView's location to how it was last time the app was open.
+	func loadPersistedMapLocation() {
 		if let mapRegion = UserDefaults.standard.dictionary(forKey: locationKey) {
+
 			let locationData = mapRegion as! [String : CLLocationDegrees]
 			let center = CLLocationCoordinate2D(latitude: locationData["lat"]!, longitude: locationData["long"]!)
 			let span = MKCoordinateSpan(latitudeDelta: locationData["latDelta"]!, longitudeDelta: locationData["longDelta"]!)
+
 			mapView.setRegion(MKCoordinateRegion(center: center, span: span), animated: true)
 		}
 	}
@@ -56,10 +63,16 @@ extension PinViewController: MKMapViewDelegate {
 
 		let pinAnnotation = annotation as! AnnotationPinView
 
-		let span = MKCoordinateSpan(latitudeDelta: 0.015, longitudeDelta: 0.015)
-		let region = MKCoordinateRegion(center: annotation.coordinate, span: span)
-		mapView.setRegion(region, animated: true)
 		performSegue(withIdentifier: "showPhotoAlbum", sender: pinAnnotation)
+
+		/*
+		When closing the photo album view controller, the selected annotation stays selected.
+		This prevents users from re-opening the same album without tapping somewhere else on the map.
+		Wait to deselect so that the user does not see the animation.
+		*/
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+			mapView.deselectAnnotation(view.annotation, animated: false)
+		}
 	}
 
 	/// Persists a new pin managed object and adds it to the map using the specified coordinate.
@@ -73,22 +86,28 @@ extension PinViewController: MKMapViewDelegate {
 					guard let placemark = placemarks?.first else { return }
 					let name = placemark.name ?? "Unknown Area"
 
-					do {
-						let newPin = self.pinStore.createPin(usingContext: self.dataController.viewContext, withLocation: name, andCoordinate: coordinate)
+					let newPin = self.pinStore.createPin(usingContext: self.dataController.viewContext, withLocation: name, andCoordinate: coordinate)
+					let annotationPin = AnnotationPinView(pin: newPin)
+					annotationPin.title = name
 
+					do {
 						// Try to save the newly created pin.
 						try self.dataController.save()
-
-						// Get photos from flickr for the new pin.
-						self.flickrClient.getFlickrPhotos(forPin: newPin, resultsForPage: 1) { (pin, error) in
-							guard pin == pin else { return }
-						}
-
-						// Add the newly created pin to the map.
-						self.mapView.addAnnotation(AnnotationPinView(pin: newPin))
 					} catch {
 						print("Error saving new pin: \(error)")
 					}
+
+					// Get images for current Pin
+					self.flickrClient.getFlickrPhotos(forPin: newPin, resultsForPage: 1) { [unowned self] (pin, error) in
+						guard pin == pin else { return }
+
+						self.activityIndicator.stopAnimating()
+						self.instructionLabel.setInstructionLabel(.longPress)
+						self.mapView.isInteractionEnabled(true)
+					}
+
+					// Add the newly created pin to the map.
+					self.mapView.addAnnotation(annotationPin)
 				}
 			}
 	}

@@ -12,55 +12,106 @@ import CoreData
 
 class PhotoAlbumViewController: UIViewController {
 
+	//MARK:- IBOutlets
 	@IBOutlet weak var mapView: MKMapView!
 	@IBOutlet weak var collectionView: UICollectionView!
 	@IBOutlet weak var doneButton: UIBarButtonItem!
-	@IBOutlet weak var refreshButton: UIBarButtonItem!
+	@IBOutlet weak var deleteButton: UIBarButtonItem!
 	@IBOutlet weak var navBarItem: UINavigationItem!
-
+	@IBOutlet weak var albumStatusView: UIView!
+	
+	//MARK:- Controller Properties
 	var dataController: DataController!
 
+	var fetchedResultsController: NSFetchedResultsController<Photo>!
+
 	var pin: Pin!
+
+	var pinStore: PinStoreProtocol!
 
 	var photoStore: PhotoStoreProtocol!
 
 	var flickrClient: FlickrClientProtocol!
 
-	var photoFetchedResultsController: NSFetchedResultsController<Photo>!
+	var blockOperations: [BlockOperation] = []
 
-	var albumStore: PhotoAlbumStoreProtocol!
+	var numberOfPhotos: Int { return collectionView.numberOfItems(inSection: 0) }
 
+	//MARK:- Deinit
+	deinit {
+		// Cancel all block operations when VC deallocates
+		for operation: BlockOperation in blockOperations {
+			operation.cancel()
+		}
+
+		blockOperations.removeAll(keepingCapacity: false)
+	}
+	
+	//MARK:- View Lifecycle methods
 	override func viewDidLoad() {
-        super.viewDidLoad()
+		super.viewDidLoad()
+
+		guard let pin = pin else { preconditionFailure("No pin passed to photo album view controller") }
+		guard let album = pin.album else { preconditionFailure("pin must have an album") }
 
 		navBarItem.title = pin.locationName ?? "Album"
 
-		let span = MKCoordinateSpan(latitudeDelta: 0.015, longitudeDelta: 0.015)
+		fetchedResultsController = photoStore.getFetchedResultsController(forAlbum: album, fromContext: dataController.viewContext)
 
-		let coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
+		// Set delegates
+		mapView.delegate = self
+		collectionView.delegate = self
+		collectionView.dataSource = self
+		fetchedResultsController.delegate = self
 
-		let region = MKCoordinateRegion(center: coordinate, span: span)
-
-		mapView.setRegion(region, animated: true)
-
-		mapView.isInteractionEnabled(false)
-    }
+		setUpMapView()
+	}
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 
-		//TODO:- Connect to core data to load all pins.
-		//TODO:- Pass the pin instead of MK annotation to this view controller and use that to fill up the map view
+		configureFlowLayout()
 
-		mapView.addAnnotation(AnnotationPinView(pin: pin))
+		refreshPhotos()
+
+		collectionView.reloadData()
+
+		setAlbumStatusView()
 	}
 
+	func setAlbumStatusView() {
+		albumStatusView.isHidden = numberOfPhotos > 0
+		collectionView.isHidden = numberOfPhotos == 0
+	}
 
+	fileprivate func refreshPhotos(){
+
+		do {
+			try fetchedResultsController.performFetch()
+		} catch {
+			fatalError("Unable to fetch photos: \(error.localizedDescription)")
+		}
+
+		collectionView.reloadData()
+	}
+
+	//MARK:- IBActions
 	@IBAction func doneButtonPressed(_ sender: UIBarButtonItem) {
 		self.dismiss(animated: true, completion: nil)
 	}
 
 
-	@IBAction func refreshButtonPressed(_ sender: UIBarButtonItem) {
+	@IBAction func deleteButtonPressed(_ sender: UIBarButtonItem) {
+		pinStore.deletePin(pin: self.pin, fromContext: self.dataController.viewContext)
+		self.dismiss(animated: true, completion: nil)
+	}
+
+	//MARK:- Prepare for Segue
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		let photo = sender as! Photo
+		let destinationVC = segue.destination as! PhotoDetailViewController
+		destinationVC.photo = photo
+		destinationVC.fetchedResultsViewController = fetchedResultsController
+		destinationVC.fetchedResultsViewControllerDelegate = self
 	}
 }
