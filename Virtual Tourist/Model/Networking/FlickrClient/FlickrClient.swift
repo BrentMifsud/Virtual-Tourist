@@ -86,8 +86,6 @@ class FlickrClient: FlickrClientProtocol {
 			}
 			
 		}
-		//TODO:- enable network indicator
-
 		dataTask.resume()
 	}
 
@@ -141,9 +139,6 @@ class FlickrClient: FlickrClientProtocol {
 				completionHandler(image, nil)
 			}
 		}
-
-		//TODO:- enable network indicator
-
 		dataTask.resume()
 	}
 }

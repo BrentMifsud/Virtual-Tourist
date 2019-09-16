@@ -26,8 +26,7 @@ class DataController {
 			guard error == nil else {
 				fatalError(error!.localizedDescription)
 			}
-			//TODO:- Enable this
-			//self.autoSaveViewContext()
+			self.autoSaveViewContext()
 
 			self.configureContext()
 			completion?()
@@ -48,7 +47,7 @@ class DataController {
 
 // MARK: - Autosaving
 extension DataController {
-	func autoSaveViewContext(interval: TimeInterval = 30) {
+	func autoSaveViewContext(interval: TimeInterval = 5) {
 		print("Autosaving")
 
 		guard interval > 0 else {
