@@ -29,29 +29,9 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
 
 		let currentPhoto = fetchedResultsController.object(at: indexPath)
 
-		if let data = currentPhoto.imageData {
-			if let existingImage = currentPhoto.image {
-				cell.imageView.image = existingImage
-				cell.activityIndicator.stopAnimating()
-			} else {
-				let image = UIImage(data: data)
-				currentPhoto.image = image
-				cell.imageView.image = image
-				cell.activityIndicator.stopAnimating()
-			}
-		} else {
-			// No photo currently downloaded. Request image from flickr
-			cell.activityIndicator.startAnimating()
-
-			flickrClient.downloadImage(fromUrl: currentPhoto.url!) { (image, error) in
-				guard let image = image else { preconditionFailure("Unable to download image: \(error.debugDescription)") }
-
-				currentPhoto.imageData = image.pngData()
-				currentPhoto.image = image
-				cell.imageView.image = image
-				cell.activityIndicator.stopAnimating()
-			}
-		}
+		cell.photo = currentPhoto
+		cell.flickrClient = flickrClient
+		cell.setUpPhotoCell()
 
 		do {
 			try dataController.viewContext.save()
