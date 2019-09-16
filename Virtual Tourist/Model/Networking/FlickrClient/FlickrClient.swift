@@ -60,7 +60,7 @@ class FlickrClient: FlickrClientProtocol {
 			ParameterKeys.NoJsonCallback: ParameterDefaultValues.NoJsonCallback,
 			ParameterKeys.Method: Methods.PhotosSearch,
 			ParameterKeys.Extra: ParameterDefaultValues.ExtraMediumURL,
-			ParameterKeys.Page: "1",
+			ParameterKeys.Page: String(page),
 			ParameterKeys.RadiusUnits: ParameterDefaultValues.RadiusUnits,
 			ParameterKeys.Radius: ParameterDefaultValues.Radius,
 			ParameterKeys.ResultsPerPage: ParameterDefaultValues.ResultsPerPage,
@@ -85,40 +85,6 @@ class FlickrClient: FlickrClientProtocol {
 				completionHandler(nil, error)
 			}
 			
-		}
-		dataTask.resume()
-	}
-
-	func getTotalPhotosCount(forPin pin: Pin, completionHandler: @escaping (Int?, Error?) -> Void) {
-		let queryParms = [
-			ParameterKeys.APIKey: ParameterDefaultValues.APIKey,
-			ParameterKeys.Format: ParameterDefaultValues.Format,
-			ParameterKeys.NoJsonCallback: ParameterDefaultValues.NoJsonCallback,
-			ParameterKeys.Method: Methods.PhotosSearch,
-			ParameterKeys.Extra: ParameterDefaultValues.ExtraMediumURL,
-			ParameterKeys.Page: "1",
-			ParameterKeys.RadiusUnits: ParameterDefaultValues.RadiusUnits,
-			ParameterKeys.Radius: ParameterDefaultValues.Radius,
-			ParameterKeys.ResultsPerPage: "1",
-			ParameterKeys.Sort: ParameterDefaultValues.Sort,
-			ParameterKeys.Latitude: String(pin.latitude),
-			ParameterKeys.Longitude: String(pin.longitude)
-		]
-
-		let dataTask = networkClient.createGetRequest(withUrl: baseURL, queryParms: queryParms, headers: nil) { (data, error) in
-			guard let data = data, error == nil else {
-				completionHandler(nil, error)
-				return
-			}
-
-			let jsonDecoder = JSONDecoder()
-
-			do {
-				let flickrResponse = try jsonDecoder.decode(FlickrResponse.self, from: data)
-				completionHandler(flickrResponse.searchResults.pages, nil)
-			} catch {
-				completionHandler(nil, error)
-			}
 		}
 		dataTask.resume()
 	}

@@ -21,8 +21,7 @@ struct NetworkClient: NetworkClientProtocol {
 		headers: [String : String]?,
 		completionHandler: @escaping (Data?, Error?) -> Void
 	) -> URLSessionDataTask {
-		guard var urlComponents = URLComponents(url: baseUrl, resolvingAgainstBaseURL: false) else { preconditionFailure("Failed to Build URLComponents from: \(baseUrl)")
-		}
+		guard var urlComponents = URLComponents(url: baseUrl, resolvingAgainstBaseURL: false) else { preconditionFailure("Failed to Build URLComponents from: \(baseUrl)") }
 
 		urlComponents.queryItems = queryParms.map{ (key, value) in
 			URLQueryItem(name: key, value: value)

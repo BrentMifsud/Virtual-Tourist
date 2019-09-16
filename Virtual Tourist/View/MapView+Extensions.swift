@@ -11,9 +11,9 @@ import MapKit
 
 extension MKMapView {
 	func isInteractionEnabled(_ enabled: Bool) {
-		self.isScrollEnabled = enabled
-		self.isZoomEnabled = enabled
-		self.isPitchEnabled = enabled
-		self.isRotateEnabled = enabled
+		isScrollEnabled = enabled
+		isZoomEnabled = enabled
+		isPitchEnabled = enabled
+		isRotateEnabled = enabled
 	}
 }
