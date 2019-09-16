@@ -11,8 +11,8 @@ import CoreLocation
 import CoreData
 
 
-/// A store in charge of creating new Pin NSManagedObjects and store them with core data.
-protocol PinStoreProtocol {
+/// Utility for managing pin managed objects.
+protocol PinCoreDataProtocol {
 	/// Creates and persists a pin object.
 	/// - Parameters:
 	///     - context: the managed object context used to persist the pin.

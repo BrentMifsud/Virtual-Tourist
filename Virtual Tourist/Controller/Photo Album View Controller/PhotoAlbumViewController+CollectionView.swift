@@ -33,10 +33,12 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
 		cell.flickrClient = flickrClient
 		cell.setUpPhotoCell()
 
-		do {
-			try dataController.viewContext.save()
-		} catch {
-			print("Unable to save photo from flickr")
+		DispatchQueue.main.async {
+			do {
+				try self.dataController.viewContext.save()
+			} catch {
+				print("Unable to save photo from flickr")
+			}
 		}
 
 		return cell

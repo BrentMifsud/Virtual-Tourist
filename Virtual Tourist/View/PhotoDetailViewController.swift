@@ -27,7 +27,10 @@ class PhotoDetailViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		guard let imageData = photo.imageData else { preconditionFailure("No image passed to photo view controller") }
+		guard let imageData = photo.imageData else {
+			self.presentErrorAlert(title: "Unable to load photo details", message: "Please try again")
+			fatalError("No image data passed to photo view controller")
+		}
 
 		imageView.image = UIImage(data: imageData)
 		imageTitle.text = photo.title

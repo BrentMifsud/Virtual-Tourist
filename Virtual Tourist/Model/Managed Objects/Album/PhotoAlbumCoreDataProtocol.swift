@@ -8,11 +8,11 @@
 
 import Foundation
 
-/// Create/Read/Delete Operations for PhotoAlbum NSManagedObject
-protocol PhotoAlbumStoreProtocol {
-	var photoStore: PhotoStoreProtocol { get }
+/// Utility for adding photos to PhotoAlbum Managed Object
+protocol PhotoAlbumCoreDataProtocol {
+	var photoStore: PhotoCoreDataProtocol { get }
 
-	init(photoStore: PhotoStoreProtocol)
+	init(photoStore: PhotoCoreDataProtocol)
 
 	/// Create and save images to the photo album.
 	/// - Parameters:

@@ -8,10 +8,10 @@
 
 import Foundation
 
-struct PhotoAlbumStore: PhotoAlbumStoreProtocol {
-	var photoStore: PhotoStoreProtocol
+struct PhotoAlbumCoreData: PhotoAlbumCoreDataProtocol {
+	var photoStore: PhotoCoreDataProtocol
 
-	init(photoStore: PhotoStoreProtocol) {
+	init(photoStore: PhotoCoreDataProtocol) {
 		self.photoStore = photoStore
 	}
 

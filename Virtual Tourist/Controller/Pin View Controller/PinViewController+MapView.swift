@@ -102,7 +102,7 @@ extension PinViewController: MKMapViewDelegate {
 					}
 
 					// Get images for current Pin
-					self.flickrClient.getFlickrPhotos(forPin: newPin, resultsForPage: 1) { [unowned self] (pin, error) in
+					self.flickrClient.getFlickrPhotos(forPin: newPin, resultsForPage: 1) { (pin, error) in
 						guard pin == pin else { return }
 
 						self.activityIndicator.stopAnimating()
