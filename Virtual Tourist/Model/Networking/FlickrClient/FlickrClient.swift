@@ -4,7 +4,6 @@
 //
 //  Created by Brent Mifsud on 2019-08-24.
 //  Copyright © 2019 Brent Mifsud. All rights reserved.
-//  Credit to TiagoMaiaL for the idea of using enums without cases to store constants.
 //
 
 import Foundation
@@ -12,14 +11,14 @@ import UIKit
 
 class FlickrClient: FlickrClientProtocol {
 	var networkClient: NetworkClientProtocol
-	var photoAlbumStore: PhotoAlbumStoreProtocol
+	var photoAlbumStore: PhotoAlbumCoreDataProtocol
 	var dataController: DataController
 
 	private let baseURL: URL = URL(string: API.BaseUrl)!
 
 	private static let jsonDecoder = JSONDecoder()
 
-	required init(networkClient: NetworkClientProtocol, photoAlbumStore: PhotoAlbumStoreProtocol, dataController: DataController) {
+	required init(networkClient: NetworkClientProtocol, photoAlbumStore: PhotoAlbumCoreDataProtocol, dataController: DataController) {
 		self.networkClient = networkClient
 		self.photoAlbumStore = photoAlbumStore
 		self.dataController = dataController

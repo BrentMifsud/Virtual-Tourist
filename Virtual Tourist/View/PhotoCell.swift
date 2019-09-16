@@ -32,7 +32,7 @@ class PhotoCell: UICollectionViewCell {
 			// No photo currently downloaded. Request image from flickr
 			activityIndicator.startAnimating()
 
-			flickrClient.downloadImage(fromUrl: photo.url!) { [unowned self] (imageData, error) in
+			flickrClient.downloadImage(fromUrl: photo.url!) { (imageData, error) in
 				guard let imageData = imageData else { preconditionFailure("Unable to download image: \(error.debugDescription)") }
 
 				self.photo.imageData = imageData.jpegData(compressionQuality: 1)

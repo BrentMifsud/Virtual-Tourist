@@ -9,8 +9,8 @@
 import Foundation
 import CoreData
 
-/// Create photos from flickr.
-protocol PhotoStoreProtocol {
+/// Utility for Creating Photo Managed Object
+protocol PhotoCoreDataProtocol {
 	/// Creates a new Photo NSManagedObject
 	/// - Parameters:
 	/// 	- flickrImage: flickr image to be persisted.

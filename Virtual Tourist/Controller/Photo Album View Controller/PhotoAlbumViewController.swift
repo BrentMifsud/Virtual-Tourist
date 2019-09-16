@@ -27,9 +27,9 @@ class PhotoAlbumViewController: UIViewController {
 
 	var pin: Pin!
 
-	var pinStore: PinStoreProtocol!
+	var pinStore: PinCoreDataProtocol!
 
-	var photoStore: PhotoStoreProtocol!
+	var photoStore: PhotoCoreDataProtocol!
 
 	var flickrClient: FlickrClientProtocol!
 
@@ -41,8 +41,14 @@ class PhotoAlbumViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		guard let pin = pin else { preconditionFailure("No pin passed to photo album view controller") }
-		guard let album = pin.album else { preconditionFailure("pin must have an album") }
+		guard let pin = pin else {
+			presentErrorAlert(title: "Unable to load photo album", message: "Please try again later.")
+			fatalError("No pin passed to photo album view controller")
+		}
+		guard let album = pin.album else {
+			presentErrorAlert(title: "Unable to load photo album", message: "Please try again later.")
+			fatalError("pin must have an album")
+		}
 
 		navBarItem.title = pin.locationName ?? "Album"
 

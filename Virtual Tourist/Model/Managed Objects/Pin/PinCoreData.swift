@@ -10,7 +10,7 @@ import Foundation
 import CoreLocation
 import CoreData
 
-struct PinStore: PinStoreProtocol {
+struct PinCoreData: PinCoreDataProtocol {
 
 	func createPin(
 		usingContext context: NSManagedObjectContext,

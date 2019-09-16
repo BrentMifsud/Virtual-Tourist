@@ -28,9 +28,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 		pinVC.dataController = dataController
 
-		pinVC.pinStore = PinStore()
+		pinVC.pinStore = PinCoreData()
 
-		pinVC.albumStore = PhotoAlbumStore(photoStore: PhotoStore())
+		pinVC.albumStore = PhotoAlbumCoreData(photoStore: PhotoCoreData())
 
 		pinVC.flickrClient = FlickrClient(
 			networkClient: NetworkClient(urlSession: .shared),
