@@ -37,16 +37,6 @@ class PhotoAlbumViewController: UIViewController {
 
 	var numberOfPhotos: Int { return collectionView.numberOfItems(inSection: 0) }
 
-	//MARK:- Deinit
-	deinit {
-		// Cancel all block operations when VC deallocates
-		for operation: BlockOperation in blockOperations {
-			operation.cancel()
-		}
-
-		blockOperations.removeAll(keepingCapacity: false)
-	}
-	
 	//MARK:- View Lifecycle methods
 	override func viewDidLoad() {
 		super.viewDidLoad()

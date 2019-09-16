@@ -17,7 +17,7 @@ class InstructionLabel: UILabel {
 	}
 
 	func setInstructionLabel(_ label: InstructionLabels){
-		self.text = label.rawValue
+		text = label.rawValue
 	}
 
 }

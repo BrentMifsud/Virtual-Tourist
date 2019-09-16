@@ -28,11 +28,4 @@ protocol FlickrClientProtocol {
 	///		- url: Image Url.
 	///		- completionHandler: function that will be called following the completion of this method.
 	func downloadImage(fromUrl url: URL, completionHandler: @escaping (UIImage?, Error?) -> Void )
-
-
-	/// Obtain the number of pages of photos for the given pin.
-	/// - Parameters:
-	/// 	- pin: the map pin to be populated with photos.
-	///		- completionHandler: function that will be called following the compeltion of this method.
-	func getTotalPhotosCount(forPin pin: Pin, completionHandler: @escaping (Int?, Error?) -> Void)
 }

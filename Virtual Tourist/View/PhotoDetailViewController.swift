@@ -18,7 +18,6 @@ class PhotoDetailViewController: UIViewController {
 	@IBOutlet weak var imageHeight: UILabel!
 	@IBOutlet weak var imageWidth: UILabel!
 
-
 	//MARK:- Controller properties
 	var fetchedResultsViewController: NSFetchedResultsController<Photo>!
 	var fetchedResultsViewControllerDelegate: NSFetchedResultsControllerDelegate!
@@ -28,9 +27,9 @@ class PhotoDetailViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		guard let image = photo.image else { preconditionFailure("No image passed to photo view controller") }
+		guard let imageData = photo.imageData else { preconditionFailure("No image passed to photo view controller") }
 
-		imageView.image = image
+		imageView.image = UIImage(data: imageData)
 		imageTitle.text = photo.title
 		url.setTitle(photo.url?.absoluteString, for: .normal)
 		imageHeight.text = photo.height

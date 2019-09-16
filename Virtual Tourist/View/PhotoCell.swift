@@ -20,23 +20,23 @@ class PhotoCell: UICollectionViewCell {
 
 	/// Set up the cell's imageView by downloading or reusing photos that have already been downloaded.
 	func setUpPhotoCell() {
+		activityIndicator.startAnimating()
+
 		// Populate cell imageview
 		if let data = photo.imageData {
 			// Photo data already exists in photo object. But has not yet been converted to a UIImage
 			let image = UIImage(data: data)
-			photo.image = image
 			imageView.image = image
 			activityIndicator.stopAnimating()
 		} else {
 			// No photo currently downloaded. Request image from flickr
 			activityIndicator.startAnimating()
 
-			flickrClient.downloadImage(fromUrl: photo.url!) { [unowned self] (image, error) in
-				guard let image = image else { preconditionFailure("Unable to download image: \(error.debugDescription)") }
+			flickrClient.downloadImage(fromUrl: photo.url!) { [unowned self] (imageData, error) in
+				guard let imageData = imageData else { preconditionFailure("Unable to download image: \(error.debugDescription)") }
 
-				self.photo.imageData = image.pngData()
-				self.photo.image = image
-				self.imageView.image = image
+				self.photo.imageData = imageData.jpegData(compressionQuality: 1)
+				self.imageView.image = imageData
 				self.activityIndicator.stopAnimating()
 			}
 		}
