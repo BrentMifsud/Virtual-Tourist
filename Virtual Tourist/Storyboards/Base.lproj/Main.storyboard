@@ -99,6 +99,18 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KfE-Jh-PrZ" userLabel="Tool Bar">
+                                <rect key="frame" x="0.0" y="813" width="414" height="49"/>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="cRT-Pv-fDP"/>
+                                    <barButtonItem title="New Collection" id="Wu0-ac-c2p">
+                                        <connections>
+                                            <action selector="newCollectionButtonPressed:" destination="tsv-o4-prm" id="OaM-Nv-TBA"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="UiE-JK-wc2"/>
+                                </items>
+                            </toolbar>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="caF-8S-NS9">
                                 <rect key="frame" x="0.0" y="288" width="414" height="574"/>
                                 <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -157,10 +169,11 @@
                                 </cells>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xku-LJ-cPp" userLabel="Album Status View">
-                                <rect key="frame" x="0.0" y="288" width="414" height="574"/>
+                                <rect key="frame" x="0.0" y="288" width="414" height="525"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No photos found for this location." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fm7-HG-z9U">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="No photos found for this location." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fm7-HG-z9U">
                                         <rect key="frame" x="63.333333333333343" y="275" width="287.66666666666663" height="24"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -176,17 +189,20 @@
                         <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="dOs-6d-Zal" firstAttribute="top" secondItem="Kfd-HO-U9d" secondAttribute="top" id="1yW-5q-62i"/>
-                            <constraint firstItem="xku-LJ-cPp" firstAttribute="trailing" secondItem="Kfd-HO-U9d" secondAttribute="trailing" id="65y-EY-v8N"/>
-                            <constraint firstItem="caF-8S-NS9" firstAttribute="trailing" secondItem="Kfd-HO-U9d" secondAttribute="trailing" id="8X2-kB-hxv"/>
-                            <constraint firstItem="xku-LJ-cPp" firstAttribute="top" secondItem="3aO-g4-M1x" secondAttribute="bottom" id="9wW-hA-4fd"/>
-                            <constraint firstItem="caF-8S-NS9" firstAttribute="leading" secondItem="Kfd-HO-U9d" secondAttribute="leading" id="Ffn-2g-CbR"/>
-                            <constraint firstItem="caF-8S-NS9" firstAttribute="top" secondItem="3aO-g4-M1x" secondAttribute="bottom" id="HdX-oh-vB3"/>
+                            <constraint firstItem="KfE-Jh-PrZ" firstAttribute="trailing" secondItem="Kfd-HO-U9d" secondAttribute="trailing" id="70c-t7-f9T"/>
+                            <constraint firstItem="caF-8S-NS9" firstAttribute="leading" secondItem="Kfd-HO-U9d" secondAttribute="leading" id="KoF-XG-eNl"/>
+                            <constraint firstItem="xku-LJ-cPp" firstAttribute="width" secondItem="caF-8S-NS9" secondAttribute="width" id="Mdk-Cs-KFn"/>
+                            <constraint firstItem="xku-LJ-cPp" firstAttribute="centerY" secondItem="caF-8S-NS9" secondAttribute="centerY" id="O7p-es-xuN"/>
+                            <constraint firstItem="caF-8S-NS9" firstAttribute="top" secondItem="3aO-g4-M1x" secondAttribute="bottom" id="Rko-6x-2m4"/>
                             <constraint firstItem="3aO-g4-M1x" firstAttribute="leading" secondItem="Kfd-HO-U9d" secondAttribute="leading" id="Tuz-vm-zNo"/>
                             <constraint firstItem="dOs-6d-Zal" firstAttribute="leading" secondItem="Kfd-HO-U9d" secondAttribute="leading" id="UMR-DT-ewN"/>
-                            <constraint firstItem="xku-LJ-cPp" firstAttribute="bottom" secondItem="Kfd-HO-U9d" secondAttribute="bottom" id="ecY-bD-Nir"/>
-                            <constraint firstItem="caF-8S-NS9" firstAttribute="bottom" secondItem="Kfd-HO-U9d" secondAttribute="bottom" id="ibt-9t-yio"/>
+                            <constraint firstItem="Kfd-HO-U9d" firstAttribute="bottom" secondItem="KfE-Jh-PrZ" secondAttribute="bottom" id="fZz-8A-ig8"/>
+                            <constraint firstItem="xku-LJ-cPp" firstAttribute="height" secondItem="caF-8S-NS9" secondAttribute="height" id="fak-oF-TZr"/>
                             <constraint firstItem="dOs-6d-Zal" firstAttribute="trailing" secondItem="Kfd-HO-U9d" secondAttribute="trailing" id="o1w-A5-scQ"/>
-                            <constraint firstItem="xku-LJ-cPp" firstAttribute="leading" secondItem="Kfd-HO-U9d" secondAttribute="leading" id="sFr-o6-wgL"/>
+                            <constraint firstItem="caF-8S-NS9" firstAttribute="trailing" secondItem="Kfd-HO-U9d" secondAttribute="trailing" id="ol6-C2-Bbt"/>
+                            <constraint firstItem="KfE-Jh-PrZ" firstAttribute="leading" secondItem="Kfd-HO-U9d" secondAttribute="leading" id="rPW-WV-iGx"/>
+                            <constraint firstItem="xku-LJ-cPp" firstAttribute="centerX" secondItem="caF-8S-NS9" secondAttribute="centerX" id="sHU-Py-sVC"/>
+                            <constraint firstItem="KfE-Jh-PrZ" firstAttribute="top" secondItem="caF-8S-NS9" secondAttribute="bottom" id="sIh-JU-yZ1"/>
                             <constraint firstItem="3aO-g4-M1x" firstAttribute="trailing" secondItem="Kfd-HO-U9d" secondAttribute="trailing" id="tl1-sS-wVt"/>
                             <constraint firstItem="3aO-g4-M1x" firstAttribute="top" secondItem="dOs-6d-Zal" secondAttribute="bottom" id="xVd-x8-v9b"/>
                         </constraints>

@@ -19,7 +19,7 @@ class PhotoAlbumViewController: UIViewController {
 	@IBOutlet weak var deleteButton: UIBarButtonItem!
 	@IBOutlet weak var navBarItem: UINavigationItem!
 	@IBOutlet weak var albumStatusView: UIView!
-	
+
 	//MARK:- Controller Properties
 	var dataController: DataController!
 
@@ -36,6 +36,8 @@ class PhotoAlbumViewController: UIViewController {
 	var blockOperations: [BlockOperation] = []
 
 	var numberOfPhotos: Int { return collectionView.numberOfItems(inSection: 0) }
+
+	var currentPage: Int = 1
 
 	//MARK:- View Lifecycle methods
 	override func viewDidLoad() {
@@ -100,6 +102,10 @@ class PhotoAlbumViewController: UIViewController {
 	@IBAction func deleteButtonPressed(_ sender: UIBarButtonItem) {
 		pinCoreData.deletePin(pin: self.pin, fromContext: self.dataController.viewContext)
 		dismiss(animated: true, completion: nil)
+	}
+
+	@IBAction func newCollectionButtonPressed(_ sender: UIBarButtonItem) {
+		//TODO: Implement call to get next page.
 	}
 
 	//MARK:- Prepare for Segue
