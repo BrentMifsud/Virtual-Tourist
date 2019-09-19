@@ -40,10 +40,7 @@ class FlickrClient: FlickrClientProtocol {
 
 				do {
 					try self.photoAlbumStore.addPhotos(images: data.searchResults.photos, toPhotoAlbum: pinContext.album!)
-
-					DispatchQueue.main.async {
-						completionHandler(pin, nil)
-					}
+					completionHandler(pin, nil)
 				} catch {
 					completionHandler(nil, error)
 				}
@@ -88,21 +85,19 @@ class FlickrClient: FlickrClientProtocol {
 		dataTask.resume()
 	}
 
-	func downloadImage(fromUrl url: URL, completionHandler: @escaping (UIImage?, Error?) -> Void) {
+	func downloadImage(fromUrl url: URL, completionHandler: @escaping (UIImage?, String?, Error?) -> Void) {
 		let dataTask = networkClient.createGetRequest(withUrl: url, queryParms: [:], headers: [:]) { (data, error) in
 			guard let data = data, error == nil else {
-				completionHandler(nil, error)
+				completionHandler(nil, nil, error)
 				return
 			}
 
 			guard let image = UIImage(data: data) else {
-				completionHandler(nil, error)
+				completionHandler(nil, nil, error)
 				return
 			}
 
-			DispatchQueue.main.async {
-				completionHandler(image, nil)
-			}
+			completionHandler(image, url.absoluteString, nil)
 		}
 		dataTask.resume()
 	}

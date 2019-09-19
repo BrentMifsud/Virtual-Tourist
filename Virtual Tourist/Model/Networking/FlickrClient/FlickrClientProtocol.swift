@@ -27,5 +27,5 @@ protocol FlickrClientProtocol {
 	/// - Parameters:
 	///		- url: Image Url.
 	///		- completionHandler: function that will be called following the completion of this method.
-	func downloadImage(fromUrl url: URL, completionHandler: @escaping (UIImage?, Error?) -> Void )
+	func downloadImage(fromUrl url: URL, completionHandler: @escaping (UIImage?, String?, Error?) -> Void )
 }

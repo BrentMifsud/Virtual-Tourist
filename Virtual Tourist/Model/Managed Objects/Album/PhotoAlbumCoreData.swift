@@ -9,17 +9,17 @@
 import Foundation
 
 struct PhotoAlbumCoreData: PhotoAlbumCoreDataProtocol {
-	var photoStore: PhotoCoreDataProtocol
+	var photoCoreData: PhotoCoreDataProtocol
 
-	init(photoStore: PhotoCoreDataProtocol) {
-		self.photoStore = photoStore
+	init(photoCoreData: PhotoCoreDataProtocol) {
+		self.photoCoreData = photoCoreData
 	}
 
 	func addPhotos(images: [FlickrImage], toPhotoAlbum photoAlbum: PhotoAlbum) throws {
 		guard let context = photoAlbum.managedObjectContext else { preconditionFailure("Album does not have a context.") }
 
 		images.forEach { (flickrImage) in
-			_ = photoStore.createPhoto(flickrImage: flickrImage, inAlbum: photoAlbum)
+			_ = photoCoreData.createPhoto(flickrImage: flickrImage, inAlbum: photoAlbum)
 		}
 
 		try context.save()

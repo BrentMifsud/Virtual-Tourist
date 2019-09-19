@@ -86,7 +86,6 @@ extension PinViewController: MKMapViewDelegate {
 		let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
 
 			geoCoder.reverseGeocodeLocation(location) { (placemarks, error) in
-				DispatchQueue.main.async {
 					guard let placemark = placemarks?.first else { return }
 					let name = placemark.name ?? "Unknown Area"
 
@@ -112,7 +111,6 @@ extension PinViewController: MKMapViewDelegate {
 
 					// Add the newly created pin to the map.
 					self.mapView.addAnnotation(annotationPin)
-				}
 			}
 	}
 
