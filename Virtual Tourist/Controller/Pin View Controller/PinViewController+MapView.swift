@@ -89,7 +89,7 @@ extension PinViewController: MKMapViewDelegate {
 					guard let placemark = placemarks?.first else { return }
 					let name = placemark.name ?? "Unknown Area"
 
-					let newPin = self.pinStore.createPin(usingContext: self.dataController.viewContext, withLocation: name, andCoordinate: coordinate)
+					let newPin = self.pinCoreData.createPin(usingContext: self.dataController.viewContext, withLocation: name, andCoordinate: coordinate)
 					let annotationPin = AnnotationPinView(pin: newPin)
 					annotationPin.title = name
 
@@ -104,9 +104,11 @@ extension PinViewController: MKMapViewDelegate {
 					self.flickrClient.getFlickrPhotos(forPin: newPin, resultsForPage: 1) { (pin, error) in
 						guard pin == pin else { return }
 
-						self.activityIndicator.stopAnimating()
-						self.instructionLabel.setInstructionLabel(.longPress)
-						self.mapView.isInteractionEnabled(true)
+						DispatchQueue.main.async {
+							self.activityIndicator.stopAnimating()
+							self.instructionLabel.setInstructionLabel(.longPress)
+							self.mapView.isInteractionEnabled(true)
+						}
 					}
 
 					// Add the newly created pin to the map.

@@ -11,10 +11,10 @@ import UIKit
 
 protocol FlickrClientProtocol {
 	var networkClient: NetworkClientProtocol { get }
-	var photoAlbumStore: PhotoAlbumCoreDataProtocol { get }
+	var photoAlbumCoreData: PhotoAlbumCoreDataProtocol { get }
 	var dataController: DataController { get }
 
-	init(networkClient: NetworkClientProtocol, photoAlbumStore: PhotoAlbumCoreDataProtocol, dataController: DataController )
+	init(networkClient: NetworkClientProtocol, photoAlbumCoreData: PhotoAlbumCoreDataProtocol, dataController: DataController )
 
 	/// Obtains photos from Flickr for a specified map pin.
 	/// - Parameters:
