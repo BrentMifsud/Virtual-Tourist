@@ -10,9 +10,9 @@ import Foundation
 
 /// Utility for adding photos to PhotoAlbum Managed Object
 protocol PhotoAlbumCoreDataProtocol {
-	var photoStore: PhotoCoreDataProtocol { get }
+	var photoCoreData: PhotoCoreDataProtocol { get }
 
-	init(photoStore: PhotoCoreDataProtocol)
+	init(photoCoreData: PhotoCoreDataProtocol)
 
 	/// Create and save images to the photo album.
 	/// - Parameters:

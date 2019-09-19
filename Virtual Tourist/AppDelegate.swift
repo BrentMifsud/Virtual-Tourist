@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 		pinVC.pinStore = PinCoreData()
 
-		pinVC.albumStore = PhotoAlbumCoreData(photoStore: PhotoCoreData())
+		pinVC.albumStore = PhotoAlbumCoreData(photoCoreData: PhotoCoreData())
 
 		pinVC.flickrClient = FlickrClient(
 			networkClient: NetworkClient(urlSession: .shared),
