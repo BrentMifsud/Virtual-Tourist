@@ -27,9 +27,9 @@ class PhotoAlbumViewController: UIViewController {
 
 	var pin: Pin!
 
-	var pinStore: PinCoreDataProtocol!
+	var pinCoreData: PinCoreDataProtocol!
 
-	var photoStore: PhotoCoreDataProtocol!
+	var photoCoreData: PhotoCoreDataProtocol!
 
 	var flickrClient: FlickrClientProtocol!
 
@@ -52,7 +52,7 @@ class PhotoAlbumViewController: UIViewController {
 
 		navBarItem.title = pin.locationName ?? "Album"
 
-		fetchedResultsController = photoStore.getFetchedResultsController(forAlbum: album, fromContext: dataController.viewContext)
+		fetchedResultsController = photoCoreData.getFetchedResultsController(forAlbum: album, fromContext: dataController.viewContext)
 
 		// Set delegates
 		mapView.delegate = self
@@ -98,7 +98,7 @@ class PhotoAlbumViewController: UIViewController {
 
 
 	@IBAction func deleteButtonPressed(_ sender: UIBarButtonItem) {
-		pinStore.deletePin(pin: self.pin, fromContext: self.dataController.viewContext)
+		pinCoreData.deletePin(pin: self.pin, fromContext: self.dataController.viewContext)
 		self.dismiss(animated: true, completion: nil)
 	}
 

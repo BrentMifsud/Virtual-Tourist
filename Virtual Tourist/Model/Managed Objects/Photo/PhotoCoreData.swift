@@ -1,5 +1,5 @@
 //
-//  PhotoStore.swift
+//  PhotoCoreData.swift
 //  Virtual Tourist
 //
 //  Created by Brent Mifsud on 2019-08-29.

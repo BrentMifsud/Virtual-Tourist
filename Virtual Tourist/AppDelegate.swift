@@ -22,19 +22,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		dataController.load()
 		
 		// Set up Initial view controller
-		guard let navVC = window?.rootViewController as? UINavigationController else { preconditionFailure("\nERROR:\nUnable to load root view controller") }
+		guard let navVC = window?.rootViewController as? UINavigationController else { preconditionFailure("Unable to load root view controller") }
 
-		guard let pinVC = navVC.viewControllers.first as? PinViewController else { preconditionFailure("\nERROR:\nUnable to load PinViewController") }
+		guard let pinVC = navVC.viewControllers.first as? PinViewController else { preconditionFailure("Unable to load PinViewController") }
 
 		pinVC.dataController = dataController
 
-		pinVC.pinStore = PinCoreData()
+		pinVC.pinCoreData = PinCoreData()
 
-		pinVC.albumStore = PhotoAlbumCoreData(photoCoreData: PhotoCoreData())
+		pinVC.albumCoreData = PhotoAlbumCoreData(photoCoreData: PhotoCoreData())
 
 		pinVC.flickrClient = FlickrClient(
 			networkClient: NetworkClient(urlSession: .shared),
-			photoAlbumStore: pinVC.albumStore,
+			photoAlbumCoreData: pinVC.albumCoreData,
 			dataController: dataController
 		)
 

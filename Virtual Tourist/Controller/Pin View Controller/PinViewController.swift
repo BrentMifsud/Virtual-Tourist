@@ -20,8 +20,8 @@ class PinViewController: UIViewController {
 	// MARK:- Controller Properties
 	var dataController: DataController!
 	var flickrClient: FlickrClientProtocol!
-	var pinStore: PinCoreDataProtocol!
-	var albumStore: PhotoAlbumCoreDataProtocol!
+	var pinCoreData: PinCoreDataProtocol!
+	var albumCoreData: PhotoAlbumCoreDataProtocol!
 	let locationKey: String = "persistedMapRegion"
 	var currentLocation: [String : CLLocationDegrees]!
 
@@ -85,8 +85,8 @@ class PinViewController: UIViewController {
 
 		vc.dataController = self.dataController
 		vc.flickrClient = self.flickrClient
-		vc.photoStore = self.albumStore.photoStore
-		vc.pinStore = self.pinStore
+		vc.photoCoreData = self.albumCoreData.photoCoreData
+		vc.pinCoreData = self.pinCoreData
 		vc.pin = pinAnnotation.pin
 	}
 }

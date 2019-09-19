@@ -31,17 +31,16 @@ class PhotoCell: UICollectionViewCell {
 		} else {
 			// No photo currently downloaded. Request image from flickr
 			activityIndicator.startAnimating()
-
 			flickrClient.downloadImage(fromUrl: photo.url!) { [weak self] (imageData, url, error) in
 				guard let weakSelf = self else { return }
 
 				guard let imageData = imageData else { preconditionFailure("Unable to download image: \(error.debugDescription)") }
 
-				if url != weakSelf.photo.url?.absoluteString {
-					return
-				}
-
 				DispatchQueue.main.async {
+					if url != weakSelf.photo.url?.absoluteString {
+						return
+					}
+
 					weakSelf.photo.imageData = imageData.jpegData(compressionQuality: 1)
 					weakSelf.imageView.image = imageData
 					weakSelf.activityIndicator.stopAnimating()
@@ -52,7 +51,7 @@ class PhotoCell: UICollectionViewCell {
 
 	override func prepareForReuse() {
 		super.prepareForReuse()
-		self.imageView.image = nil
-		self.photo = nil
+		self.imageView.image = UIImage()
+		self.activityIndicator.startAnimating()
 	}
 }

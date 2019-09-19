@@ -11,16 +11,16 @@ import UIKit
 
 class FlickrClient: FlickrClientProtocol {
 	var networkClient: NetworkClientProtocol
-	var photoAlbumStore: PhotoAlbumCoreDataProtocol
+	var photoAlbumCoreData: PhotoAlbumCoreDataProtocol
 	var dataController: DataController
 
 	private let baseURL: URL = URL(string: API.BaseUrl)!
 
 	private static let jsonDecoder = JSONDecoder()
 
-	required init(networkClient: NetworkClientProtocol, photoAlbumStore: PhotoAlbumCoreDataProtocol, dataController: DataController) {
+	required init(networkClient: NetworkClientProtocol, photoAlbumCoreData: PhotoAlbumCoreDataProtocol, dataController: DataController) {
 		self.networkClient = networkClient
-		self.photoAlbumStore = photoAlbumStore
+		self.photoAlbumCoreData = photoAlbumCoreData
 		self.dataController = dataController
 	}
 
@@ -39,7 +39,7 @@ class FlickrClient: FlickrClientProtocol {
 				}
 
 				do {
-					try self.photoAlbumStore.addPhotos(images: data.searchResults.photos, toPhotoAlbum: pinContext.album!)
+					try self.photoAlbumCoreData.addPhotos(images: data.searchResults.photos, toPhotoAlbum: pinContext.album!)
 					completionHandler(pin, nil)
 				} catch {
 					completionHandler(nil, error)

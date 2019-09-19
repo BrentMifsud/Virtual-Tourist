@@ -1,5 +1,5 @@
 //
-//  PinStore.swift
+//  PinCoreData.swift
 //  Virtual Tourist
 //
 //  Created by Brent Mifsud on 2019-08-29.
