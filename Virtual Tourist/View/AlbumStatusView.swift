@@ -42,6 +42,7 @@ class AlbumStatusView: UIView {
 
 		// Set up activity indicator
 		activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+		activityIndicator.hidesWhenStopped = true
 		addSubview(activityIndicator)
 		activityIndicator.translatesAutoresizingMaskIntoConstraints = false
 		activityIndicator.color = .black
@@ -54,13 +55,11 @@ class AlbumStatusView: UIView {
 		case .downloading:
 			activityIndicator.startAnimating()
 			statusLabel.text = state.rawValue
-			statusLabel.sizeToFit()
 			self.isHidden = false
 		case .noImagesFound:
 			activityIndicator.stopAnimating()
 			activityIndicator.isHidden = true
 			statusLabel.text = state.rawValue
-			statusLabel.sizeToFit()
 			self.isHidden = false
 		case .displayImages:
 			activityIndicator.stopAnimating()

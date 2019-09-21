@@ -21,7 +21,7 @@ protocol FlickrClientProtocol {
 	/// 	- pin: the map pin to be populated with photos.
 	///		- page: the page to grab photos from. Each page contains up to 100 photos.
 	///		- completionHandler: function that will be called following the compeltion of this method.
-	func getFlickrPhotos(forPin pin: Pin, resultsForPage page: Int, completionHandler: @escaping (Pin?, Error?) -> Void)
+	func getFlickrPhotos(forPin pin: Pin, resultsForPage page: Int, completionHandler: @escaping (Pin?, Int?, Error?) -> Void)
 
 	/// Given Flickr image URL, download the image from Flickr.
 	/// - Parameters:

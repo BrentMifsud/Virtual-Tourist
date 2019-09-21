@@ -24,14 +24,12 @@ class FlickrClient: FlickrClientProtocol {
 		self.dataController = dataController
 	}
 
-	func getFlickrPhotos(forPin pin: Pin, resultsForPage page: Int = 1, completionHandler: @escaping (Pin?, Error?) -> Void) {
+	func getFlickrPhotos(forPin pin: Pin, resultsForPage page: Int = 1, completionHandler: @escaping (Pin?, Int?, Error?) -> Void) {
 		let pinId = pin.objectID
 
 		requestImages(forPin: pin, resultsForPage: page) { (data, error) in
 			guard let data = data, error == nil else {
-				DispatchQueue.main.async {
-					completionHandler(nil, error)
-				}
+				completionHandler(nil, nil, error)
 				return
 			}
 
@@ -43,9 +41,10 @@ class FlickrClient: FlickrClientProtocol {
 				DispatchQueue.main.async {
 					do {
 						try self.photoAlbumCoreData.addPhotos(images: data.searchResults.photos, toPhotoAlbum: pinContext.album!)
-						completionHandler(pin, nil)
+						
+							completionHandler(pin, data.searchResults.pages, nil)
 					} catch {
-						completionHandler(nil, error)
+						completionHandler(nil, nil, error)
 					}
 				}
 			}

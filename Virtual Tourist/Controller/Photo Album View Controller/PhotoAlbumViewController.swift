@@ -20,6 +20,8 @@ class PhotoAlbumViewController: UIViewController {
 	@IBOutlet weak var navBarItem: UINavigationItem!
 
 	//MARK:- Controller Properties
+	var albumStatusView: AlbumStatusView!
+
 	var dataController: DataController!
 
 	var fetchedResultsController: NSFetchedResultsController<Photo>!
@@ -36,7 +38,9 @@ class PhotoAlbumViewController: UIViewController {
 
 	var currentPage: Int = 1
 
-	var albumStatusView: AlbumStatusView!
+	var totalAlbumPages: Int = 1
+
+
 
 	//MARK:- View Lifecycle methods
 	fileprivate func setUpAlbumStatusView() {
@@ -85,9 +89,10 @@ class PhotoAlbumViewController: UIViewController {
 	}
 
 	func downloadPhotos(forPage page: Int = 1){
-		// Download Initial set of photos.
-		flickrClient.getFlickrPhotos(forPin: pin, resultsForPage: 1) {[unowned self] (pin, error) in
-			guard error == nil, let pin = pin else {
+		albumStatusView.setState(state: .downloading)
+
+		flickrClient.getFlickrPhotos(forPin: pin, resultsForPage: 1) {[unowned self] (pin, pages, error) in
+			guard error == nil, let pin = pin, let pages = pages else {
 				self.presentErrorAlert(title: "Unable to download images", message: error!.localizedDescription)
 				return
 			}
@@ -99,6 +104,7 @@ class PhotoAlbumViewController: UIViewController {
 				self.albumStatusView.setState(state: .noImagesFound)
 				self.collectionView.isHidden = true
 			} else {
+				self.totalAlbumPages = pages
 				self.configureFlowLayout()
 				self.refreshPhotos()
 				self.albumStatusView.setState(state: .displayImages)
@@ -130,7 +136,25 @@ class PhotoAlbumViewController: UIViewController {
 	}
 
 	@IBAction func newCollectionButtonPressed(_ sender: UIBarButtonItem) {
-		//TODO: Implement call to get next page.
+		albumStatusView.setState(state: .downloading)
+
+		fetchedResultsController.fetchedObjects?.forEach({ (photo) in
+			dataController.viewContext.delete(photo)
+		})
+
+		do {
+			try dataController.viewContext.save()
+		} catch {
+			print("Unable to save context after clearing album")
+		}
+
+//		var nextPage = 1
+//
+//		while nextPage == currentPage {
+//			nextPage = Int.random(in: 1...totalAlbumPages)
+//		}
+//
+//		downloadPhotos(forPage: nextPage)
 	}
 
 	//MARK:- Prepare for Segue
