@@ -18,6 +18,7 @@
 		845B47982311E68D00ECEA74 /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845B47972311E68D00ECEA74 /* Pin.swift */; };
 		845B479A2311E70800ECEA74 /* PhotoAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845B47992311E70800ECEA74 /* PhotoAlbum.swift */; };
 		845B479C2311E75500ECEA74 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845B479B2311E75500ECEA74 /* Photo.swift */; };
+		8467216F2335AA20007E91C7 /* FlickrErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8467216E2335AA20007E91C7 /* FlickrErrorResponse.swift */; };
 		847F10C82316025900D052E0 /* NetworkClientProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F10C72316025900D052E0 /* NetworkClientProtocol.swift */; };
 		847F10CB2316050400D052E0 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F10CA2316050400D052E0 /* NetworkClient.swift */; };
 		847F10CD23160A6700D052E0 /* NetworkClient+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F10CC23160A6700D052E0 /* NetworkClient+Constants.swift */; };
@@ -58,6 +59,7 @@
 		845B47972311E68D00ECEA74 /* Pin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
 		845B47992311E70800ECEA74 /* PhotoAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbum.swift; sourceTree = "<group>"; };
 		845B479B2311E75500ECEA74 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		8467216E2335AA20007E91C7 /* FlickrErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrErrorResponse.swift; sourceTree = "<group>"; };
 		847F10C72316025900D052E0 /* NetworkClientProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClientProtocol.swift; sourceTree = "<group>"; };
 		847F10CA2316050400D052E0 /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
 		847F10CC23160A6700D052E0 /* NetworkClient+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkClient+Constants.swift"; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 				84D18C5D2311D44F00AFBD95 /* FlickrResponse.swift */,
 				847F10CE23160CEA00D052E0 /* FlickrClientProtocol.swift */,
 				847F10D023160FE900D052E0 /* FlickrClient+Constants.swift */,
+				8467216E2335AA20007E91C7 /* FlickrErrorResponse.swift */,
 			);
 			path = FlickrClient;
 			sourceTree = "<group>";
@@ -348,6 +351,7 @@
 				847F111F2327564F00D052E0 /* VirtualTourist.xcdatamodeld in Sources */,
 				847F110E2321C31700D052E0 /* MapView+Extensions.swift in Sources */,
 				847F10CD23160A6700D052E0 /* NetworkClient+Constants.swift in Sources */,
+				8467216F2335AA20007E91C7 /* FlickrErrorResponse.swift in Sources */,
 				847F10D62318A0CF00D052E0 /* PinCoreDataProtocol.swift in Sources */,
 				847F112B232D35C600D052E0 /* InstructionLabel.swift in Sources */,
 				84D18C572311CB2400AFBD95 /* FlickrClient.swift in Sources */,

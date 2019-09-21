@@ -102,7 +102,10 @@ extension PinViewController: MKMapViewDelegate {
 
 					// Get images for current Pin
 					self.flickrClient.getFlickrPhotos(forPin: newPin, resultsForPage: 1) { (pin, error) in
-						guard pin == pin else { return }
+						guard error == nil else {
+							self.presentErrorAlert(title: "Unable to download images", message: error!.localizedDescription)
+							return
+						}
 
 						DispatchQueue.main.async {
 							self.activityIndicator.stopAnimating()
