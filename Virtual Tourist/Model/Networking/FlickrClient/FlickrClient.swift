@@ -41,14 +41,12 @@ class FlickrClient: FlickrClientProtocol {
 				DispatchQueue.main.async {
 					do {
 						try self.photoAlbumCoreData.addPhotos(images: data.searchResults.photos, toPhotoAlbum: pinContext.album!)
-						
-							completionHandler(pin, data.searchResults.pages, nil)
+						completionHandler(pin, data.searchResults.pages, nil)
 					} catch {
 						completionHandler(nil, nil, error)
 					}
 				}
 			}
-
 		}
 	}
 

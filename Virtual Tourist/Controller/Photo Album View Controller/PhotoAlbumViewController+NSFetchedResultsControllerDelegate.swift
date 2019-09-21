@@ -31,13 +31,29 @@ extension PhotoAlbumViewController: NSFetchedResultsControllerDelegate {
 
 		switch type {
 		case .insert:
-			op = BlockOperation { [unowned self] in self.collectionView!.insertItems(at: [indexPath!]) }
+			op = BlockOperation { [weak self] in
+				if let weakSelf = self {
+					weakSelf.collectionView!.insertItems(at: [newIndexPath!])
+
+				}
+			}
 		case.delete:
-			op = BlockOperation { [unowned self] in self.collectionView!.deleteItems(at: [indexPath!]) }
+			op = BlockOperation { [weak self] in
+				if let weakSelf = self {
+					weakSelf.collectionView!.deleteItems(at: [indexPath!])
+				}
+			}
 		case.update:
-			op = BlockOperation { [unowned self] in self.collectionView!.reloadItems(at: [indexPath!]) }
+			op = BlockOperation { [weak self] in
+				if let weakSelf = self {
+					weakSelf.collectionView!.reloadItems(at: [indexPath!]) }
+				}
 		case.move:
-			op = BlockOperation { [unowned self] in	self.collectionView!.moveItem(at: indexPath!, to: newIndexPath!) }
+			op = BlockOperation { [weak self] in
+				if let weakSelf = self {
+					weakSelf.collectionView!.moveItem(at: indexPath!, to: newIndexPath!)
+				}
+			}
 		@unknown default:
 			break
 		}

@@ -18,7 +18,8 @@ class PhotoAlbumViewController: UIViewController {
 	@IBOutlet weak var doneButton: UIBarButtonItem!
 	@IBOutlet weak var deleteButton: UIBarButtonItem!
 	@IBOutlet weak var navBarItem: UINavigationItem!
-
+	@IBOutlet weak var newCollectionButton: UIBarButtonItem!
+	
 	//MARK:- Controller Properties
 	var albumStatusView: AlbumStatusView!
 
@@ -66,6 +67,8 @@ class PhotoAlbumViewController: UIViewController {
 		// Set up Collection View
 		collectionView.dataSource = self
 		collectionView.delegate = self
+		configureFlowLayout()
+		newCollectionButton.isEnabled = false
 		setUpAlbumStatusView()
 		downloadPhotos()
 
@@ -91,24 +94,26 @@ class PhotoAlbumViewController: UIViewController {
 	func downloadPhotos(forPage page: Int = 1){
 		albumStatusView.setState(state: .downloading)
 
-		flickrClient.getFlickrPhotos(forPin: pin, resultsForPage: 1) {[unowned self] (pin, pages, error) in
-			guard error == nil, let pin = pin, let pages = pages else {
-				self.presentErrorAlert(title: "Unable to download images", message: error!.localizedDescription)
-				return
-			}
-			guard let album = pin.album else { self.presentErrorAlert(title: "Unable to download images", message: error!.localizedDescription)
-				return
-			}
+		flickrClient.getFlickrPhotos(forPin: pin, resultsForPage: page) {(pin, pages, error) in
+			DispatchQueue.main.async {
+				guard error == nil, let pin = pin, let pages = pages else {
+					self.presentErrorAlert(title: "Unable to download images", message: error!.localizedDescription)
+					return
+				}
+				guard let album = pin.album else { self.presentErrorAlert(title: "Unable to download images", message: error!.localizedDescription)
+					return
+				}
 
-			if album.isEmpty {
-				self.albumStatusView.setState(state: .noImagesFound)
-				self.collectionView.isHidden = true
-			} else {
-				self.totalAlbumPages = pages
-				self.configureFlowLayout()
-				self.refreshPhotos()
-				self.albumStatusView.setState(state: .displayImages)
-				self.collectionView.isHidden = false
+				if album.isEmpty {
+					self.albumStatusView.setState(state: .noImagesFound)
+					self.collectionView.isHidden = true
+				} else {
+					self.totalAlbumPages = pages
+					self.refreshPhotos()
+					self.albumStatusView.setState(state: .displayImages)
+					self.collectionView.isHidden = false
+					self.newCollectionButton.isEnabled = true
+				}
 			}
 		}
 	}
@@ -136,6 +141,11 @@ class PhotoAlbumViewController: UIViewController {
 	}
 
 	@IBAction func newCollectionButtonPressed(_ sender: UIBarButtonItem) {
+		guard totalAlbumPages != 1 else {
+			presentErrorAlert(title: "Unable to fetch new photos", message: "There are no additional photos available for the given location.")
+			return
+		}
+
 		albumStatusView.setState(state: .downloading)
 
 		fetchedResultsController.fetchedObjects?.forEach({ (photo) in
@@ -148,13 +158,11 @@ class PhotoAlbumViewController: UIViewController {
 			print("Unable to save context after clearing album")
 		}
 
-//		var nextPage = 1
-//
-//		while nextPage == currentPage {
-//			nextPage = Int.random(in: 1...totalAlbumPages)
-//		}
-//
-//		downloadPhotos(forPage: nextPage)
+		let nextPage = Int.random(in: 1...totalAlbumPages)
+
+		print(nextPage)
+
+		downloadPhotos(forPage: nextPage)
 	}
 
 	//MARK:- Prepare for Segue

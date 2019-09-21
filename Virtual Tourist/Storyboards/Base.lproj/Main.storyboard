@@ -211,7 +211,8 @@
                         <outlet property="doneButton" destination="3Fy-h9-skT" id="hNF-vQ-ENJ"/>
                         <outlet property="mapView" destination="3aO-g4-M1x" id="moU-Nd-OzG"/>
                         <outlet property="navBarItem" destination="7u3-yy-IyI" id="Par-OZ-FXh"/>
-                        <segue destination="h60-Qv-lbR" kind="presentation" identifier="showPhotoDetails" modalPresentationStyle="currentContext" id="w6y-q4-x6W"/>
+                        <outlet property="newCollectionButton" destination="Wu0-ac-c2p" id="8iR-Mz-09v"/>
+                        <segue destination="h60-Qv-lbR" kind="show" identifier="showPhotoDetails" id="w6y-q4-x6W"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CAF-Zy-060" userLabel="First Responder" sceneMemberID="firstResponder"/>
