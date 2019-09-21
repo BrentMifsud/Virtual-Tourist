@@ -13,7 +13,6 @@ class InstructionLabel: UILabel {
 	enum InstructionLabels: String {
 		case longPress = "Long press to add new travel location"
 		case release = "Release finger to add pin"
-		case downloading = "Downloading Map Information"
 	}
 
 	func setInstructionLabel(_ label: InstructionLabels){

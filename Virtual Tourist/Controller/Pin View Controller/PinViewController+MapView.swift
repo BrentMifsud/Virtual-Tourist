@@ -60,10 +60,10 @@ extension PinViewController: MKMapViewDelegate {
 
 	func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
 		guard let annotation = view.annotation else { return }
-		guard !self.activityIndicator.isAnimating else {
-			mapView.deselectAnnotation(view.annotation, animated: false)
-			return
-		}
+//		guard !self.activityIndicator.isAnimating else {
+//			mapView.deselectAnnotation(view.annotation, animated: false)
+//			return
+//		}
 
 		let pinAnnotation = annotation as! AnnotationPinView
 

@@ -18,7 +18,6 @@ class PhotoAlbumViewController: UIViewController {
 	@IBOutlet weak var doneButton: UIBarButtonItem!
 	@IBOutlet weak var deleteButton: UIBarButtonItem!
 	@IBOutlet weak var navBarItem: UINavigationItem!
-	@IBOutlet weak var albumStatusView: UIView!
 
 	//MARK:- Controller Properties
 	var dataController: DataController!
@@ -35,11 +34,17 @@ class PhotoAlbumViewController: UIViewController {
 
 	var blockOperations: [BlockOperation] = []
 
-	var numberOfPhotos: Int { return collectionView.numberOfItems(inSection: 0) }
-
 	var currentPage: Int = 1
 
+	var albumStatusView: AlbumStatusView!
+
 	//MARK:- View Lifecycle methods
+	fileprivate func setUpAlbumStatusView() {
+		albumStatusView = AlbumStatusView(frame: self.collectionView.frame)
+		albumStatusView.setState(state: .downloading)
+		self.view.addSubview(albumStatusView)
+	}
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
@@ -47,22 +52,24 @@ class PhotoAlbumViewController: UIViewController {
 			presentErrorAlert(title: "Unable to load photo album", message: "Please try again later.")
 			fatalError("No pin passed to photo album view controller")
 		}
-		guard let album = pin.album else {
-			presentErrorAlert(title: "Unable to load photo album", message: "Please try again later.")
-			fatalError("pin must have an album")
-		}
 
 		navBarItem.title = pin.locationName ?? "Album"
 
-		fetchedResultsController = photoCoreData.getFetchedResultsController(forAlbum: album, fromContext: dataController.viewContext)
-
-		// Set delegates
+		// Set up Map View
 		mapView.delegate = self
-		collectionView.delegate = self
-		collectionView.dataSource = self
-		fetchedResultsController.delegate = self
-
 		setUpMapView()
+
+		// Set up Collection View
+		collectionView.dataSource = self
+		collectionView.delegate = self
+		setUpAlbumStatusView()
+		downloadPhotos()
+
+		// Set up fetched results view controller
+		guard let album = pin.album else { preconditionFailure("Unable to access album") }
+
+		fetchedResultsController = photoCoreData.getFetchedResultsController(forAlbum: album, fromContext: dataController.viewContext)
+		fetchedResultsController.delegate = self
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -77,9 +84,27 @@ class PhotoAlbumViewController: UIViewController {
 		setAlbumStatusView()
 	}
 
-	func setAlbumStatusView() {
-		albumStatusView.isHidden = numberOfPhotos > 0
-		collectionView.isHidden = numberOfPhotos == 0
+	func downloadPhotos(forPage page: Int = 1){
+		// Download Initial set of photos.
+		flickrClient.getFlickrPhotos(forPin: pin, resultsForPage: 1) {[unowned self] (pin, error) in
+			guard error == nil, let pin = pin else {
+				self.presentErrorAlert(title: "Unable to download images", message: error!.localizedDescription)
+				return
+			}
+			guard let album = pin.album else { self.presentErrorAlert(title: "Unable to download images", message: error!.localizedDescription)
+				return
+			}
+
+			if album.isEmpty {
+				self.albumStatusView.setState(state: .noImagesFound)
+				self.collectionView.isHidden = true
+			} else {
+				self.configureFlowLayout()
+				self.refreshPhotos()
+				self.albumStatusView.setState(state: .displayImages)
+				self.collectionView.isHidden = false
+			}
+		}
 	}
 
 	fileprivate func refreshPhotos(){

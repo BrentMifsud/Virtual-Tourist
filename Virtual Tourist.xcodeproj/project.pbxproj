@@ -19,6 +19,7 @@
 		845B479A2311E70800ECEA74 /* PhotoAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845B47992311E70800ECEA74 /* PhotoAlbum.swift */; };
 		845B479C2311E75500ECEA74 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845B479B2311E75500ECEA74 /* Photo.swift */; };
 		8467216F2335AA20007E91C7 /* FlickrErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8467216E2335AA20007E91C7 /* FlickrErrorResponse.swift */; };
+		846721732335DBB1007E91C7 /* AlbumStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846721722335DBB1007E91C7 /* AlbumStatusView.swift */; };
 		847F10C82316025900D052E0 /* NetworkClientProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F10C72316025900D052E0 /* NetworkClientProtocol.swift */; };
 		847F10CB2316050400D052E0 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F10CA2316050400D052E0 /* NetworkClient.swift */; };
 		847F10CD23160A6700D052E0 /* NetworkClient+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847F10CC23160A6700D052E0 /* NetworkClient+Constants.swift */; };
@@ -60,6 +61,7 @@
 		845B47992311E70800ECEA74 /* PhotoAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbum.swift; sourceTree = "<group>"; };
 		845B479B2311E75500ECEA74 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		8467216E2335AA20007E91C7 /* FlickrErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrErrorResponse.swift; sourceTree = "<group>"; };
+		846721722335DBB1007E91C7 /* AlbumStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumStatusView.swift; sourceTree = "<group>"; };
 		847F10C72316025900D052E0 /* NetworkClientProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClientProtocol.swift; sourceTree = "<group>"; };
 		847F10CA2316050400D052E0 /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
 		847F10CC23160A6700D052E0 /* NetworkClient+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkClient+Constants.swift"; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				847F1126232C3EFC00D052E0 /* PhotoCell.swift */,
 				847F112A232D35C600D052E0 /* InstructionLabel.swift */,
 				847F11632330478200D052E0 /* UIViewController+Extensions.swift */,
+				846721722335DBB1007E91C7 /* AlbumStatusView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -363,6 +366,7 @@
 				8451FED822D563D800BE42ED /* PinViewController+MapView.swift in Sources */,
 				847F10D123160FE900D052E0 /* FlickrClient+Constants.swift in Sources */,
 				847F10DE2318A4E100D052E0 /* PhotoCoreDataProtocol.swift in Sources */,
+				846721732335DBB1007E91C7 /* AlbumStatusView.swift in Sources */,
 				847F10D82318A19000D052E0 /* PinCoreData.swift in Sources */,
 				847F10DC2318A2A100D052E0 /* PhotoAlbumCoreData.swift in Sources */,
 				847F11162327351900D052E0 /* AnnotationPinView.swift in Sources */,

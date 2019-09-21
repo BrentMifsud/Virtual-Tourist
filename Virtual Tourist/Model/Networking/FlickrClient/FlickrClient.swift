@@ -80,19 +80,13 @@ class FlickrClient: FlickrClientProtocol {
 
 			do {
 				let flickrResponse = try jsonDecoder.decode(FlickrResponse.self, from: data)
-				DispatchQueue.main.async {
-					completionHandler(flickrResponse, nil)
-				}
+				completionHandler(flickrResponse, nil)
 			} catch {
 				do {
 					let flickrError = try jsonDecoder.decode(FlickrErrorResponse.self, from: data)
-					DispatchQueue.main.async {
-						completionHandler(nil, flickrError)
-					}
+					completionHandler(nil, flickrError)
 				} catch {
-					DispatchQueue.main.async {
-						completionHandler(nil, error)
-					}
+					completionHandler(nil, error)
 				}
 			}
 			

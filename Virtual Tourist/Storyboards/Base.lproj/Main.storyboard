@@ -191,17 +191,13 @@
                             <constraint firstItem="dOs-6d-Zal" firstAttribute="top" secondItem="Kfd-HO-U9d" secondAttribute="top" id="1yW-5q-62i"/>
                             <constraint firstItem="KfE-Jh-PrZ" firstAttribute="trailing" secondItem="Kfd-HO-U9d" secondAttribute="trailing" id="70c-t7-f9T"/>
                             <constraint firstItem="caF-8S-NS9" firstAttribute="leading" secondItem="Kfd-HO-U9d" secondAttribute="leading" id="KoF-XG-eNl"/>
-                            <constraint firstItem="xku-LJ-cPp" firstAttribute="width" secondItem="caF-8S-NS9" secondAttribute="width" id="Mdk-Cs-KFn"/>
-                            <constraint firstItem="xku-LJ-cPp" firstAttribute="centerY" secondItem="caF-8S-NS9" secondAttribute="centerY" id="O7p-es-xuN"/>
                             <constraint firstItem="caF-8S-NS9" firstAttribute="top" secondItem="3aO-g4-M1x" secondAttribute="bottom" id="Rko-6x-2m4"/>
                             <constraint firstItem="3aO-g4-M1x" firstAttribute="leading" secondItem="Kfd-HO-U9d" secondAttribute="leading" id="Tuz-vm-zNo"/>
                             <constraint firstItem="dOs-6d-Zal" firstAttribute="leading" secondItem="Kfd-HO-U9d" secondAttribute="leading" id="UMR-DT-ewN"/>
                             <constraint firstItem="Kfd-HO-U9d" firstAttribute="bottom" secondItem="KfE-Jh-PrZ" secondAttribute="bottom" id="fZz-8A-ig8"/>
-                            <constraint firstItem="xku-LJ-cPp" firstAttribute="height" secondItem="caF-8S-NS9" secondAttribute="height" id="fak-oF-TZr"/>
                             <constraint firstItem="dOs-6d-Zal" firstAttribute="trailing" secondItem="Kfd-HO-U9d" secondAttribute="trailing" id="o1w-A5-scQ"/>
                             <constraint firstItem="caF-8S-NS9" firstAttribute="trailing" secondItem="Kfd-HO-U9d" secondAttribute="trailing" id="ol6-C2-Bbt"/>
                             <constraint firstItem="KfE-Jh-PrZ" firstAttribute="leading" secondItem="Kfd-HO-U9d" secondAttribute="leading" id="rPW-WV-iGx"/>
-                            <constraint firstItem="xku-LJ-cPp" firstAttribute="centerX" secondItem="caF-8S-NS9" secondAttribute="centerX" id="sHU-Py-sVC"/>
                             <constraint firstItem="KfE-Jh-PrZ" firstAttribute="top" secondItem="caF-8S-NS9" secondAttribute="bottom" id="sIh-JU-yZ1"/>
                             <constraint firstItem="3aO-g4-M1x" firstAttribute="trailing" secondItem="Kfd-HO-U9d" secondAttribute="trailing" id="tl1-sS-wVt"/>
                             <constraint firstItem="3aO-g4-M1x" firstAttribute="top" secondItem="dOs-6d-Zal" secondAttribute="bottom" id="xVd-x8-v9b"/>
@@ -210,7 +206,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="UsL-hq-Mph"/>
                     <connections>
-                        <outlet property="albumStatusView" destination="xku-LJ-cPp" id="SQG-yI-kch"/>
                         <outlet property="collectionView" destination="caF-8S-NS9" id="Zmb-KA-myu"/>
                         <outlet property="deleteButton" destination="EAa-T8-RMY" id="xxt-5y-3lO"/>
                         <outlet property="doneButton" destination="3Fy-h9-skT" id="hNF-vQ-ENJ"/>
