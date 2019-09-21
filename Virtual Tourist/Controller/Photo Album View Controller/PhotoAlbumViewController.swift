@@ -94,25 +94,26 @@ class PhotoAlbumViewController: UIViewController {
 	func downloadPhotos(forPage page: Int = 1){
 		albumStatusView.setState(state: .downloading)
 
-		flickrClient.getFlickrPhotos(forPin: pin, resultsForPage: page) {(pin, pages, error) in
+		flickrClient.getFlickrPhotos(forPin: pin, resultsForPage: page) {[weak self] (pin, pages, error) in
+			guard let weakSelf = self else { return }
 			DispatchQueue.main.async {
 				guard error == nil, let pin = pin, let pages = pages else {
-					self.presentErrorAlert(title: "Unable to download images", message: error!.localizedDescription)
+					weakSelf.presentErrorAlert(title: "Unable to download images", message: error!.localizedDescription)
 					return
 				}
-				guard let album = pin.album else { self.presentErrorAlert(title: "Unable to download images", message: error!.localizedDescription)
+				guard let album = pin.album else { weakSelf.presentErrorAlert(title: "Unable to download images", message: error!.localizedDescription)
 					return
 				}
 
 				if album.isEmpty {
-					self.albumStatusView.setState(state: .noImagesFound)
-					self.collectionView.isHidden = true
+					weakSelf.albumStatusView.setState(state: .noImagesFound)
+					weakSelf.collectionView.isHidden = true
 				} else {
-					self.totalAlbumPages = pages
-					self.refreshPhotos()
-					self.albumStatusView.setState(state: .displayImages)
-					self.collectionView.isHidden = false
-					self.newCollectionButton.isEnabled = true
+					weakSelf.totalAlbumPages = pages
+					weakSelf.albumStatusView.setState(state: .displayImages)
+					weakSelf.collectionView.isHidden = false
+					weakSelf.newCollectionButton.isEnabled = true
+					weakSelf.refreshPhotos()
 				}
 			}
 		}
@@ -146,6 +147,7 @@ class PhotoAlbumViewController: UIViewController {
 			return
 		}
 
+		newCollectionButton.isEnabled = false
 		albumStatusView.setState(state: .downloading)
 
 		fetchedResultsController.fetchedObjects?.forEach({ (photo) in
@@ -159,8 +161,6 @@ class PhotoAlbumViewController: UIViewController {
 		}
 
 		let nextPage = Int.random(in: 1...totalAlbumPages)
-
-		print(nextPage)
 
 		downloadPhotos(forPage: nextPage)
 	}
