@@ -23,17 +23,9 @@ class PhotoAlbumViewController: UIViewController {
 	//MARK:- Controller Properties
 	var albumStatusView: AlbumStatusView!
 
-	var dataController: DataController!
-
 	var fetchedResultsController: NSFetchedResultsController<Photo>!
 
 	var pin: Pin!
-
-	var pinCoreData: PinCoreDataProtocol!
-
-	var photoCoreData: PhotoCoreDataProtocol!
-
-	var flickrClient: FlickrClientProtocol!
 
 	var blockOperations: [BlockOperation] = []
 
@@ -76,7 +68,7 @@ class PhotoAlbumViewController: UIViewController {
 			setUpButtons(enabled: true)
 		}
 
-		fetchedResultsController = photoCoreData.getFetchedResultsController(forAlbum: album, fromContext: dataController.viewContext)
+		fetchedResultsController = PhotoCoreData.shared.getFetchedResultsController(forAlbum: album, fromContext: DataController.shared.viewContext)
 		fetchedResultsController.delegate = self
 	}
 
@@ -93,7 +85,7 @@ class PhotoAlbumViewController: UIViewController {
 	func downloadPhotos(forPage page: Int = 1){
 		albumStatusView.setState(state: .downloading)
 
-		flickrClient.getFlickrPhotos(forPin: pin, resultsForPage: page) {[weak self] (pin, pages, error) in
+		FlickrClient.shared.getFlickrPhotos(forPin: pin, resultsForPage: page) {[weak self] (pin, pages, error) in
 			guard let weakSelf = self else { return }
 			guard error == nil, let pin = pin, let pages = pages else {
 				weakSelf.presentErrorAlert(title: "Unable to download images", message: error!.localizedDescription)
@@ -137,7 +129,7 @@ class PhotoAlbumViewController: UIViewController {
 
 
 	@IBAction func deleteButtonPressed(_ sender: UIBarButtonItem) {
-		pinCoreData.deletePin(pin: self.pin, fromContext: self.dataController.viewContext)
+		PinCoreData.shared.deletePin(pin: self.pin, fromContext: DataController.shared.viewContext)
 		dismiss(animated: true, completion: nil)
 	}
 
@@ -152,11 +144,11 @@ class PhotoAlbumViewController: UIViewController {
 		albumStatusView.setState(state: .downloading)
 
 		fetchedResultsController.fetchedObjects?.forEach { (photo) in
-			dataController.viewContext.delete(photo)
+			DataController.shared.viewContext.delete(photo)
 		}
 		
 		do {
-			try dataController.viewContext.save()
+			try DataController.shared.viewContext.save()
 		} catch {
 			print("Unable to save context after clearing album")
 		}

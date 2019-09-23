@@ -18,10 +18,6 @@ class PinViewController: UIViewController {
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	
 	// MARK:- Controller Properties
-	var dataController: DataController!
-	var flickrClient: FlickrClientProtocol!
-	var pinCoreData: PinCoreDataProtocol!
-	var albumCoreData: PhotoAlbumCoreDataProtocol!
 	let locationKey: String = "persistedMapRegion"
 	var currentLocation: [String : CLLocationDegrees]!
 
@@ -54,9 +50,9 @@ class PinViewController: UIViewController {
 			NSSortDescriptor(key: "dateCreated", ascending: false)
 		]
 
-		dataController.viewContext.perform {
+		DataController.shared.viewContext.perform {
 			do {
-				let pins = try self.dataController.viewContext.fetch(request)
+				let pins = try DataController.shared.viewContext.fetch(request)
 				self.mapView.addAnnotations(pins.map { pin in AnnotationPinView(pin: pin) })
 			} catch {
 				print("Error fetching Pins: \(error)")
@@ -85,10 +81,6 @@ class PinViewController: UIViewController {
 
 		let pinAnnotation: AnnotationPinView = sender as! AnnotationPinView
 
-		vc.dataController = self.dataController
-		vc.flickrClient = self.flickrClient
-		vc.photoCoreData = self.albumCoreData.photoCoreData
-		vc.pinCoreData = self.pinCoreData
 		vc.pin = pinAnnotation.pin
 	}
 }

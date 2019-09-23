@@ -85,13 +85,13 @@ extension PinViewController: MKMapViewDelegate {
 				guard let placemark = placemarks?.first else { return }
 				let name = placemark.name ?? "Unknown Area"
 
-				let newPin = self.pinCoreData.createPin(usingContext: self.dataController.viewContext, withLocation: name, andCoordinate: coordinate)
+				let newPin = PinCoreData.shared.createPin(usingContext: DataController.shared.viewContext, withLocation: name, andCoordinate: coordinate)
 				let annotationPin = AnnotationPinView(pin: newPin)
 				annotationPin.title = name
 
 				// Save newly created pin.
 				do {
-					try self.dataController.save()
+					try DataController.shared.save()
 				} catch {
 					print("Error saving new pin: \(error)")
 				}

@@ -10,19 +10,13 @@ import Foundation
 import UIKit
 
 class FlickrClient: FlickrClientProtocol {
-	var networkClient: NetworkClientProtocol
-	var photoAlbumCoreData: PhotoAlbumCoreDataProtocol
-	var dataController: DataController
-
 	private let baseURL: URL = URL(string: API.BaseUrl)!
 
 	private static let jsonDecoder = JSONDecoder()
 
-	required init(networkClient: NetworkClientProtocol, photoAlbumCoreData: PhotoAlbumCoreDataProtocol, dataController: DataController) {
-		self.networkClient = networkClient
-		self.photoAlbumCoreData = photoAlbumCoreData
-		self.dataController = dataController
-	}
+	static let shared = FlickrClient()
+
+	private init(){}
 
 	func getFlickrPhotos(forPin pin: Pin, resultsForPage page: Int = 1, completionHandler: @escaping (Pin?, Int?, Error?) -> Void) {
 		let pinId = pin.objectID
@@ -33,11 +27,11 @@ class FlickrClient: FlickrClientProtocol {
 				return
 			}
 
-			let pinContext = self.dataController.viewContext.object(with: pinId) as! Pin
+			let pinContext = DataController.shared.viewContext.object(with: pinId) as! Pin
 
 			DispatchQueue.main.async {
 				do {
-					try self.photoAlbumCoreData.addPhotos(images: data.searchResults.photos, toPhotoAlbum: pinContext.album!)
+					try PhotoAlbumCoreData.shared.addPhotos(images: data.searchResults.photos, toPhotoAlbum: pinContext.album!)
 					completionHandler(pin, data.searchResults.pages, nil)
 				} catch {
 					completionHandler(nil, nil, error)
@@ -62,7 +56,7 @@ class FlickrClient: FlickrClientProtocol {
 			ParameterKeys.Longitude: String(pin.longitude)
 		]
 
-		let dataTask = networkClient.createGetRequest(withUrl: baseURL, queryParms: queryParms, headers: nil) { (data, error) in
+		let dataTask = NetworkClient.shared.createGetRequest(withUrl: baseURL, queryParms: queryParms, headers: nil) { (data, error) in
 
 			guard let data = data, error == nil else {
 				completionHandler(nil, error)
@@ -88,7 +82,7 @@ class FlickrClient: FlickrClientProtocol {
 	}
 
 	func downloadImage(fromUrl url: URL, completionHandler: @escaping (UIImage?, String?, Error?) -> Void) {
-		let dataTask = networkClient.createGetRequest(withUrl: url, queryParms: [:], headers: [:]) { (data, error) in
+		let dataTask = NetworkClient.shared.createGetRequest(withUrl: url, queryParms: [:], headers: [:]) { (data, error) in
 			guard let data = data, error == nil else {
 				completionHandler(nil, nil, error)
 				return
