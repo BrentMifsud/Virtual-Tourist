@@ -66,7 +66,7 @@ class PhotoAlbumViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 
-		configureFlowLayout()
+		configureFlowLayout() 
 
 		refreshPhotos()
 
@@ -93,19 +93,20 @@ class PhotoAlbumViewController: UIViewController {
 
 	//MARK:- IBActions
 	@IBAction func doneButtonPressed(_ sender: UIBarButtonItem) {
-		self.dismiss(animated: true, completion: nil)
+		dismiss(animated: true, completion: nil)
 	}
 
 
 	@IBAction func deleteButtonPressed(_ sender: UIBarButtonItem) {
 		pinCoreData.deletePin(pin: self.pin, fromContext: self.dataController.viewContext)
-		self.dismiss(animated: true, completion: nil)
+		dismiss(animated: true, completion: nil)
 	}
 
 	//MARK:- Prepare for Segue
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		let photo = sender as! Photo
 		let destinationVC = segue.destination as! PhotoDetailViewController
+
 		destinationVC.photo = photo
 		destinationVC.fetchedResultsViewController = fetchedResultsController
 		destinationVC.fetchedResultsViewControllerDelegate = self

@@ -52,15 +52,9 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
 	}
 
 	func configureFlowLayout() {
-		collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-
 		if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-			flowLayout.minimumLineSpacing = 1
-			flowLayout.minimumInteritemSpacing = 1
-
 			let cellSideLength = (collectionView.frame.width/3) - 1
 			flowLayout.itemSize = CGSize(width: cellSideLength, height: cellSideLength)
 		}
 	}
-
 }
