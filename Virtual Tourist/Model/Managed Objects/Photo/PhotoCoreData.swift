@@ -11,6 +11,10 @@ import CoreData
 
 struct PhotoCoreData: PhotoCoreDataProtocol {
 
+	static let shared = PhotoCoreData()
+
+	private init() {}
+
 	func createPhoto(flickrImage: FlickrImage, inAlbum album: PhotoAlbum) -> Photo {
 		guard let context = album.managedObjectContext else { preconditionFailure("Failed to get album context.") }
 

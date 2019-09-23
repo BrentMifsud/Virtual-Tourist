@@ -10,10 +10,6 @@ import Foundation
 
 /// Utility for adding photos to PhotoAlbum Managed Object
 protocol PhotoAlbumCoreDataProtocol {
-	var photoCoreData: PhotoCoreDataProtocol { get }
-
-	init(photoCoreData: PhotoCoreDataProtocol)
-
 	/// Create and save images to the photo album.
 	/// - Parameters:
 	///		- images: the images from the flickr response

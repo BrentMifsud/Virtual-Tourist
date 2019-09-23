@@ -16,7 +16,6 @@ class PhotoCell: UICollectionViewCell {
 	public static let reuseId = "photoCell"
 
 	var photo: Photo!
-	var flickrClient: FlickrClientProtocol!
 
 	/// Set up the cell's imageView by downloading or reusing photos that have already been downloaded.
 	func setUpPhotoCell() {
@@ -37,7 +36,7 @@ class PhotoCell: UICollectionViewCell {
 		} else {
 			// No photo currently downloaded. Request image from flickr
 			activityIndicator.startAnimating()
-			flickrClient.downloadImage(fromUrl: photo.url!) { [weak self] (imageData, url, error) in
+			FlickrClient.shared.downloadImage(fromUrl: photo.url!) { [weak self] (imageData, url, error) in
 				guard let weakSelf = self else { return }
 
 				guard let imageData = imageData else { preconditionFailure("Unable to download image: \(error.debugDescription)") }
