@@ -104,14 +104,14 @@ extension PinViewController: MKMapViewDelegate {
 					self.flickrClient.getFlickrPhotos(forPin: newPin, resultsForPage: 1) { (pin, error) in
 						guard error == nil else {
 							self.presentErrorAlert(title: "Unable to download images", message: error!.localizedDescription)
-							return
-						}
-
-						DispatchQueue.main.async {
 							self.activityIndicator.stopAnimating()
 							self.instructionLabel.setInstructionLabel(.longPress)
 							self.mapView.isInteractionEnabled(true)
+							return
 						}
+						self.activityIndicator.stopAnimating()
+						self.instructionLabel.setInstructionLabel(.longPress)
+						self.mapView.isInteractionEnabled(true)
 					}
 
 					// Add the newly created pin to the map.
