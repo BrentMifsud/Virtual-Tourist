@@ -24,32 +24,25 @@ class FlickrClient: FlickrClientProtocol {
 		self.dataController = dataController
 	}
 
-	func getFlickrPhotos(forPin pin: Pin, resultsForPage page: Int = 1, completionHandler: @escaping (Pin?, Error?) -> Void) {
+	func getFlickrPhotos(forPin pin: Pin, resultsForPage page: Int = 1, completionHandler: @escaping (Pin?, Int?, Error?) -> Void) {
 		let pinId = pin.objectID
 
 		requestImages(forPin: pin, resultsForPage: page) { (data, error) in
 			guard let data = data, error == nil else {
-				DispatchQueue.main.async {
-					completionHandler(nil, error)
-				}
+				completionHandler(nil, nil, error)
 				return
 			}
 
-			self.dataController.persistentContainer.performBackgroundTask { (context) in
-				guard let pinContext = context.object(with: pinId) as? Pin else {
-					preconditionFailure("Pin must be fetched in background context")
-				}
+			let pinContext = self.dataController.viewContext.object(with: pinId) as! Pin
 
-				DispatchQueue.main.async {
-					do {
-						try self.photoAlbumCoreData.addPhotos(images: data.searchResults.photos, toPhotoAlbum: pinContext.album!)
-						completionHandler(pin, nil)
-					} catch {
-						completionHandler(nil, error)
-					}
+			DispatchQueue.main.async {
+				do {
+					try self.photoAlbumCoreData.addPhotos(images: data.searchResults.photos, toPhotoAlbum: pinContext.album!)
+					completionHandler(pin, data.searchResults.pages, nil)
+				} catch {
+					completionHandler(nil, nil, error)
 				}
 			}
-
 		}
 	}
 
@@ -80,19 +73,13 @@ class FlickrClient: FlickrClientProtocol {
 
 			do {
 				let flickrResponse = try jsonDecoder.decode(FlickrResponse.self, from: data)
-				DispatchQueue.main.async {
-					completionHandler(flickrResponse, nil)
-				}
+				completionHandler(flickrResponse, nil)
 			} catch {
 				do {
 					let flickrError = try jsonDecoder.decode(FlickrErrorResponse.self, from: data)
-					DispatchQueue.main.async {
-						completionHandler(nil, flickrError)
-					}
+					completionHandler(nil, flickrError)
 				} catch {
-					DispatchQueue.main.async {
-						completionHandler(nil, error)
-					}
+					completionHandler(nil, error)
 				}
 			}
 			

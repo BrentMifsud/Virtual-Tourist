@@ -74,11 +74,7 @@ class PinViewController: UIViewController {
 		} else if sender.state == .ended {
 			// Get the coordinates of the tapped location on the map.
 			let locationCoordinate = mapView.convert(sender.location(in: mapView), toCoordinateFrom: mapView)
-
-			activityIndicator.startAnimating()
-			mapView.isInteractionEnabled(false)
-			instructionLabel.setInstructionLabel(.downloading)
-
+			instructionLabel.setInstructionLabel(.longPress)
 			createGeocodedAnnotation(from: locationCoordinate)			
 		}
 	}

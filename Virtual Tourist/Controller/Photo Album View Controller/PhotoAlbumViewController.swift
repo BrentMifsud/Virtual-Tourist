@@ -18,9 +18,11 @@ class PhotoAlbumViewController: UIViewController {
 	@IBOutlet weak var doneButton: UIBarButtonItem!
 	@IBOutlet weak var deleteButton: UIBarButtonItem!
 	@IBOutlet weak var navBarItem: UINavigationItem!
-	@IBOutlet weak var albumStatusView: UIView!
+	@IBOutlet weak var newCollectionButton: UIBarButtonItem!
 	
 	//MARK:- Controller Properties
+	var albumStatusView: AlbumStatusView!
+
 	var dataController: DataController!
 
 	var fetchedResultsController: NSFetchedResultsController<Photo>!
@@ -35,32 +37,47 @@ class PhotoAlbumViewController: UIViewController {
 
 	var blockOperations: [BlockOperation] = []
 
-	var numberOfPhotos: Int { return collectionView.numberOfItems(inSection: 0) }
+	var totalAlbumPages: Int = 1
+
 
 	//MARK:- View Lifecycle methods
+	fileprivate func setUpAlbumStatusView() {
+		albumStatusView = AlbumStatusView(frame: self.collectionView.frame)
+		albumStatusView.setState(state: .downloading)
+		self.view.addSubview(albumStatusView)
+	}
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		guard let pin = pin else {
+		guard let pin = pin, let album = pin.album else {
 			presentErrorAlert(title: "Unable to load photo album", message: "Please try again later.")
 			fatalError("No pin passed to photo album view controller")
-		}
-		guard let album = pin.album else {
-			presentErrorAlert(title: "Unable to load photo album", message: "Please try again later.")
-			fatalError("pin must have an album")
 		}
 
 		navBarItem.title = pin.locationName ?? "Album"
 
-		fetchedResultsController = photoCoreData.getFetchedResultsController(forAlbum: album, fromContext: dataController.viewContext)
-
-		// Set delegates
+		// Set up Map View
 		mapView.delegate = self
-		collectionView.delegate = self
-		collectionView.dataSource = self
-		fetchedResultsController.delegate = self
-
 		setUpMapView()
+
+		// Set up Collection View
+		collectionView.dataSource = self
+		collectionView.delegate = self
+		configureFlowLayout()
+		newCollectionButton.isEnabled = false
+		deleteButton.isEnabled = false
+		setUpAlbumStatusView()
+
+		if album.isEmpty {
+			downloadPhotos()
+		} else {
+			albumStatusView.setState(state: .displayImages)
+			setUpButtons(enabled: true)
+		}
+
+		fetchedResultsController = photoCoreData.getFetchedResultsController(forAlbum: album, fromContext: dataController.viewContext)
+		fetchedResultsController.delegate = self
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -71,13 +88,30 @@ class PhotoAlbumViewController: UIViewController {
 		refreshPhotos()
 
 		collectionView.reloadData()
-
-		setAlbumStatusView()
 	}
 
-	func setAlbumStatusView() {
-		albumStatusView.isHidden = numberOfPhotos > 0
-		collectionView.isHidden = numberOfPhotos == 0
+	func downloadPhotos(forPage page: Int = 1){
+		albumStatusView.setState(state: .downloading)
+
+		flickrClient.getFlickrPhotos(forPin: pin, resultsForPage: page) {[weak self] (pin, pages, error) in
+			guard let weakSelf = self else { return }
+			guard error == nil, let pin = pin, let pages = pages else {
+				weakSelf.presentErrorAlert(title: "Unable to download images", message: error!.localizedDescription)
+				return
+			}
+			guard let album = pin.album else { weakSelf.presentErrorAlert(title: "Unable to download images", message: error!.localizedDescription)
+				return
+			}
+
+			if album.isEmpty {
+				weakSelf.albumStatusView.setState(state: .noImagesFound)
+			} else {
+				weakSelf.totalAlbumPages = pages
+				weakSelf.albumStatusView.setState(state: .displayImages)
+				weakSelf.refreshPhotos()
+			}
+			weakSelf.setUpButtons(enabled: true)
+		}
 	}
 
 	fileprivate func refreshPhotos(){
@@ -91,6 +125,11 @@ class PhotoAlbumViewController: UIViewController {
 		collectionView.reloadData()
 	}
 
+	fileprivate func setUpButtons(enabled: Bool){
+		deleteButton.isEnabled = enabled
+		newCollectionButton.isEnabled = enabled
+	}
+
 	//MARK:- IBActions
 	@IBAction func doneButtonPressed(_ sender: UIBarButtonItem) {
 		dismiss(animated: true, completion: nil)
@@ -102,6 +141,31 @@ class PhotoAlbumViewController: UIViewController {
 		dismiss(animated: true, completion: nil)
 	}
 
+	@IBAction func newCollectionButtonPressed(_ sender: UIBarButtonItem) {
+		guard let album = pin.album else { return }
+		guard !album.isEmpty else {
+			presentErrorAlert(title: "Unable to fetch new photos", message: "There are no additional photos available for the given location.")
+			return
+		}
+
+		newCollectionButton.isEnabled = false
+		albumStatusView.setState(state: .downloading)
+
+		fetchedResultsController.fetchedObjects?.forEach { (photo) in
+			dataController.viewContext.delete(photo)
+		}
+		
+		do {
+			try dataController.viewContext.save()
+		} catch {
+			print("Unable to save context after clearing album")
+		}
+
+		let nextPage = Int.random(in: 1...totalAlbumPages)
+
+		downloadPhotos(forPage: nextPage)
+	}
+
 	//MARK:- Prepare for Segue
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		let photo = sender as! Photo
@@ -111,4 +175,5 @@ class PhotoAlbumViewController: UIViewController {
 		destinationVC.fetchedResultsViewController = fetchedResultsController
 		destinationVC.fetchedResultsViewControllerDelegate = self
 	}
+
 }

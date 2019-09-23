@@ -13,7 +13,7 @@
     <entity name="PhotoAlbum" representedClassName=".PhotoAlbum" syncable="YES" codeGenerationType="category">
         <attribute name="dateCreated" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="id" attributeType="String" syncable="YES"/>
-        <relationship name="photos" toMany="YES" deletionRule="Cascade" destinationEntity="Photo" inverseName="photoAlbum" inverseEntity="Photo" syncable="YES"/>
+        <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Photo" inverseName="photoAlbum" inverseEntity="Photo" syncable="YES"/>
         <relationship name="pin" maxCount="1" deletionRule="Nullify" destinationEntity="Pin" inverseName="album" inverseEntity="Pin" syncable="YES"/>
     </entity>
     <entity name="Pin" representedClassName=".Pin" syncable="YES" codeGenerationType="category">
@@ -25,7 +25,7 @@
     </entity>
     <elements>
         <element name="Photo" positionX="25.828125" positionY="-65.90234375" width="128" height="165"/>
-        <element name="PhotoAlbum" positionX="-151.15625" positionY="-19.87109375" width="128" height="103"/>
+        <element name="PhotoAlbum" positionX="-151.15625" positionY="-19.87109375" width="128" height="105"/>
         <element name="Pin" positionX="-326.25" positionY="-34.953125" width="128" height="120"/>
     </elements>
 </model>

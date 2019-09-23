@@ -60,10 +60,6 @@ extension PinViewController: MKMapViewDelegate {
 
 	func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
 		guard let annotation = view.annotation else { return }
-		guard !self.activityIndicator.isAnimating else {
-			mapView.deselectAnnotation(view.annotation, animated: false)
-			return
-		}
 
 		let pinAnnotation = annotation as! AnnotationPinView
 
@@ -86,36 +82,22 @@ extension PinViewController: MKMapViewDelegate {
 		let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
 
 			geoCoder.reverseGeocodeLocation(location) { (placemarks, error) in
-					guard let placemark = placemarks?.first else { return }
-					let name = placemark.name ?? "Unknown Area"
+				guard let placemark = placemarks?.first else { return }
+				let name = placemark.name ?? "Unknown Area"
 
-					let newPin = self.pinCoreData.createPin(usingContext: self.dataController.viewContext, withLocation: name, andCoordinate: coordinate)
-					let annotationPin = AnnotationPinView(pin: newPin)
-					annotationPin.title = name
+				let newPin = self.pinCoreData.createPin(usingContext: self.dataController.viewContext, withLocation: name, andCoordinate: coordinate)
+				let annotationPin = AnnotationPinView(pin: newPin)
+				annotationPin.title = name
 
-					do {
-						// Try to save the newly created pin.
-						try self.dataController.save()
-					} catch {
-						print("Error saving new pin: \(error)")
-					}
+				// Save newly created pin.
+				do {
+					try self.dataController.save()
+				} catch {
+					print("Error saving new pin: \(error)")
+				}
 
-					// Get images for current Pin
-					self.flickrClient.getFlickrPhotos(forPin: newPin, resultsForPage: 1) { (pin, error) in
-						guard error == nil else {
-							self.presentErrorAlert(title: "Unable to download images", message: error!.localizedDescription)
-							self.activityIndicator.stopAnimating()
-							self.instructionLabel.setInstructionLabel(.longPress)
-							self.mapView.isInteractionEnabled(true)
-							return
-						}
-						self.activityIndicator.stopAnimating()
-						self.instructionLabel.setInstructionLabel(.longPress)
-						self.mapView.isInteractionEnabled(true)
-					}
-
-					// Add the newly created pin to the map.
-					self.mapView.addAnnotation(annotationPin)
-			}
+				// Add the newly created pin to the map.
+				self.mapView.addAnnotation(annotationPin)
+		}
 	}
 }
