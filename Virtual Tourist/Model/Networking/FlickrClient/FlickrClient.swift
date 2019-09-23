@@ -23,7 +23,9 @@ class FlickrClient: FlickrClientProtocol {
 
 		requestImages(forPin: pin, resultsForPage: page) { (data, error) in
 			guard let data = data, error == nil else {
-				completionHandler(nil, nil, error)
+				DispatchQueue.main.async {
+					completionHandler(nil, nil, error)
+				}
 				return
 			}
 

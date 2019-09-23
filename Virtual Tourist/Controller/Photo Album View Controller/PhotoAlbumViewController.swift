@@ -89,9 +89,11 @@ class PhotoAlbumViewController: UIViewController {
 			guard let weakSelf = self else { return }
 			guard error == nil, let pin = pin, let pages = pages else {
 				weakSelf.presentErrorAlert(title: "Unable to download images", message: error!.localizedDescription)
+				weakSelf.albumStatusView.setState(state: .noImagesFound)
 				return
 			}
 			guard let album = pin.album else { weakSelf.presentErrorAlert(title: "Unable to download images", message: error!.localizedDescription)
+				weakSelf.albumStatusView.setState(state: .noImagesFound)
 				return
 			}
 
