@@ -30,6 +30,12 @@ class PinViewController: UIViewController {
 		super.viewDidLoad()
 		mapView.delegate = self
 		loadPersistedMapLocation()
+
+		if #available(iOS 13.0, *) {
+			activityIndicator.style = .large
+		} else {
+			activityIndicator.style = .whiteLarge
+		}
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
