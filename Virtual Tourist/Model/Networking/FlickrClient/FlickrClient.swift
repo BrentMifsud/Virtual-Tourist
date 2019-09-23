@@ -33,18 +33,14 @@ class FlickrClient: FlickrClientProtocol {
 				return
 			}
 
-			self.dataController.persistentContainer.performBackgroundTask { (context) in
-				guard let pinContext = context.object(with: pinId) as? Pin else {
-					preconditionFailure("Pin must be fetched in background context")
-				}
+			let pinContext = self.dataController.viewContext.object(with: pinId) as! Pin
 
-				DispatchQueue.main.async {
-					do {
-						try self.photoAlbumCoreData.addPhotos(images: data.searchResults.photos, toPhotoAlbum: pinContext.album!)
-						completionHandler(pin, data.searchResults.pages, nil)
-					} catch {
-						completionHandler(nil, nil, error)
-					}
+			DispatchQueue.main.async {
+				do {
+					try self.photoAlbumCoreData.addPhotos(images: data.searchResults.photos, toPhotoAlbum: pinContext.album!)
+					completionHandler(pin, data.searchResults.pages, nil)
+				} catch {
+					completionHandler(nil, nil, error)
 				}
 			}
 		}

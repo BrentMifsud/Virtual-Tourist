@@ -41,11 +41,18 @@ class AlbumStatusView: UIView {
 		statusLabel.sizeToFit()
 
 		// Set up activity indicator
-		activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+		activityIndicator = UIActivityIndicatorView()
+
+		if #available(iOS 13.0, *){
+			activityIndicator.style = .large
+		} else {
+			activityIndicator.style = .whiteLarge
+			activityIndicator.color = .black
+		}
+
 		activityIndicator.hidesWhenStopped = true
 		addSubview(activityIndicator)
 		activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-		activityIndicator.color = .black
 		activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0).isActive = true
 		activityIndicator.bottomAnchor.constraint(equalTo: statusLabel.topAnchor, constant: -10).isActive = true
 	}

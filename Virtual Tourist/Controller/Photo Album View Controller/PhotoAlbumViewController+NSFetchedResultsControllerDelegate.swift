@@ -15,14 +15,16 @@ extension PhotoAlbumViewController: NSFetchedResultsControllerDelegate {
 	}
 
 	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-		collectionView!.performBatchUpdates({ () -> Void in
-			self.blockOperations.forEach({ (blockOp) in
-				blockOp.start()
-			})
-		}, completion: { (finished) -> Void in
+		collectionView!.performBatchUpdates(
+			{ () -> Void in
+				self.blockOperations.forEach { (blockOp) in
+					blockOp.start()
+				}
+			}
+		) { (finished) -> Void in
 			self.blockOperations.removeAll(keepingCapacity: false)
 			self.collectionView.reloadData()
-		})
+		}
 	}
 
 	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
