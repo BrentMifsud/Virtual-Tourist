@@ -118,15 +118,4 @@ extension PinViewController: MKMapViewDelegate {
 					self.mapView.addAnnotation(annotationPin)
 			}
 	}
-
-	/// Add a pin managed object to the Map View.
-	/// - Parameter pin: Pin Managed Object to be added.
-	func addPinAnnotation(pin: Pin){
-		self.mapView.addAnnotation(AnnotationPinView(pin: pin))
-	}
-
-	/// Clear all existing annotations from the map.
-	func clearAnnotations(){
-		self.mapView.removeAnnotations(self.mapView.annotations)
-	}
 }
