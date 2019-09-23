@@ -5,7 +5,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -54,7 +53,7 @@
                         <outlet property="activityIndicator" destination="XcP-Z1-CAa" id="Ks5-jp-1xc"/>
                         <outlet property="instructionLabel" destination="sfw-Ca-8ws" id="wED-jj-Kpp"/>
                         <outlet property="mapView" destination="bBo-HU-Sao" id="Tky-Lk-QSo"/>
-                        <segue destination="tsv-o4-prm" kind="presentation" identifier="showPhotoAlbum" modalPresentationStyle="currentContext" id="wjy-JH-TsJ"/>
+                        <segue destination="tsv-o4-prm" kind="presentation" identifier="showPhotoAlbum" modalPresentationStyle="fullScreen" id="wjy-JH-TsJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -83,7 +82,7 @@
                             </mapView>
                             <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dOs-6d-Zal">
                                 <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                                <color key="barTintColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="barTintColor" systemColor="secondarySystemGroupedBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
                                     <navigationItem title="Title" id="7u3-yy-IyI">
                                         <barButtonItem key="leftBarButtonItem" systemItem="trash" id="EAa-T8-RMY">
@@ -99,7 +98,7 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KfE-Jh-PrZ" userLabel="Tool Bar">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KfE-Jh-PrZ" userLabel="Tool Bar">
                                 <rect key="frame" x="0.0" y="813" width="414" height="49"/>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="cRT-Pv-fDP"/>
@@ -110,9 +109,10 @@
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="UiE-JK-wc2"/>
                                 </items>
+                                <color key="barTintColor" systemColor="secondarySystemGroupedBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </toolbar>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="caF-8S-NS9">
-                                <rect key="frame" x="0.0" y="288" width="414" height="574"/>
+                                <rect key="frame" x="0.0" y="288" width="414" height="525"/>
                                 <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="1" minimumInteritemSpacing="1" id="oNq-LG-G37">
                                     <size key="itemSize" width="121" height="121"/>
@@ -150,43 +150,10 @@
                                             <outlet property="imageView" destination="r3z-5K-QlW" id="2oc-ro-rEP"/>
                                         </connections>
                                     </collectionViewCell>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="hTm-cQ-g8v">
-                                        <rect key="frame" x="122" y="0.0" width="120.99999999999997" height="121"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="ROB-9z-yEc">
-                                            <rect key="frame" x="0.0" y="0.0" width="120.99999999999997" height="121"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </collectionViewCellContentView>
-                                    </collectionViewCell>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="94X-pi-Ebr">
-                                        <rect key="frame" x="244" y="0.0" width="121" height="121"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="SDh-1A-v0x">
-                                            <rect key="frame" x="0.0" y="0.0" width="121" height="121"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </collectionViewCellContentView>
-                                    </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xku-LJ-cPp" userLabel="Album Status View">
-                                <rect key="frame" x="0.0" y="288" width="414" height="525"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="No photos found for this location." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fm7-HG-z9U">
-                                        <rect key="frame" x="63.333333333333343" y="275" width="287.66666666666663" height="24"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstItem="fm7-HG-z9U" firstAttribute="centerX" secondItem="xku-LJ-cPp" secondAttribute="centerX" id="dtp-kT-oEf"/>
-                                    <constraint firstItem="fm7-HG-z9U" firstAttribute="centerY" secondItem="xku-LJ-cPp" secondAttribute="centerY" id="gBp-la-JHW"/>
-                                </constraints>
-                            </view>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="dOs-6d-Zal" firstAttribute="top" secondItem="Kfd-HO-U9d" secondAttribute="top" id="1yW-5q-62i"/>
                             <constraint firstItem="KfE-Jh-PrZ" firstAttribute="trailing" secondItem="Kfd-HO-U9d" secondAttribute="trailing" id="70c-t7-f9T"/>
@@ -212,7 +179,7 @@
                         <outlet property="mapView" destination="3aO-g4-M1x" id="moU-Nd-OzG"/>
                         <outlet property="navBarItem" destination="7u3-yy-IyI" id="Par-OZ-FXh"/>
                         <outlet property="newCollectionButton" destination="Wu0-ac-c2p" id="8iR-Mz-09v"/>
-                        <segue destination="h60-Qv-lbR" kind="show" identifier="showPhotoDetails" id="w6y-q4-x6W"/>
+                        <segue destination="h60-Qv-lbR" kind="presentation" identifier="showPhotoDetails" modalPresentationStyle="fullScreen" id="w6y-q4-x6W"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CAF-Zy-060" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -229,9 +196,9 @@
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="kitten-image" translatesAutoresizingMaskIntoConstraints="NO" id="zKt-43-Ofa">
                                 <rect key="frame" x="0.0" y="88" width="414" height="611.33333333333337"/>
-                                <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="0R6-sB-w8I">
+                            <stackView contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="0R6-sB-w8I">
                                 <rect key="frame" x="8" y="699.33333333333337" width="398" height="162.66666666666663"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PsI-ou-tNB">
@@ -314,7 +281,7 @@
                             </stackView>
                             <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8zB-FB-Re9">
                                 <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                                <color key="barTintColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="barTintColor" systemColor="secondarySystemGroupedBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
                                     <navigationItem title="Photo Details" id="3vK-Um-mcl">
                                         <barButtonItem key="leftBarButtonItem" systemItem="trash" id="hJa-ub-n9W" userLabel="Delete Button">
@@ -331,7 +298,7 @@
                                 </items>
                             </navigationBar>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="zKt-43-Ofa" firstAttribute="top" secondItem="8zB-FB-Re9" secondAttribute="bottom" id="O8m-0I-BTt"/>
                             <constraint firstItem="zKt-43-Ofa" firstAttribute="leading" secondItem="kvd-3q-7Dm" secondAttribute="leading" id="PWQ-27-ET5"/>
@@ -346,6 +313,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="kvd-3q-7Dm"/>
                     </view>
+                    <navigationItem key="navigationItem" id="0Gc-9X-yxB"/>
                     <connections>
                         <outlet property="imageHeight" destination="4N6-33-6De" id="V2O-yY-F30"/>
                         <outlet property="imageTitle" destination="40o-E7-M15" id="VaQ-fe-h9G"/>

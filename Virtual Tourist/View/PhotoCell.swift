@@ -21,7 +21,10 @@ class PhotoCell: UICollectionViewCell {
 	/// Set up the cell's imageView by downloading or reusing photos that have already been downloaded.
 	func setUpPhotoCell() {
 		if #available(iOS 13.0, *) {
-			activityIndicator.color = .systemGroupedBackground
+			activityIndicator.style = .large
+		} else {
+			activityIndicator.style = .whiteLarge
+			activityIndicator.color = .black
 		}
 		activityIndicator.startAnimating()
 
