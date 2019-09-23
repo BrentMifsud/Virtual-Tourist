@@ -40,7 +40,7 @@ class PinViewController: UIViewController {
 	/// Fetch all persisted pins and add them to the map view.
 	func refreshPins() {
 		// Clear all existing annotations before trying to refresh them.
-		clearAnnotations()
+		mapView.clearAnnotations()
 
 		// Fetch all the pins from core data.
 		let request: NSFetchRequest<Pin> = Pin.fetchRequest()
