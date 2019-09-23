@@ -9,10 +9,6 @@
 import Foundation
 
 protocol NetworkClientProtocol {
-	var urlSession: URLSession { get }
-
-	init(urlSession: URLSession)
-
 	/// Builds a GET HTTP task with the provided query parameters.
 	/// - Parameters:
     ///	    - baseUrl: the base url for the request.

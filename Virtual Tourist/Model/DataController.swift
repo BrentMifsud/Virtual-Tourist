@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 import CoreData
 
 /// Used to manage core data in Virtual Tourist Application.
@@ -17,7 +18,9 @@ class DataController {
 		return persistentContainer.viewContext
 	}
 
-	init(modelName: String) {
+	static let shared = DataController(modelName: "VirtualTourist")
+
+	private init(modelName: String) {
 		persistentContainer = NSPersistentContainer(name: modelName)
 	}
 

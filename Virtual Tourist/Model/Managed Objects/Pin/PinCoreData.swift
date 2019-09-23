@@ -12,6 +12,12 @@ import CoreData
 
 struct PinCoreData: PinCoreDataProtocol {
 
+	static let shared: PinCoreData = PinCoreData()
+
+	private init(){
+		
+	}
+
 	func createPin(
 		usingContext context: NSManagedObjectContext,
 		withLocation location: String?,

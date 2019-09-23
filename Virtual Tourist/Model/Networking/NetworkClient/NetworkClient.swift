@@ -9,11 +9,9 @@
 import Foundation
 
 struct NetworkClient: NetworkClientProtocol {
-	var urlSession: URLSession
+	static let shared: NetworkClient = NetworkClient()
 
-	init(urlSession: URLSession) {
-		self.urlSession = urlSession
-	}
+	private init() {}
 
 	func createGetRequest(
 		withUrl baseUrl: URL,
@@ -40,7 +38,7 @@ struct NetworkClient: NetworkClientProtocol {
 			urlRequest.addValue(HeaderValues.accept, forHTTPHeaderField: HeaderKeys.accept)
 		}
 
-		return urlSession.dataTask(with: urlRequest){ (data, urlResponse, error) in
+		return URLSession.shared.dataTask(with: urlRequest){ (data, urlResponse, error) in
 			guard let data = data, error == nil else {
 				completionHandler(nil, error)
 				return
