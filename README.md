@@ -13,3 +13,8 @@ Apply for an API key [here](https://www.flickr.com/services/apps/create/apply).
 Please add your API key to the [FlickrClient+Constants.swift](Virtual%20Tourist/Model/Networking/FlickrClient/FlickrClient+Constants.swift) file.
 
 ![FlickrClient+Constants.swift](images/apiKey.png)
+
+# Credits
+Special thanks to Udacity mentor Francisco for helping me track down and squash various bugs in my multi-threaded code.
+
+Credit to [TiagoMaiaL](https://github.com/TiagoMaiaL/Virtual-Tourist) for inspiring the clean protocol driven design pattern for the flickr network calls.
