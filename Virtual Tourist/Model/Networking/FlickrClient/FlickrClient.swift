@@ -33,6 +33,7 @@ class FlickrClient: FlickrClientProtocol {
 
 			DispatchQueue.main.async {
 				do {
+					try PhotoAlbumCoreData.shared.setPagingInformation(currentPage: Int16(data.searchResults.page), totalPages: Int16(data.searchResults.pages), forAlbum: pinContext.album!)
 					try PhotoAlbumCoreData.shared.addPhotos(images: data.searchResults.photos, toPhotoAlbum: pinContext.album!)
 					completionHandler(pin, data.searchResults.pages, nil)
 				} catch {

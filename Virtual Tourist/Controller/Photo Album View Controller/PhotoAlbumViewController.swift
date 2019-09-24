@@ -29,9 +29,6 @@ class PhotoAlbumViewController: UIViewController {
 
 	var blockOperations: [BlockOperation] = []
 
-	var totalAlbumPages: Int = 1
-
-
 	//MARK:- View Lifecycle methods
 	fileprivate func setUpAlbumStatusView() {
 		albumStatusView = AlbumStatusView(frame: self.collectionView.frame)
@@ -87,7 +84,7 @@ class PhotoAlbumViewController: UIViewController {
 
 		FlickrClient.shared.getFlickrPhotos(forPin: pin, resultsForPage: page) {[weak self] (pin, pages, error) in
 			guard let weakSelf = self else { return }
-			guard error == nil, let pin = pin, let pages = pages else {
+			guard error == nil, let pin = pin else {
 				weakSelf.presentErrorAlert(title: "Unable to download images", message: error!.localizedDescription)
 				weakSelf.albumStatusView.setState(state: .noImagesFound)
 				return
@@ -100,7 +97,6 @@ class PhotoAlbumViewController: UIViewController {
 			if album.isEmpty {
 				weakSelf.albumStatusView.setState(state: .noImagesFound)
 			} else {
-				weakSelf.totalAlbumPages = pages
 				weakSelf.albumStatusView.setState(state: .displayImages)
 				weakSelf.refreshPhotos()
 			}
@@ -137,7 +133,7 @@ class PhotoAlbumViewController: UIViewController {
 
 	@IBAction func newCollectionButtonPressed(_ sender: UIBarButtonItem) {
 		guard let album = pin.album else { return }
-		guard !album.isEmpty else {
+		guard album.totalPages > 1 else {
 			presentErrorAlert(title: "Unable to fetch new photos", message: "There are no additional photos available for the given location.")
 			return
 		}
@@ -155,7 +151,15 @@ class PhotoAlbumViewController: UIViewController {
 			print("Unable to save context after clearing album")
 		}
 
-		let nextPage = Int.random(in: 1...totalAlbumPages)
+		let currentPage = Int(album.currentPage)
+		let totalPages = Int(album.totalPages)
+
+		var nextPage: Int
+
+		// If the randomly generated number happens to be the same page as current, get a different random number.
+		repeat {
+			nextPage = Int.random(in: 1...totalPages)
+		} while nextPage == currentPage
 
 		downloadPhotos(forPage: nextPage)
 	}

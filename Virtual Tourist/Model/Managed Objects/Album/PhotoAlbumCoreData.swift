@@ -20,4 +20,14 @@ struct PhotoAlbumCoreData: PhotoAlbumCoreDataProtocol {
 
 		try context.save()
 	}
+
+	func setPagingInformation(currentPage: Int16, totalPages: Int16, forAlbum photoAlbum: PhotoAlbum) throws {
+		guard let context = photoAlbum.managedObjectContext else {
+			preconditionFailure("Album does not have a context.")
+		}
+
+		photoAlbum.totalPages = totalPages
+
+		try context.save()
+	}
 }
