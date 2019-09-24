@@ -39,6 +39,7 @@ class PinViewController: UIViewController {
 		refreshPins()
 	}
 
+	//MARK:- Class Methods
 	/// Fetch all persisted pins and add them to the map view.
 	func refreshPins() {
 		// Clear all existing annotations before trying to refresh them.
@@ -65,12 +66,12 @@ class PinViewController: UIViewController {
 
 		if sender.state == .began{
 			// Update Instruction Label
-			instructionLabel.setInstructionLabel(.release)
+			instructionLabel.setState(.releaseToAddPin)
 
 		} else if sender.state == .ended {
 			// Get the coordinates of the tapped location on the map.
 			let locationCoordinate = mapView.convert(sender.location(in: mapView), toCoordinateFrom: mapView)
-			instructionLabel.setInstructionLabel(.longPress)
+			instructionLabel.setState(.readyForNewPin)
 			createGeocodedAnnotation(from: locationCoordinate)			
 		}
 	}

@@ -8,14 +8,20 @@
 
 import UIKit
 
+
+/// This class controls the PinViewController's Instruction Label
 class InstructionLabel: UILabel {
 
-	enum InstructionLabels: String {
-		case longPress = "Long press to add new travel location"
-		case release = "Release finger to add pin"
+	/// The various states for the instruction label.
+	enum LabelState: String {
+		case readyForNewPin = "Long press to add new travel location"
+		case releaseToAddPin = "Release finger to add pin"
 	}
 
-	func setInstructionLabel(_ label: InstructionLabels){
+
+	/// Populate Instruction Label based on its state.
+	/// - Parameter label: Instruction Label State
+	func setState(_ label: LabelState){
 		text = label.rawValue
 	}
 

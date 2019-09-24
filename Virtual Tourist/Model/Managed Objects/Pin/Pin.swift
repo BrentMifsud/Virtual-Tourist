@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 
+
+/// Map Pin Core Data Managed Object
 class Pin: NSManagedObject {
 	override func awakeFromInsert() {
 		super.awakeFromInsert()
