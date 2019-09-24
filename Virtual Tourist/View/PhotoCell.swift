@@ -9,21 +9,25 @@
 import UIKit
 import CoreData
 
+
+/// Class representation of the PhotoAlbumViewController's Collection View Cells.
 class PhotoCell: UICollectionViewCell {
+
+	// MARK:- IBActions
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	@IBOutlet weak var imageView: UIImageView!
 
+	// MARK:- Class Properties
 	public static let reuseId = "photoCell"
-
 	var photo: Photo!
 
+	// MARK:- Class Methods
 	/// Set up the cell's imageView by downloading or reusing photos that have already been downloaded.
 	func setUpPhotoCell() {
 		if #available(iOS 13.0, *) {
 			activityIndicator.style = .large
 		} else {
 			activityIndicator.style = .whiteLarge
-			activityIndicator.color = .black
 		}
 		activityIndicator.startAnimating()
 

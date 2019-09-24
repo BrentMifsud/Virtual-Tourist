@@ -8,6 +8,8 @@
 
 import Foundation
 
+
+/// Error response struct from the Flickr API.
 struct FlickrErrorResponse: Codable {
 	let status: String
 	let code: Int

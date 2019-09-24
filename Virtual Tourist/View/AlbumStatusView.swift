@@ -8,8 +8,10 @@
 
 import UIKit
 
+/// A helpful UIView that shows the user the status of photos in the PhotoAlbumViewController.
 class AlbumStatusView: UIView {
 
+	// MARK:- Class Properties.
 	var activityIndicator: UIActivityIndicatorView!
 	var statusLabel: UILabel!
 
@@ -28,6 +30,9 @@ class AlbumStatusView: UIView {
 		fatalError("init(coder:) has not been implemented")
 	}
 
+	// MARK:- Class Methods.
+	
+	/// Set up a new AlbumStatusView.
 	func setUpView() {
 		// Set up label
 		statusLabel = UILabel()
@@ -57,6 +62,9 @@ class AlbumStatusView: UIView {
 		activityIndicator.bottomAnchor.constraint(equalTo: statusLabel.topAnchor, constant: -10).isActive = true
 	}
 
+
+	/// Set the state of the album status view.
+	/// - Parameter state: Album status view state.
 	func setState(state: State) {
 		switch state {
 		case .downloading:

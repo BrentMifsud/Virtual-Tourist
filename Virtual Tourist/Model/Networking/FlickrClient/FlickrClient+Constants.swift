@@ -41,7 +41,7 @@ extension FlickrClient {
 		static let ResultsPerPage = "100"
 		static let Radius = "0.1"
 		static let RadiusUnits = "km"
-		static let APIKey = "ADD API KEY HERE"
+		static let APIKey = "ADD API KEY HERE" // ADD YOUR FLICKR API KEY HERE
 		static let Sort = "date-posted-desc"
 	}
 }

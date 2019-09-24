@@ -22,20 +22,11 @@ class PhotoAlbumViewController: UIViewController {
 	
 	//MARK:- Controller Properties
 	var albumStatusView: AlbumStatusView!
-
 	var fetchedResultsController: NSFetchedResultsController<Photo>!
-
 	var pin: Pin!
-
 	var blockOperations: [BlockOperation] = []
 
 	//MARK:- View Lifecycle methods
-	fileprivate func setUpAlbumStatusView() {
-		albumStatusView = AlbumStatusView(frame: self.collectionView.frame)
-		albumStatusView.setState(state: .downloading)
-		self.view.addSubview(albumStatusView)
-	}
-
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
@@ -46,16 +37,9 @@ class PhotoAlbumViewController: UIViewController {
 
 		navBarItem.title = pin.locationName ?? "Album"
 
-		// Set up Map View
-		mapView.delegate = self
 		setUpMapView()
-
-		// Set up Collection View
-		collectionView.dataSource = self
-		collectionView.delegate = self
-		configureFlowLayout()
-		newCollectionButton.isEnabled = false
-		deleteButton.isEnabled = false
+		setUpCollectionView()
+		setUpButtons(enabled: false)
 		setUpAlbumStatusView()
 
 		if album.isEmpty {
@@ -79,6 +63,8 @@ class PhotoAlbumViewController: UIViewController {
 		collectionView.reloadData()
 	}
 
+
+	//MARK:- Class Methods
 	func downloadPhotos(forPage page: Int = 1){
 		albumStatusView.setState(state: .downloading)
 
@@ -104,6 +90,7 @@ class PhotoAlbumViewController: UIViewController {
 		}
 	}
 
+	/// Fetch album from core data and reload the collection view.
 	fileprivate func refreshPhotos(){
 
 		do {
@@ -115,6 +102,15 @@ class PhotoAlbumViewController: UIViewController {
 		collectionView.reloadData()
 	}
 
+	/// Set Up the initial AlbumStatusView.
+	fileprivate func setUpAlbumStatusView() {
+		albumStatusView = AlbumStatusView(frame: self.collectionView.frame)
+		albumStatusView.setState(state: .downloading)
+		self.view.addSubview(albumStatusView)
+	}
+
+	/// Set the new collection button and delete button funtionality.
+	/// - Parameter enabled: Enable or disable the buttons.
 	fileprivate func setUpButtons(enabled: Bool){
 		deleteButton.isEnabled = enabled
 		newCollectionButton.isEnabled = enabled
