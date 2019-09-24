@@ -23,7 +23,7 @@ struct PhotoCoreData: PhotoCoreDataProtocol {
 		photo.url = URL(string: flickrImage.mediumUrl)
 		photo.id = flickrImage.id
 		photo.photoAlbum = album
-		//TODO:- Flickr API bug alternates height and with as String and Int. Add below back when issue is fixed.
+//TODO:- Error with flickr API not returning consistent data type. Add back when issue is fixed.
 //		photo.height = flickrImage.height
 //		photo.width = flickrImage.width
 
