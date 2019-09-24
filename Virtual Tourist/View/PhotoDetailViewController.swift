@@ -35,7 +35,7 @@ class PhotoDetailViewController: UIViewController {
 		}
 
 		imageView.image = UIImage(data: imageData)
-		imageTitle.text = photo.title
+		imageTitle.text = photo.title ?? "Untitled"
 		url.setTitle(photo.url?.absoluteString, for: .normal)
 		imageHeight.text = photo.height
 		imageWidth.text = photo.width
