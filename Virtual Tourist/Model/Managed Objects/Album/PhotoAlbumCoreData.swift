@@ -26,6 +26,7 @@ struct PhotoAlbumCoreData: PhotoAlbumCoreDataProtocol {
 			preconditionFailure("Album does not have a context.")
 		}
 
+		photoAlbum.currentPage = currentPage
 		photoAlbum.totalPages = totalPages
 
 		try context.save()
