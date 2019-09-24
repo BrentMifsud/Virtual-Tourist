@@ -28,7 +28,6 @@ class PhotoCell: UICollectionViewCell {
 			activityIndicator.style = .large
 		} else {
 			activityIndicator.style = .whiteLarge
-			activityIndicator.color = .black
 		}
 		activityIndicator.startAnimating()
 
