@@ -15,7 +15,6 @@ class PinViewController: UIViewController {
 	// MARK:- IBOutlets
 	@IBOutlet weak var mapView: MKMapView!
 	@IBOutlet weak var instructionLabel: InstructionLabel!
-	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	
 	// MARK:- Controller Properties
 	let locationKey: String = "persistedMapRegion"
@@ -26,12 +25,6 @@ class PinViewController: UIViewController {
 		super.viewDidLoad()
 		mapView.delegate = self
 		loadPersistedMapLocation()
-
-		if #available(iOS 13.0, *) {
-			activityIndicator.style = .large
-		} else {
-			activityIndicator.style = .whiteLarge
-		}
 	}
 
 	override func viewWillAppear(_ animated: Bool) {

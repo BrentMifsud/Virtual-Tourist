@@ -41,7 +41,7 @@ struct FlickrImage: Codable {
 	let id: String
 	let title: String
 	let mediumUrl: String
-	//TODO:- Error with flickr API not returning consistent data type. Add back when issue is fixed.
+//TODO:- Error with flickr API not returning consistent data type. Add back when issue is fixed.
 //	let height: String
 //	let width: String
 
@@ -49,7 +49,7 @@ struct FlickrImage: Codable {
 		case id
 		case title
 		case mediumUrl = "url_m"
-		//TODO:- Error with flickr API not returning consistent data type. Add back when issue is fixed.
+//TODO:- Error with flickr API not returning consistent data type. Add back when issue is fixed.
 //		case height = "height_m"
 //		case width = "width_m"
 	}
