@@ -38,7 +38,7 @@ extension FlickrClient {
 		static let Format = "json"
 		static let NoJsonCallback = "1"
 		static let ExtraMediumURL = "url_m"
-		static let ResultsPerPage = "100"
+		static let ResultsPerPage = "50"
 		static let Radius = "0.1"
 		static let RadiusUnits = "km"
 		static let APIKey = "ADD API KEY HERE" // ADD YOUR FLICKR API KEY HERE
