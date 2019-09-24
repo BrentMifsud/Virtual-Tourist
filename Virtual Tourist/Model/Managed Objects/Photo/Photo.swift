@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 
+
+/// Photo Core Data Managed Object
 class Photo: NSManagedObject {
 	override func awakeFromInsert() {
 		super.awakeFromInsert()

@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 
+
+/// Photo Album Core Data Managed Object
 class PhotoAlbum: NSManagedObject {
 	var isEmpty: Bool {
 		return (photos?.count ?? 0) == 0

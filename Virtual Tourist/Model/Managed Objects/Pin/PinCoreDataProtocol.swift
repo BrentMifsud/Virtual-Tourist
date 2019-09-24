@@ -10,7 +10,6 @@ import Foundation
 import CoreLocation
 import CoreData
 
-
 /// Utility for managing pin managed objects.
 protocol PinCoreDataProtocol {
 	/// Creates and persists a pin object.

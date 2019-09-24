@@ -8,6 +8,8 @@
 
 import Foundation
 
+
+/// Network Client is used to create various HTTP requests.
 protocol NetworkClientProtocol {
 	/// Builds a GET HTTP task with the provided query parameters.
 	/// - Parameters:

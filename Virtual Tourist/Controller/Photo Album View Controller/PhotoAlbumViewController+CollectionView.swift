@@ -50,6 +50,16 @@ extension PhotoAlbumViewController: UICollectionViewDelegate, UICollectionViewDa
 		performSegue(withIdentifier: "showPhotoDetails", sender: photo)
 	}
 
+
+	/// Set up the Collection View.
+	func setUpCollectionView() {
+		// Set up Collection View
+		collectionView.dataSource = self
+		collectionView.delegate = self
+		configureFlowLayout()
+	}
+
+	/// Set up the flow layout for the Collection View.
 	func configureFlowLayout() {
 		if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
 			let cellSideLength = (collectionView.frame.width/3) - 1

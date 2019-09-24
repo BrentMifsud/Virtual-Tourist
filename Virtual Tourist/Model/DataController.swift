@@ -24,7 +24,10 @@ class DataController {
 		persistentContainer = NSPersistentContainer(name: modelName)
 	}
 
-	func load(completion: (() -> Void)? = nil) {
+
+	/// Set up DataController context.
+	/// - Parameter completionHandler: Code to execute after the completion of this method.
+	func load(completionHandler: (() -> Void)? = nil) {
 		persistentContainer.loadPersistentStores { storeDescription, error in
 			guard error == nil else {
 				fatalError(error!.localizedDescription)
@@ -32,16 +35,20 @@ class DataController {
 			self.autoSaveViewContext()
 
 			self.configureContext()
-			completion?()
+			completionHandler?()
 		}
 	}
 
+
+	/// Save current context.
 	func save() throws {
 		if viewContext.hasChanges {
 			try viewContext.save()
 		}
 	}
 
+
+	/// Configure the context merge policies.
 	func configureContext() {
 		viewContext.automaticallyMergesChangesFromParent = true
 		viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
@@ -50,7 +57,7 @@ class DataController {
 
 // MARK: - Autosaving
 extension DataController {
-	func autoSaveViewContext(interval: TimeInterval = 5) {
+	private func autoSaveViewContext(interval: TimeInterval = 5) {
 		guard interval > 0 else {
 			print("cannot set negative autosave interval")
 			return

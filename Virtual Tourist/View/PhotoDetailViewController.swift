@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+
+/// Displays details about the selected photo from the PhotoAlbumViewController
 class PhotoDetailViewController: UIViewController {
 
 	//MARK:- IBOutlets

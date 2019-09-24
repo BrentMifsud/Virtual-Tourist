@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+
+/// Flicker Client is used to work with Flickr's API.
 protocol FlickrClientProtocol {
 	/// Obtains photos from Flickr for a specified map pin.
 	/// - Parameters:
