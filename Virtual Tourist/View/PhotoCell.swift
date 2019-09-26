@@ -29,6 +29,7 @@ class PhotoCell: UICollectionViewCell {
 		} else {
 			activityIndicator.style = .whiteLarge
 		}
+
 		activityIndicator.startAnimating()
 
 		// Populate cell imageview

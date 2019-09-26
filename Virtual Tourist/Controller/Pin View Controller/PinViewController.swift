@@ -71,11 +71,10 @@ class PinViewController: UIViewController {
 
 	//MARK:- Segue
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		guard let vc = segue.destination as? PhotoAlbumViewController else { return }
+		guard let photoAlbumViewController = segue.destination as? PhotoAlbumViewController else { return }
 
 		let pinAnnotation: AnnotationPinView = sender as! AnnotationPinView
 
-		vc.pin = pinAnnotation.pin
+		photoAlbumViewController.pin = pinAnnotation.pin
 	}
 }
-

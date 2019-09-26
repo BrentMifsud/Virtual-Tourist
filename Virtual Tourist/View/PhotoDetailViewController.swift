@@ -48,6 +48,7 @@ class PhotoDetailViewController: UIViewController {
 			app.open(toOpen, options: [:], completionHandler: nil)
 		}
 	}
+
 	@IBAction func doneButtonPressed(_ sender: UIBarButtonItem) {
 		dismiss(animated: true, completion: nil)
 	}
